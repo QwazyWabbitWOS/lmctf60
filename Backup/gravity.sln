@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "team", "gravity.vcproj", "{FDA6A6E1-372E-4410-8203-F95D612B0766}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Alpha|Win32 = Debug Alpha|Win32
+		Debug|Win32 = Debug|Win32
+		Release Alpha|Win32 = Release Alpha|Win32
+		Release Pentium Pro|Win32 = Release Pentium Pro|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Debug Alpha|Win32.ActiveCfg = Debug Alpha|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Debug Alpha|Win32.Build.0 = Debug Alpha|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Debug|Win32.Build.0 = Debug|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Release Alpha|Win32.ActiveCfg = Release Alpha|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Release Alpha|Win32.Build.0 = Release Alpha|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Release Pentium Pro|Win32.ActiveCfg = Release Pentium Pro|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Release Pentium Pro|Win32.Build.0 = Release Pentium Pro|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Release|Win32.ActiveCfg = Release|Win32
+		{FDA6A6E1-372E-4410-8203-F95D612B0766}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

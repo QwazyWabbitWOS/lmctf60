@@ -1,0 +1,61 @@
+#
+# LMCTF TE  gamesparc.so Makefile for Solaris 2.6
+# Requires GNU make
+#
+
+ARCH=sparc
+CC=gcc
+BASE_CFLAGS=-Dstricmp=strcasecmp
+
+#use these cflags to optimize it
+CFLAGS=$(BASE_CFLAGS) -funroll-loops \
+	-fomit-frame-pointer -fexpensive-optimizations -fno-strength-reduce
+#use these when debugging 
+#CFLAGS=$(BASE_CFLAGS) -g
+
+LDFLAGS=-ldl -lm -lsocket
+SHLIBEXT=so
+SHLIBCFLAGS=-fPIC
+SHLIBLDFLAGS=-G
+
+DO_CC=$(CC) $(CFLAGS) $(SHLIBCFLAGS) -o $@ -c $<
+
+# Lithium II ZBot detection object (Use the appropriate binary)
+#L_OBJS = l2zbot/Solaris_Sparq/zbotcheck.o
+L_OBJS =
+
+#############################################################################
+# SETUP AND BUILD
+# GAME
+#############################################################################
+
+.c.o:
+	$(DO_CC)
+
+GAME_OBJS = \
+	g_ai.o g_cmds.o g_combat.o g_ctffunc.o g_func.o g_items.o g_main.o \
+	g_menu.o g_misc.o g_monster.o g_phys.o g_replace.o g_runes.o \
+	g_save.o g_skins.o g_spawn.o g_svcmds.o g_target.o g_tourney.o \
+	g_trigger.o g_turret.o g_utils.o g_weapon.o gslog.o m_actor.o \
+	m_berserk.o m_boss2.o m_boss3.o m_boss31.o m_boss32.o m_brain.o \
+	m_chick.o m_flash.o m_flipper.o m_float.o m_flyer.o m_gladiator.o \
+	m_gunner.o m_hover.o m_infantry.o m_insane.o m_medic.o m_move.o \
+	m_mutant.o m_parasite.o m_soldier.o m_supertank.o m_tank.o \
+	p_client.o p_hud.o p_observer.o p_stats.o p_trail.o p_view.o \
+	p_weapon.o q_shared.o stdlog.o \
+	g_so.o # this file is a shared library thingie needed for Solaris
+
+game$(ARCH).$(SHLIBEXT) : $(GAME_OBJS) $(L_OBJS)
+	$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(GAME_OBJS) $(L_OBJS)
+
+
+#############################################################################
+# MISC
+#############################################################################
+
+clean:
+	-rm -f $(GAME_OBJS)
+
+depend:
+	gcc -MM $(GAME_OBJS:.o=.c)
+
