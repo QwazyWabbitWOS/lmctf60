@@ -175,9 +175,9 @@ DeathmatchScoreboardMessage
 */
 void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
 {
-    char    entry[4096];
-    char    string[5000];
-    char    string2[4000];  // TEAM PLAY -- LM_JORM
+    char    entry[MAX_MSGLEN];
+    char    string[MAX_MSGLEN];
+    char    string2[MAX_MSGLEN];  // TEAM PLAY -- LM_JORM
 	char	mvpstring[64];
 	int     bluescore, redscore;  // TEAM PLAY -- LM_JORM
     int     bluecaps, redcaps;  // TEAM PLAY -- LM_JORM
@@ -992,7 +992,7 @@ void CTFSquadboardMessage (edict_t *ent, edict_t* killer) // ADC
 				if (squad == 0)
 					squad = clients[j]->pers.squad;
 
-				if (!stricmp (clients[j]->pers.squad, squad))
+				if (!Q_stricmp (clients[j]->pers.squad, squad))
 				{
 					sortedClients [sortedCount++] = clients [j];
 					clients [j] = 0;
@@ -1022,7 +1022,7 @@ void CTFSquadboardMessage (edict_t *ent, edict_t* killer) // ADC
 
 		*entry = 0;
 
-		if (!squad || stricmp (squad, sortedClients[i]->pers.squad))
+		if (!squad || Q_stricmp (squad, sortedClients[i]->pers.squad))
 		{
 			squad = sortedClients[i]->pers.squad;
 
