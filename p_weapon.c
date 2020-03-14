@@ -1948,9 +1948,9 @@ void Draw_Hook (edict_t *ent, vec3_t start, vec3_t end)
 	float		*v;
 
 	v = tv(-15,-15,-15);
-	VectorCopy (v, mins);
+	_VectorCopy (v, mins);
 	v = tv(15,15,15);
-	VectorCopy (v, maxs);
+	_VectorCopy (v, maxs);
 
 	VectorSubtract(end, start, dir);
 	VectorSet(offset, 0, 0, 0);
@@ -1977,9 +1977,9 @@ void Weapon_Hook_Fire (edict_t *ent)
 	vec3_t	dest;
 
 	v = tv(-15,-15,-15);
-	VectorCopy (v, mins);
+	_VectorCopy (v, mins);
 	v = tv(15,15,15);
-	VectorCopy (v, maxs);
+	_VectorCopy (v, maxs);
 
 	ent->client->isfiring = 0; // We are only "firing" when we start
 
