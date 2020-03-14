@@ -293,9 +293,9 @@ static int CheckArmor (edict_t *ent, vec3_t point, vec3_t normal, int damage, in
 	armor = GetItemByIndex (index);
 
 	if (dflags & DAMAGE_ENERGY)
-		save = ceil(((gitem_armor_t *)armor->info)->energy_protection*damage);
+		save = ceilf(((gitem_armor_t *)armor->info)->energy_protection*damage);
 	else
-		save = ceil(((gitem_armor_t *)armor->info)->normal_protection*damage);
+		save = ceilf(((gitem_armor_t *)armor->info)->normal_protection*damage);
 	if (save >= client->pers.inventory[index])
 		save = client->pers.inventory[index];
 
@@ -561,7 +561,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		{                                                             // and the client has a rune
 			if ((attacker->client->rune->runetype == RUNE_VAMP)&&(attacker!=targ))   // if the rune is the VAMPIRE rune and the target is not himself
 			{
-				if (targ->classname == "player")                     // if the target is a player,
+				if (Q_stricmp(targ->classname,"player") == 0)                     // if the target is a player,
                 {
 					vampdrain = attacker->health + (take >> 1); // take half of the health removed from the player
 					if (vampdrain < 250)
@@ -571,7 +571,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 					gi.sound(attacker, CHAN_ITEM, gi.soundindex("brain/brnatck3.wav"), 1, ATTN_NORM, 0); //make the vampiric sound
 					//gi.bprintf(PRINT_MEDIUM,"sucking the life from %s\n",targ->classname);   //for debugging purposes
 				}
-				else if (targ->classname == "bodyque")      // if the target is a dead body.  NOTE: the grapple classname = 'noclass'
+				else if (Q_stricmp(targ->classname, "bodyque") == 0)      // if the target is a dead body.  NOTE: the grapple classname = 'noclass'
 				{
 					vampdrain = attacker->health + (take >> 2); // take quarter of the health removed from the corpse
 					if (vampdrain < 250)
@@ -581,9 +581,9 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 					gi.sound(attacker, CHAN_ITEM, gi.soundindex("brain/brnatck3.wav"), 1, ATTN_NORM, 0); //make the vampiric sound
 					//gi.bprintf(PRINT_MEDIUM,"sucking the life from %s\n",targ->classname);   //for debugging purposes
 				}
-			}                                                    
-		}                                                       
-                                                       
+			}
+		}
+
 
 
 
