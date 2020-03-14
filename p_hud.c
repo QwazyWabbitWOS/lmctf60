@@ -206,7 +206,7 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
     
 	//int     score, total;
 	int     score;
-    int     picnum;
+ //   int     picnum;
     int     x, y;
     gclient_t   *cl;
     edict_t     *cl_ent;
@@ -425,7 +425,7 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
         }
         else
         {
-            picnum = gi.imageindex ("i_fixme");
+ //           picnum = gi.imageindex ("i_fixme");
             x = 0;
             y = 32 + 32 * (i%6);
 
@@ -543,7 +543,7 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
         }
         else
         {
-            picnum = gi.imageindex ("i_fixme");
+ //           picnum = gi.imageindex ("i_fixme");
             //x = (i>=6) ? 160 : 0;
             x = 160;
             y = 32 + 32 * (i%6);
