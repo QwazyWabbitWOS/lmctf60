@@ -308,8 +308,8 @@ static int CheckArmor (edict_t *ent, vec3_t point, vec3_t normal, int damage, in
 	return save;
 }
 
+#ifdef MONSTERS_OK
 
-/*
 void M_ReactToDamage (edict_t *targ, edict_t *attacker)
 {
 	if (!(attacker->client) && !(attacker->svflags & SVF_MONSTER))
@@ -385,7 +385,7 @@ void M_ReactToDamage (edict_t *targ, edict_t *attacker)
 	}
 }
 
-*/
+#endif
 
 qboolean CheckTeamDamage (edict_t *targ, edict_t *attacker)
 {

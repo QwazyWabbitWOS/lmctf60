@@ -187,11 +187,10 @@ void PlayVoiceSound(edict_t *ent, char *sound)
 
 static char* ValidateSoundName(char* sound)
 {
-	static char buffer[64];
-	static char result[64];
+	static char buffer[MAX_QPATH] = { 0 };
+	static char result[MAX_QPATH] = { 0 };
 
-	memset(result, 0, 64);
-	memcpy(buffer, sound, 63);
+	memcpy(buffer, sound, MAX_QPATH - 1);
 	sscanf(buffer, "%[^;\\/:*?\"<>| \t\n\r]", result);
 	return result;
 }
@@ -1404,7 +1403,8 @@ void Cmd_InfoEnt_f (edict_t *ent)
 	vec3_t	forward, right, start, offset, mins, maxs, end;
 	trace_t	tr;
 	float	*v;
-	char	enttype[100], entcolor[100];
+	char	enttype[100] = { 0 };
+	char	entcolor[100] = { 0 };
 
 	v = tv(-8,-8,-2);
 	VectorCopy (v, mins);
@@ -1426,7 +1426,7 @@ void Cmd_InfoEnt_f (edict_t *ent)
 
 	if (sscanf(p, "%s %[^\n]", enttype, entcolor))
 	{
-		if (!strcmp(entcolor, "red"))
+		if (!Q_stricmp(entcolor, "red"))
 			red = 1;
 		else
 			red = 0;

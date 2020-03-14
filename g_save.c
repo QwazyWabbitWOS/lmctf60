@@ -527,6 +527,9 @@ void ReadField (FILE *f, field_t *field, byte *base)
 
 //=========================================================
 
+
+static gclient_t	temp;	// For WriteClient
+
 /*
 ==============
 WriteClient
@@ -537,7 +540,6 @@ All pointer variables (except function pointers) must be handled specially.
 void WriteClient (FILE *f, gclient_t *client)
 {
 	field_t		*field;
-	gclient_t	temp;
 	
 	// all of the ints, floats, and vectors stay as they are
 	temp = *client;
@@ -605,7 +607,10 @@ void WriteGame (char *filename, qboolean autosave)
 
 	f = fopen (filename, "wb");
 	if (!f)
-		gi.error ("Couldn't open %s", filename);
+	{
+		gi.error("Couldn't open %s", filename);
+		return;
+	}
 
 	memset (str, 0, sizeof(str));
 	strcpy (str, __DATE__);
@@ -783,7 +788,10 @@ void WriteLevel (char *filename)
 
 	f = fopen (filename, "wb");
 	if (!f)
-		gi.error ("Couldn't open %s", filename);
+	{
+		gi.error("Couldn't open %s", filename);
+		return;
+	}
 
 	// write out edict size for checking
 	i = sizeof(edict_t);

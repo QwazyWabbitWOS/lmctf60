@@ -227,8 +227,7 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 	if (ent->killtarget)
 	{
 		t = NULL;
-		t = G_Find (t, FOFS(targetname), ent->killtarget);
-		while (t)
+		while ((t = G_Find (t, FOFS(targetname), ent->killtarget)) != NULL)
 		{
 			G_FreeEdict (t);
 			if (!ent->inuse)
@@ -236,7 +235,6 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 				gi.dprintf("entity was removed while using killtargets\n");
 				return;
 			}
-			t = G_Find (t, FOFS(targetname), ent->killtarget);
 		}
 	}
 
@@ -246,16 +244,12 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 	if (ent->target)
 	{
 		t = NULL;
-		t = G_Find (t, FOFS(targetname), ent->target);
-		while (t)
+		while ((t = G_Find (t, FOFS(targetname), ent->target)) != NULL)
 		{
 			// doors fire area portals in a specific way
 			if (!Q_stricmp(t->classname, "func_areaportal") &&
 				(!Q_stricmp(ent->classname, "func_door") || !Q_stricmp(ent->classname, "func_door_rotating")))
-			{
-				t = G_Find (t, FOFS(targetname), ent->target);
 				continue;
-			}
 
 			if (t == ent)
 			{
@@ -271,7 +265,6 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 				gi.dprintf("entity was removed while using targets\n");
 				return;
 			}
-			t = G_Find (t, FOFS(targetname), ent->target);
 		}
 	}
 }
@@ -399,7 +392,7 @@ void vectoangles (vec3_t value1, vec3_t angles)
 		if (yaw < 0)
 			yaw += 360;
 
-		forward = sqrt (value1[0]*value1[0] + value1[1]*value1[1]);
+		forward = sqrtf (value1[0]*value1[0] + value1[1]*value1[1]);
 		pitch = (int) (atan2(value1[2], forward) * 180 / M_PI);
 		if (pitch < 0)
 			pitch += 360;
@@ -449,7 +442,7 @@ edict_t *G_Spawn (void)
 	{
 		// the first couple seconds of server time can involve a lot of
 		// freeing and allocating, so relax the replacement policy
-		if (!e->inuse && ( e->freetime < 2 || level.time - e->freetime > 0.5 ) )
+		if (!e->inuse && ( e->freetime < 2 || level.time - e->freetime > 0.5f ) )
 		{
 			G_InitEdict (e);
 			return e;

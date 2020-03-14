@@ -84,8 +84,10 @@ qboolean SV_RunThink (edict_t *ent)
 		return true;
 	
 	ent->nextthink = 0;
-	if (!ent->think)
-		gi.error ("NULL ent->think");
+	if (!ent->think) {
+		gi.error("NULL ent->think");
+		return false;
+	}
 	ent->think (ent);
 
 	return false;
@@ -870,7 +872,7 @@ void SV_Physics_Step (edict_t *ent)
 			if (!(ent->health <= 0.0 && !M_CheckBottom(ent)))
 			{
 				vel = ent->velocity;
-				speed = sqrt(vel[0]*vel[0] +vel[1]*vel[1]);
+				speed = sqrtf(vel[0] * vel[0] + vel[1] * vel[1]);
 				if (speed)
 				{
 					friction = sv_friction;
