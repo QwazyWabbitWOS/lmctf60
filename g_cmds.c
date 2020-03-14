@@ -1832,7 +1832,7 @@ void Cmd_Kick_f (edict_t *ent)
 	}
 
 	p = gi.args();
-	if (!sscanf(p, "%ld", &i))
+	if (!sscanf(p, "%lu", &i))
 	{
 		ctf_SafePrint(ent, PRINT_HIGH, "Usage: kick <number>\nUse \"users\" to list players by number.\n");
 		return;
