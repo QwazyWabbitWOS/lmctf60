@@ -436,7 +436,7 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 			case MOD_G_SPLASH:
 				if (IsNeutral(self))
 					message = "tripped on its own grenade";
-				else if (IsFemale(self))
+				else if (Sex)
 					message = "tripped on her own grenade";
 				else
 					message = "tripped on his own grenade";
@@ -444,7 +444,7 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 			case MOD_R_SPLASH:
 				if (IsNeutral(self))
 					message = "blew itself up";
-				else if (IsFemale(self))
+				else if (Sex)
 					message = "blew herself up";
 				else
 					message = "blew himself up";
@@ -462,7 +462,7 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 			default:
 				if (IsNeutral(self))
 					message = "killed itself";
-				else if (IsFemale(self))
+				else if (Sex)
 					message = "killed herself";
 				else
 					message = "killed himself";
