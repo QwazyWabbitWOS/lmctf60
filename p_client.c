@@ -354,40 +354,6 @@ int index;
 	strcpy(Death_Msg_String, Random_MSG_Kills1[index]);
 }
 
-
-void Gimme_Random_Death_Message(int Sex)
-{
-int index;
-int percentage;
-
-
-	percentage = rand() % 100;
-
-	if(percentage < 10)
-	{
-		if(Sex == MALE)
-		{
-			index = rand() % DIF_MALE_DEATHS;
-			strcpy(Death_Msg_String, Random_Male_Deaths[index]);
-		}
-		else
-		{
-			index = rand() % DIF_FEMALE_DEATHS;
-			strcpy(Death_Msg_String, Random_Female_Deaths[index]);
-		}
-	
-		return;
-	}
-	else
-	{
-		index = rand() % DIF_MSG_DEATHS;
-		strcpy(Death_Msg_String, Random_MSG_Kills1[index]);
-	}
-
-};
-
-
-
 void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 {
 	int			mod;
