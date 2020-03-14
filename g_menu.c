@@ -748,10 +748,11 @@ void SaveServer_Exec(edict_t *ent)
 {
 	FILE	*fp;
 
- 	char	name[MAX_INFO_STRING],text[MAX_INFO_STRING];
+	char	name[MAX_INFO_STRING];
+	char	text[MAX_INFO_STRING];
 	int		size;
-	char * tempbuf, * outbuf;
-	long i;
+	char*	tempbuf;
+	long	i = 0;
 
 	strcpy(name, gamedir->string);
 //	strcat (name, "/server.cfg");
@@ -763,7 +764,6 @@ void SaveServer_Exec(edict_t *ent)
 		return;
 	
 	tempbuf = (char *) malloc(40000); //server.cfg files cannot exceed 40k arbitrary
-	outbuf = (char *) malloc(40000); //same
 
 	if (tempbuf)
 	{
@@ -779,10 +779,9 @@ void SaveServer_Exec(edict_t *ent)
 			ctf_SafePrint(ent,PRINT_HIGH,"Failed to read server.cfg");
 		}
 
-		fopen(name, "w");
+		fp = fopen(name, "w");
 		if (!fp)
 			return;
-		i=0;
 
 		//dump out the server settings we record
 		sprintf(text, "set dmflags %d\n", (int) dmflags->value);
@@ -2049,21 +2048,22 @@ void Menu_Use (edict_t *ent)
 		size = menulist[ent->client->menu].size;
 	}
 
-	
-	if (menu[cl->menuselect].func)
+	if (menu && size)
 	{
-		ent->client->prevmenu = ent->client->currmenu;
-		ent->client->currmenu = menu[cl->menuselect].func;
+		if (menu[cl->menuselect].func)
+		{
+			ent->client->prevmenu = ent->client->currmenu;
+			ent->client->currmenu = menu[cl->menuselect].func;
 
-		ent->client->menulastpage = ent->client->menupage;
-		if (ent->client->currmenu == ent->client->prevmenu)
-			ent->client->menupage++;
-		else
-			ent->client->menupage = 0;
+			ent->client->menulastpage = ent->client->menupage;
+			if (ent->client->currmenu == ent->client->prevmenu)
+				ent->client->menupage++;
+			else
+				ent->client->menupage = 0;
 
-		menu[cl->menuselect].func(ent);
+			menu[cl->menuselect].func(ent);
+		}
 	}
-	
 	//Menu_Draw (ent);
 	//gi.unicast (ent, true);
 }
