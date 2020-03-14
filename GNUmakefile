@@ -127,7 +127,7 @@ CC = gcc -std=c99
 
 SHELL = /bin/sh
 
-CFLAGS += -g -Wall -Werror
+CFLAGS += -g -Wall
 
 # flavors of Linux
 ifeq ($(shell uname),Linux)
