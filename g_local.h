@@ -506,13 +506,14 @@ extern  int     snd_fry;
 
 extern	int	meansOfDeath;
 
+#define q_offsetof(t, m)    ((size_t)&((t *)0)->m)
 
-extern	edict_t			*g_edicts;
+extern	edict_t* g_edicts;
 
-#define	FOFS(x) (int)&(((edict_t *)0)->x)
-#define	STOFS(x) (int)&(((spawn_temp_t *)0)->x)
-#define	LLOFS(x) (int)&(((level_locals_t *)0)->x)
-#define	CLOFS(x) (int)&(((gclient_t *)0)->x)
+#define FOFS(x)     q_offsetof(edict_t, x)
+#define STOFS(x)    q_offsetof(spawn_temp_t, x)
+#define	LLOFS(x) (size_t)&(((level_locals_t *)0)->x)
+#define	CLOFS(x) (size_t)&(((gclient_t *)0)->x)
 
 #define random()	((rand () & 0x7fff) / ((float)0x7fff))
 #define crandom()	(2.0 * (random() - 0.5))
