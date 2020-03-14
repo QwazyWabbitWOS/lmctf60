@@ -960,7 +960,7 @@ void CTFSquadboardMessage (edict_t *ent, edict_t* killer) // ADC
 
 		if (team == teamOfInterest)
 		{
-			int len = strlen(game.clients[i].pers.netname);
+			len = strlen(game.clients[i].pers.netname);
 			clients [clientCount++] = &game.clients [i];
 
 			if (len > widestName)

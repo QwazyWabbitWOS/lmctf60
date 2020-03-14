@@ -318,7 +318,7 @@ HIGHSCORE_STATS_TYPE *ptr0, *ptr1;
 void Check_Made_Table(edict_t *cl_ent)
 {
 long score;
-int index;
+int index = 0;
 int i;
 
    	score = stats_get(cl_ent, STATS_SCORE);

@@ -6,6 +6,7 @@
 #pragma warning(disable : 4244)     // MIPS
 #pragma warning(disable : 4018)     // signed/unsigned mismatch
 #pragma warning(disable : 4305)		// truncation from const double to float
+#pragma warning(disable : 4459)		// declaration of 'var' hides global declaration
 
 //surt ... trying to find errors at max debug level
 #pragma warning(disable : 4100) //unreferenced formal parameter lots in id code
