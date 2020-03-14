@@ -439,12 +439,16 @@
     <ClInclude Include="stdlog.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".travis.yml" />
     <None Include="deaths.txt" />
     <None Include="license.txt" />
     <None Include="readme301.txt" />
     <None Include="scores.txt" />
     <None Include="TE todo.txt" />
     <None Include="team.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GNUmakefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

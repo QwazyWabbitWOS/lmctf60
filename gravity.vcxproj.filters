@@ -329,5 +329,9 @@
     <None Include="TE todo.txt">
       <Filter>Information files</Filter>
     </None>
+    <None Include=".travis.yml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GNUmakefile" />
   </ItemGroup>
 </Project>

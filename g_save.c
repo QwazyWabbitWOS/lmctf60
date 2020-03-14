@@ -338,7 +338,9 @@ void InitGame (void)
 		file = fopen("motd.txt", "r");
 	if (file)
     {
-		fread(motd, 1000, 1, file);
+		size_t count = fread(motd, sizeof motd, 1, file);
+		if (count)
+			; // don't worry, be happy
 		fclose(file);
     }
 
@@ -473,7 +475,9 @@ void ReadField (FILE *f, field_t *field, byte *base)
 		else
 		{
 			*(char **)p = gi.TagMalloc (len, TAG_LEVEL);
-			fread (*(char **)p, len, 1, f);
+			size_t count = fread(*(char**)p, len, 1, f);
+			if (count)
+				; // don't worry, be happy
 		}
 		break;
 	case F_EDICT:
@@ -564,8 +568,11 @@ All pointer variables (except function pointers) must be handled specially.
 void ReadClient (FILE *f, gclient_t *client)
 {
 	field_t		*field;
+	size_t	count;
 
-	fread (client, sizeof(*client), 1, f);
+	count = fread(client, sizeof(*client), 1, f);
+	if (count)
+		; // don't worry, be happy
 
 	for (field=clientfields ; field->name ; field++)
 	{
@@ -618,15 +625,21 @@ void ReadGame (char *filename)
 {
 	FILE	*f;
 	int		i;
-	char	str[MAX_INFO_STRING];
+	char	str[MAX_INFO_STRING] = { 0 };
+	size_t	count;
 
 	gi.FreeTags (TAG_GAME);
 
 	f = fopen (filename, "rb");
 	if (!f)
-		gi.error ("Couldn't open %s", filename);
+	{
+		gi.error("Couldn't open %s", filename);
+		return;
+	}
 
-	fread (str, sizeof(str), 1, f);
+	count = fread(str, sizeof(str), 1, f);
+	if (count)
+		; // don't worry, be happy
 	if (strcmp (str, __DATE__))
 	{
 		fclose (f);
@@ -636,7 +649,7 @@ void ReadGame (char *filename)
 	g_edicts =  gi.TagMalloc (game.maxentities * sizeof(g_edicts[0]), TAG_GAME);
 	globals.edicts = g_edicts;
 
-	fread (&game, sizeof(game), 1, f);
+	count = fread(&game, sizeof(game), 1, f);
 	game.clients = gi.TagMalloc (game.maxclients * sizeof(game.clients[0]), TAG_GAME);
 	for (i=0 ; i<game.maxclients ; i++)
 		ReadClient (f, &game.clients[i]);
@@ -721,8 +734,11 @@ All pointer variables (except function pointers) must be handled specially.
 void ReadEdict (FILE *f, edict_t *ent)
 {
 	field_t		*field;
+	size_t	count;
 
-	fread (ent, sizeof(*ent), 1, f);
+	count = fread(ent, sizeof(*ent), 1, f);
+	if (count)
+		; // don't worry, be happy
 
 	for (field=fields ; field->name ; field++)
 	{
@@ -740,8 +756,11 @@ All pointer variables (except function pointers) must be handled specially.
 void ReadLevelLocals (FILE *f)
 {
 	field_t		*field;
+	size_t	count;
 
-	fread (&level, sizeof(level), 1, f);
+	count = fread(&level, sizeof(level), 1, f);
+	if (count)
+		; // don't worry, be happy
 
 	for (field=levelfields ; field->name ; field++)
 	{
@@ -816,7 +835,7 @@ void ReadLevel (char *filename)
 	int		i;
 	void	*base;
 	edict_t	*ent;
-//char string [500];
+	size_t	count;
 
 	f = fopen (filename, "rb");
 	if (!f)
@@ -831,7 +850,7 @@ void ReadLevel (char *filename)
 	globals.num_edicts = maxclients->value+1;
 
 	// check edict size
-	fread (&i, sizeof(i), 1, f);
+	count = fread(&i, sizeof(i), 1, f);
 	if (i != sizeof(edict_t))
 	{
 		fclose (f);
@@ -839,7 +858,7 @@ void ReadLevel (char *filename)
 	}
 
 	// check function pointer base address
-	fread (&base, sizeof(base), 1, f);
+	count = fread(&base, sizeof(base), 1, f);
 #ifdef _WIN32
 	if (base != (void *)InitGame)
 	{
