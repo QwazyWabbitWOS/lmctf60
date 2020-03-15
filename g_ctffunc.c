@@ -1303,9 +1303,9 @@ qboolean ctf_SpamCheck(edict_t *ent)
 	//here we have a player who has done a few actions in a short time
 	if (ent->client->spam_freq_time - level.time < CTF_SPAM_FREQ_EXTRA_PENALTY_TIME)
 	{
-		ent->client->spam_freq_count+= CTF_SPAM_FREQ_EXTRA_PENALTY;
+		ent->client->spam_freq_count += CTF_SPAM_FREQ_EXTRA_PENALTY;
 		if (ent->client->spam_band_count < CTF_SPAM_FREQ_BAND_EXTRA_PENALTY_LEVEL) //compound penalty for bandwidth
-			ent->client->spam_freq_count+= CTF_SPAM_FREQ_BAND_EXTRA_PENALTY;
+			ent->client->spam_freq_count += CTF_SPAM_FREQ_BAND_EXTRA_PENALTY;
 	}
 
 

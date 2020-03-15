@@ -1727,9 +1727,9 @@ void SelectKick (edict_t *ent)
 	char kickcommand[MAX_INFO_STRING];
 
 	i = ent->client->menuselect;
-	sscanf(ent->client->localmenu[i].text, "%lu", &id );
+	if(sscanf(ent->client->localmenu[i].text, "%lu", &id ));
 	if (id)
-		sprintf(kickcommand, "\nctfkick %ld\n", id);
+		Com_sprintf(kickcommand, sizeof kickcommand, "\nctfkick %lu\n", id);
 
 	ForceCommand(ent, kickcommand);
 }

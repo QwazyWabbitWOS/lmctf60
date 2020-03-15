@@ -20,8 +20,6 @@
 
 void NoAmmoWeaponChange (edict_t *ent);
 
-void Show_Plasma_Mode(gitem_t *New_Weapon, edict_t *ent);
-
 //bat
 #define PLASMA_INDEX	18
 

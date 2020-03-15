@@ -52,8 +52,13 @@ void stats_init_player(stats_player_s *p_player)
 
 stats_player_s* stats_new_player(char* name)
 {
-	stats_player_s *p_player =
-		(stats_player_s *) malloc(sizeof(stats_player_s)); 
+	stats_player_s* p_player;
+	
+	p_player = (stats_player_s *) malloc(sizeof(stats_player_s));
+	if (!p_player) {
+		gi.error("LMCTF: malloc failed in %s", __func__);
+		return NULL;	// silence compiler
+	}
 
 	stats_init_player(p_player);
 	p_player->dropped = false;

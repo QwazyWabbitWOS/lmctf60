@@ -21,7 +21,6 @@ static byte		is_silenced;
 qboolean CheckTeamDamage (edict_t *targ, edict_t *attacker); // CTF CODE -- LM_JORM
 
 void weapon_grenade_fire (edict_t *ent, qboolean held);
-void Show_Plasma_Mode(gitem_t *New_Weapon, edict_t *ent);
 
 
 static void P_ProjectSource (gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
@@ -1372,7 +1371,10 @@ void fire_fieldgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	float		*v;
 	edict_t	*target;
 
-	v = tv(-32,-32,-32);
+	if (!self)
+		return;
+	
+	v = tv(-32, -32, -32);
 	VectorCopy (v, mins);
 	v = tv(32,32,32);
 	VectorCopy (v, maxs);
@@ -1749,6 +1751,10 @@ Touch function for the grappling hook
 void hook_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	vec3_t dest;
+
+	if (!other)
+		return;
+
 	if (other == self->owner)
 		return; //we hit ourselves, ignore us
 

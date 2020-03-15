@@ -710,6 +710,9 @@ void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick
 	int			mask;
 	qboolean	water;
 
+	if (!self)	// self must not be null
+		return;
+
 #ifdef WEAP_BALANCE_OK
 	if ((int)ctfflags->value & CTF_WEAP_BALANCE)
 	{

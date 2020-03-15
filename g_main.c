@@ -239,49 +239,31 @@ edict_t *CreateTargetChangeLevel(char *map)
 
 short Maps_Picked[100];
 
-//#ifdef BAT_DEBUG
-//FILE *Some_File;
-//#endif
-
 short Last_Map = 0;
 
 void Randomize_Map_List(int Num_Of_Maps)
 {
-int i;
-int Rand_Num;
+	int i;
+	int Rand_Num;
 
-//#ifdef BAT_DEBUG
-//	Some_File = fopen("test.txt", "wt");
-//#endif
-
-	if(Num_Of_Maps > MAX_MAPS)
+	if (Num_Of_Maps > MAX_MAPS)
 		Num_Of_Maps = MAX_MAPS;
 
-	for(i = 0; i < MAX_MAPS; i++)
+	for (i = 0; i < MAX_MAPS; i++)
 		Maps_Picked[i] = 0;
 
-	for(i = 0; i < Num_Of_Maps; i++)
+	for (i = 0; i <= Num_Of_Maps; i++)
 	{
 		Rand_Num = rand() % Num_Of_Maps;
-		while(Maps_Picked[Rand_Num])
+		while (Maps_Picked[Rand_Num])
 		{
 			Rand_Num++;
-			if(Rand_Num == Num_Of_Maps)
+			if (Rand_Num == Num_Of_Maps)
 				Rand_Num = 0;
 		}
 
 		Maps_Picked[Rand_Num] = i;
 	}
-
-//#ifdef BAT_DEBUG
-//	fprintf(Some_File, "Num_Of_Maps = %d\n", Num_Of_Maps);
-//
-//	for(i = 0; i < Num_Of_Maps; i++)
-//		fprintf(Some_File, "%d = %d\n", i, Maps_Picked[i]);
-//
-//	fclose(Some_File);
-//#endif
-
 }
 
 

@@ -61,7 +61,7 @@
 #define CTF_SPAM_FREQ_MAX                         180
 #define CTF_SPAM_FREQ_MIN                         0
 #define CTF_SPAM_FREQ_MAX_ALLOWED                 50
-#define CTF_SPAM_FREQ_EXTRA_PENALTY_TIME          0.25
+#define CTF_SPAM_FREQ_EXTRA_PENALTY_TIME          0.25f
 #define CTF_SPAM_FREQ_EXTRA_PENALTY               20
 #define CTF_SPAM_FREQ_BAND_EXTRA_PENALTY_LEVEL    190
 #define CTF_SPAM_FREQ_BAND_EXTRA_PENALTY          5

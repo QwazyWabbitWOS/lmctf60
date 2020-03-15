@@ -31,9 +31,10 @@ void SkinsReadFile()
 	char	name[MAX_INFO_STRING], *newb = NULL;
 	int		size;
 	char    *tempbuf;
-	char	line[MAX_INFO_STRING];
+	char	line[MAX_INFO_STRING] = { 0 };
 	int		colorindex;
-	char	skin[MAX_INFO_STRING], model[MAX_INFO_STRING];
+	char	skin[MAX_INFO_STRING] = { 0 };
+	char	model[MAX_INFO_STRING] = { 0 };
 	int		red, blue;
 
 	strcpy(name, gamedir->string);
@@ -167,7 +168,8 @@ SkinValid(edict_t *ent, char *input)
 {
 	int teamnum, i;
 	qboolean	valid = false;
-	char	skin[MAX_INFO_STRING], model[MAX_INFO_STRING];
+	char	skin[MAX_INFO_STRING] = { 0 };
+	char	model[MAX_INFO_STRING] = { 0 };
 
 	if (!ent->client)
 		return false;

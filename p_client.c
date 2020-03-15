@@ -228,7 +228,7 @@ void SP_info_player_blue(edict_t *self)
 The deathmatch intermission point will be at one of these
 Use 'angles' instead of 'angle', so you can set pitch or roll as well as yaw.  'pitch yaw roll'
 */
-void SP_info_player_intermission(void)
+void SP_info_player_intermission(edict_t* ent)
 {
 }
 
@@ -1144,16 +1144,16 @@ void InitClientResp (gclient_t *client)
 	//	  int 		pingalertfloor;
 	//	  int 		pingalertceiling;
 	//	  int 	compass;
-	client_ctf_t ctftemp;
+	client_ctf_t *ctftemp;
 	stats_player_s *playertemp;
 	
-	ctftemp = client->ctf;
+	ctftemp = &client->ctf;
 	playertemp = client->p_stats_player;
 	
 	memset (&client->resp, 0, sizeof(client->resp));
 	client->resp.enterframe = level.framenum;
 	
-	client->ctf = ctftemp;
+	client->ctf = *ctftemp;
 	client->p_stats_player = playertemp;
 
 	if ((int)ctfflags->value & CTF_TEAM_RESET)
@@ -2028,13 +2028,14 @@ deathmatch mode, so clear everything out before starting them.
 */
 void ClientBeginDeathmatch (edict_t *ent)
 {
+	if (!ent->client)
+		return;
+
 #ifdef OLDOBSERVERCODE
 	int 		observe = 0; // MJD Uninit'd - No bug, though. Fixed
 #endif
 	int 		oldteam;
 	char		message[MAX_INFO_STRING];
-	
-	//surt ctf stuff
 	char		userinfo[MAX_INFO_STRING];
 
 	long i; //loop
@@ -2047,13 +2048,10 @@ void ClientBeginDeathmatch (edict_t *ent)
 
 	//try to fix unknown pics, associated with skins?
 	//this is messing up the spectator stuff
-	if (ent->client)
-	{
-		memcpy (userinfo, ent->client->pers.userinfo, sizeof(userinfo));
-		ClientUserinfoChanged (ent, userinfo);
-	}
-	
-	for (i=PRINT_LOW; i<=PRINT_CHAT; i++)
+	memcpy(userinfo, ent->client->pers.userinfo, sizeof(userinfo));
+	ClientUserinfoChanged(ent, userinfo);
+
+	for (i = PRINT_LOW; i <= PRINT_CHAT; i++)
 	{
 		ent->client->ctf.printdata[i][0] = 0; //clear this out on connect
 	}
@@ -2170,7 +2168,7 @@ void ClientBeginDeathmatch (edict_t *ent)
 		MvpDisp = 0;
 	}
 	
-	sprintf(message, "%s entered the game\n", ent->client->pers.netname);
+	Com_sprintf(message, sizeof message, "%s entered the game\n", ent->client->pers.netname);
 	ctf_BSafePrint(PRINT_HIGH, message);
 
 
