@@ -3209,7 +3209,7 @@ void ClientOldSetSkin(edict_t *ent, char *input)
 	skin[0] = 0;
 	
 	// See if we have only specified a skin number
-	sscanf(s, "%d", &skinnum);
+	if(sscanf(s, "%d", &skinnum));
 	
 	// First, check if skin matches proper format MJD Suggest Parens
 	err = sscanf(s, "%[^/]/%[^-]-%c%c%d", dir, set, &color, &gender, &num);
