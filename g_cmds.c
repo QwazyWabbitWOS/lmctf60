@@ -190,8 +190,9 @@ static char* ValidateSoundName(char* sound)
 	static char buffer[MAX_QPATH] = { 0 };
 	static char result[MAX_QPATH] = { 0 };
 
+	memset(result, 0, MAX_QPATH);
 	memcpy(buffer, sound, MAX_QPATH - 1);
-	sscanf(buffer, "%[^;\\/:*?\"<>| \t\n\r]", result);
+	if(sscanf(buffer, "%[^;\\/:*?\"<>| \t\n\r]", result));
 	return result;
 }
 
