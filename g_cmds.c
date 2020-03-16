@@ -2260,6 +2260,8 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp (cmd, "gameversion") == 0)
 	{
 		ctf_SafePrint(ent, PRINT_HIGH, GAMEVERSION);
+		ctf_SafePrint(ent, PRINT_HIGH, " ");
+		ctf_SafePrint(ent, PRINT_HIGH, __DATE__);
 		ctf_SafePrint(ent, PRINT_HIGH, "\n");
 		return;
 	}

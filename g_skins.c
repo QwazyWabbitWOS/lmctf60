@@ -38,7 +38,6 @@ void SkinsReadFile()
 	int		red, blue;
 
 	strcpy(name, gamedir->string);
-//	strcat (name, "/skins.ini");
 	strcat(name, "/");
 	strcat(name, skin_file->string);
 
@@ -140,27 +139,26 @@ void SkinsReadFile()
 
 
 	// DEBUG ONLY!
+	#ifdef _DEBUG	// ISO C compliant macro name
 	red = 0;
 	gi.dprintf("[red]\n");
-	while(skinlist[SKIN_RED][red][SKIN_MODELNAME])
+	while (skinlist[SKIN_RED][red][SKIN_MODELNAME])
 	{
-		gi.dprintf("MODEL: [%s]  SKIN: [%s]\n", 
+		gi.dprintf("MODEL: [%s]  SKIN: [%s]\n",
 			skinlist[SKIN_RED][red][SKIN_MODELNAME],
 			skinlist[SKIN_RED][red][SKIN_SKINNAME]);
 		red++;
 	}
-		red = 0;
+	red = 0;
 	gi.dprintf("\n[blue]\n");
-	while(skinlist[SKIN_BLUE][red][SKIN_MODELNAME])
+	while (skinlist[SKIN_BLUE][red][SKIN_MODELNAME])
 	{
-		gi.dprintf("MODEL: [%s]  SKIN: [%s]\n", 
+		gi.dprintf("MODEL: [%s]  SKIN: [%s]\n",
 			skinlist[SKIN_BLUE][red][SKIN_MODELNAME],
 			skinlist[SKIN_BLUE][red][SKIN_SKINNAME]);
 		red++;
 	}
-
-
-	
+#endif
 }
 
 qboolean

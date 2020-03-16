@@ -142,6 +142,10 @@ is loaded.
 */
 void InitGame (void)
 {
+
+#ifdef	_WIN32
+	_CrtMemCheckpoint(&startup1);
+#endif
 	// CTF CODE -- LM_JORM
 	FILE		*file;
 	char		line[MAX_INFO_STRING];
@@ -150,7 +154,7 @@ void InitGame (void)
 
 	// END CTF CODE -- LM_JORM
 	
-	gi.dprintf ("==== InitGame ====\n");
+	gi.dprintf ("==== InitGame "GAMEVERSION" "__DATE__" ====\n");
 
 	// seed the random number generator
 	srand((unsigned) time(NULL));

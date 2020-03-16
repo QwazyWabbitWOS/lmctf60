@@ -295,7 +295,7 @@ spawn_t	spawns[] = {
 };
 
 
-void WriteFile (char *mapname, char *entities)
+void WriteEntFile (char *mapname, char *entities)
 {
 	FILE	*fp;
 	char	name[MAX_INFO_STRING];
@@ -310,11 +310,12 @@ void WriteFile (char *mapname, char *entities)
 	fclose(fp);
 }
 
-char *ReadFile (char *mapname, char *entities)
+char *ReadEntFile (char *mapname, char *entities)
 {
 	FILE	*fp;
 
-	char	name[MAX_INFO_STRING], *newb = NULL;
+	char	name[MAX_INFO_STRING];
+	char	*newb = NULL;
 	int		size;
 	char * tempbuf;
 
@@ -947,7 +948,7 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 
 	// LM_JORM
 	//  Write Entities out to a file
-	entities = ReadFile(mapname, entities);
+	entities = ReadEntFile(mapname, entities);
 	
 	total_ents = 0; //surt
 	// END LM_JORM

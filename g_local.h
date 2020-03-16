@@ -3,6 +3,17 @@
 #ifndef __G_LOCAL_H__
 #define __G_LOCAL_H__
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN	//non-MFC
+#include <windows.h>
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+_CrtMemState startup1;	// memory diagnostics
+#else
+#define OutputDebugString	//not doing Windows
+#endif
+
 //#define ZBOT
 
 //#define OLDOBSERVERCODE
