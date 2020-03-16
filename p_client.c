@@ -1144,16 +1144,16 @@ void InitClientResp (gclient_t *client)
 	//	  int 		pingalertfloor;
 	//	  int 		pingalertceiling;
 	//	  int 	compass;
-	client_ctf_t *ctftemp;
+	client_ctf_t ctftemp;
 	stats_player_s *playertemp;
 	
-	ctftemp = &client->ctf;
+	ctftemp = client->ctf;
 	playertemp = client->p_stats_player;
 	
 	memset (&client->resp, 0, sizeof(client->resp));
 	client->resp.enterframe = level.framenum;
 	
-	client->ctf = *ctftemp;
+	client->ctf = ctftemp;
 	client->p_stats_player = playertemp;
 
 	if ((int)ctfflags->value & CTF_TEAM_RESET)
