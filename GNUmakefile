@@ -123,7 +123,7 @@ OBJS = $(C_OBJS) $(G_OBJS) $(M_OBJS) $(P_OBJS) $(Q_OBJS)
 
 TARGET = game$(ARCH).so
 
-CC = gcc -std=c99
+CC = gcc -std=c11
 
 SHELL = /bin/sh
 
