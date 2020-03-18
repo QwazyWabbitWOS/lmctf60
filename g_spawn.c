@@ -331,7 +331,7 @@ char *ReadEntFile (char *mapname, char *entities)
 	if (!fp)
 		return entities;
 
-	tempbuf = (char *) malloc(400002); //.ent files cannot exceed 400k
+	tempbuf = (char *) gi.TagMalloc(400002, TAG_LEVEL); //.ent files cannot exceed 400k
 
 	if (tempbuf)
 	{
@@ -360,10 +360,10 @@ char *ReadEntFile (char *mapname, char *entities)
 	}
 	else
 	{
-		gi.dprintf("Error: unable to malloc memory for entities.\n");
+		gi.dprintf("Error: unable to allocate memory for entities.\n");
 	}
 
-	free(tempbuf);
+	gi.TagFree(tempbuf);
 
 	if (newb)
 	{

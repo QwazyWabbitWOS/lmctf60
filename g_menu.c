@@ -763,7 +763,7 @@ void SaveServer_Exec(edict_t *ent)
 	if (!fp)
 		return;
 	
-	tempbuf = (char *) malloc(40000); //server.cfg files cannot exceed 40k arbitrary
+	tempbuf = (char *) gi.TagMalloc(40000, TAG_GAME); //server.cfg files cannot exceed 40k arbitrary
 
 	if (tempbuf)
 	{
@@ -824,10 +824,10 @@ void SaveServer_Exec(edict_t *ent)
 	}
 	else
 	{
-		ctf_SafePrint(ent,PRINT_HIGH,"Error: unable to malloc memory for server.cfg read.\n");
+		ctf_SafePrint(ent,PRINT_HIGH,"Error: unable to allocate memory for server.cfg read.\n");
 	}
 
-	free(tempbuf);
+	gi.TagFree(tempbuf);
 	return;
 }
 
@@ -1892,7 +1892,7 @@ void Menu_Set (edict_t *ent, int item, char *text, void	(*func)(edict_t *ent))
 	if (ent->client->localmenu[item].text)
 			gi.TagFree(ent->client->localmenu[item].text);
 
-	// Set the menu text to a tagged malloc'ed string, kind of like strdup
+	// Set the menu text to a TagMalloc'ed string, kind of like strdup
 	ent->client->localmenu[item].text = G_CopyString(text);
 	ent->client->localmenu[item].func = func;
 }

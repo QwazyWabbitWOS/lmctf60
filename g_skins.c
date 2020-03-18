@@ -49,7 +49,7 @@ void SkinsReadFile()
 
 	// Read the whole skins file and place it in a spot of memory
 	
-	tempbuf = (char *) malloc(400000); //.ent files cannot exceed 400k
+	tempbuf = (char *) gi.TagMalloc(400000, TAG_LEVEL); //.ent files cannot exceed 400k
 	if (tempbuf)
 	{
 		size = fread(tempbuf, 1, 400000, fp);
@@ -72,7 +72,7 @@ void SkinsReadFile()
 	}
 	else
 	{
-		gi.dprintf("Error: unable to malloc memory for entities.\n");
+		gi.dprintf("Error: unable to allocate memory for entities.\n");
 		return;
 	}
 
@@ -135,7 +135,7 @@ void SkinsReadFile()
 	}
 
 	// Free the memory
-	free(newb);
+	gi.TagFree(newb);
 
 
 	// DEBUG ONLY!

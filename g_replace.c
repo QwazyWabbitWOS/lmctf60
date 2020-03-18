@@ -11,9 +11,9 @@ void string_replace(edict_t *person, char *inmsg, char *outmsg, int outsize)
 	
 	
 	strcpy(outmsg,inmsg); //in case anything fails, you'll say something
-	substr = (char *) malloc(outsize * 2);
-	result = (char *) malloc(outsize * 2);
-	tmpstr = (char *) malloc(outsize * 2);
+	substr = (char *)gi.TagMalloc(outsize * 2, TAG_LEVEL);
+	result = (char *)gi.TagMalloc(outsize * 2, TAG_LEVEL);
+	tmpstr = (char *)gi.TagMalloc(outsize * 2, TAG_LEVEL);
 	
 	//initialize strings empty
 	tmpstr[0] = 0;
@@ -45,46 +45,36 @@ void string_replace(edict_t *person, char *inmsg, char *outmsg, int outsize)
 				
 				if (strlen(substr) == 1)
 				{
-					switch(substr[0]) //switch on the single character
+					switch(tolower(substr[0])) //switch on the single character
 					{
 					case 'l' :
-					case 'L' :
 						replace_location(person, tmpstr, false, true);
 						break;
 					case 'a' :
-					case 'A' :
 						replace_armor(person, tmpstr);
 						break;
 					case 'h' :
-					case 'H' :
 						replace_health(person, tmpstr);
 						break;
 					case 't' :
-					case 'T' :
 						replace_artifact(person, tmpstr);
 						break;
 					case 'w' :
-					case 'W' :
 						replace_weapon(person, tmpstr);
 						break;
 					case 'n' :
-					case 'N' :
 						replace_team(person, tmpstr);
 						break;
 					case 'p' :
-					case 'P' :
 						replace_location(person, tmpstr, true, false);
 						break;
 					case 'f' :
-					case 'F' :
 						replace_flaginfo(person, tmpstr);
 						break;
 					case 'v' :
-					case 'V' :
 						replace_viewinfo(person, tmpstr);
 						break;
 					case 'c' :
-					case 'C' :
 						replace_carrierinfo(person, tmpstr);
 						break;
 					default:
@@ -113,9 +103,9 @@ void string_replace(edict_t *person, char *inmsg, char *outmsg, int outsize)
 		strcpy(outmsg, result); //copy the resulting string
 	}
 
-	free(tmpstr);
-	free(result);
-	free(substr);
+	gi.TagFree(tmpstr);
+	gi.TagFree(result);
+	gi.TagFree(substr);
 }
 
 

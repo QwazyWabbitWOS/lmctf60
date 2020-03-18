@@ -41,7 +41,7 @@ char *ClientTeam (edict_t *ent)
 
 void ForceCommand(edict_t *ent, char *command) 	
 {
-	if (!command || strlen(command) > 1000)
+	if (!command || strlen(command) > MAX_INFO_STRING)
 		return;
 	if (strcmp(level.level_name, "") == 0) 
 		return;
@@ -279,7 +279,8 @@ void SelectNextItem (edict_t *ent, int itflags)
 void SelectPrevItem (edict_t *ent, int itflags)
 {
 	gclient_t	*cl;
-	int			i, index;
+	int			i;
+	int			index;
 	gitem_t		*it;
 
 	it = 0;
@@ -1163,12 +1164,12 @@ void Cmd_Id_f (edict_t *ent)
 
 }
 
-void Cmd_Position_f (edict_t *ent)
+void Cmd_Position_f(edict_t* ent)
 {
-    char temp[1000];
+	char temp[MAX_INFO_STRING];
 	double f1, f2, f3, a1, a2, a3;
-	char message[2048];
-    
+	char message[MAX_INFO_STRING];
+
 	f1 = ent->s.origin[0];
 	f2 = ent->s.origin[1];
 	f3 = ent->s.origin[2];
@@ -1177,12 +1178,12 @@ void Cmd_Position_f (edict_t *ent)
 	a2 = ent->s.angles[1];
 	a3 = ent->s.angles[2];
 
-	string_replace(ent, "%p", temp, 1000);
+	string_replace(ent, "%p", temp, sizeof temp);
 
 	sprintf(message, "LOC: { %.0f, %.0f, %.0f }\nANGLE: { %.0f, %.0f, %.0f }\n"
 		"You are %s\n",
-		f1, f2, f3, a1,a2,a3, temp);
-	
+		f1, f2, f3, a1, a2, a3, temp);
+
 	ctf_SafePrint(ent, PRINT_HIGH, message);
 }
 
@@ -1191,7 +1192,7 @@ void Cmd_AngleInfo_f (edict_t *ent)
 	double a1, a2, a3;
 	double t1, t2, t3;
 	vec3_t tempvec;
-	char message[512];
+	char message[MAX_INFO_STRING];
     
 	a1 = ent->client->v_angle[0];
 	a2 = ent->client->v_angle[1];
@@ -1211,7 +1212,7 @@ void Cmd_AngleInfo_f (edict_t *ent)
 void Cmd_Ctfhelp_f (edict_t *ent)
 {
 	char	*s1, *s2, *s3, *s4, *s5, *s6, *s7, *s8, *s9, *s10, *s11;
-	char message[2048];
+	char message[MAX_INFO_STRING];
 
 #ifdef WEAP_BALANCE_OK	
 	if ((int)ctfflags->value & CTF_WEAP_BALANCE)
@@ -1398,8 +1399,9 @@ void Cmd_InfoEnt_f (edict_t *ent)
 	edict_t	*banner;
 	FILE	*fp;
 	char	*p;
-	char	name[MAX_INFO_STRING], entities[MAX_INFO_STRING];
-    double f1, f2, f3, a1, a2, a3;
+	char	name[MAX_INFO_STRING];
+	char	entities[MAX_INFO_STRING];
+	double f1, f2, f3, a1, a2, a3;
 	int	red = 0; 
 	vec3_t	forward, right, start, offset, mins, maxs, end;
 	trace_t	tr;
@@ -2021,7 +2023,8 @@ void Cmd_Say_f (edict_t *ent, qboolean team, qboolean arg0)
 	int		j;
 	edict_t	*other;
 	char	*p;
-	char	temp[1024], text[2048];
+	char	temp[MAX_INFO_STRING];
+	char	text[MAX_INFO_STRING];
 
 	if (gi.argc () < 2 && !arg0)
 		return;
@@ -2096,7 +2099,7 @@ void Cmd_PlayerList_f(edict_t *ent)
 {
 	int i;
 	char st[80];
-	char text[1400];
+	char text[MAX_MSGLEN];
 	edict_t *e2;
 
 	// connect time, ping, score, name

@@ -18,7 +18,7 @@ void stats_log_reset()
 	while (p_current_player != NULL)
 	{
 		p_start_player = p_start_player->pNext;
-		free(p_current_player);
+		gi.TagFree(p_current_player);
 		p_current_player = p_start_player;
 	}
 
@@ -54,10 +54,10 @@ stats_player_s* stats_new_player(char* name)
 {
 	stats_player_s* p_player;
 	
-	p_player = (stats_player_s *) malloc(sizeof(stats_player_s));
+	p_player = (stats_player_s *) gi.TagMalloc(sizeof(stats_player_s), TAG_LEVEL);
 	if (!p_player) {
-		gi.error("LMCTF: malloc failed in %s", __func__);
-		return NULL;	// silence compiler
+		gi.error(ERR_FATAL, "LMCTF: allocation failed in %s", __func__);
+		return NULL;
 	}
 
 	stats_init_player(p_player);
@@ -95,7 +95,7 @@ void stats_cleanup()
 	while ( p_current_player && (p_current_player->dropped))
 	{
 		p_start_player = p_current_player->pNext;
-		free(p_current_player);
+		gi.TagFree(p_current_player);
 		p_current_player = p_start_player;
 
 	}
@@ -117,7 +117,7 @@ void stats_cleanup()
 		if (p_current_player->dropped)
 		{
 			p_prev_player->pNext = p_current_player->pNext;
-			free(p_current_player);
+			gi.TagFree(p_current_player);
 		}
 		else
 		{
