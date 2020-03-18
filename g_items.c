@@ -1064,10 +1064,7 @@ void droptofloor (edict_t *ent)
 		gi.setmodel (ent, ent->item->world_model);
 	ent->solid = SOLID_TRIGGER;
 	
-	//ent->movetype = MOVETYPE_TOSS;  
-	//-bat
-	ent->movetype = MOVETYPE_NONE;
-	
+	ent->movetype = MOVETYPE_TOSS;  
 
 	ent->touch = Touch_Item;
 
