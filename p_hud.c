@@ -917,8 +917,8 @@ CTFSquadboardMessage
 */
 void CTFSquadboardMessage (edict_t *ent, edict_t* killer) // ADC
 {
-	char	entry[1024];
-	char	string[1400];
+	char	entry[MAX_MSGLEN];
+	char	string[MAX_MSGLEN];
 	int		len, i, j, team, ready;
 	edict_t		*cl_ent;
 	int maxsize = 1000;
