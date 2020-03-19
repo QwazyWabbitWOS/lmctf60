@@ -1135,6 +1135,11 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.connected = true;
 }
 
+//QW// This was originally a stack variable in
+// InitClientResp and PutClientInServer.
+// I'm not even sure why this housekeeping
+// is needed since resp stuff is not in client->ctf.
+static client_ctf_t ctftemp;
 
 void InitClientResp (gclient_t *client)
 {
@@ -1144,7 +1149,6 @@ void InitClientResp (gclient_t *client)
 	//	  int 		pingalertfloor;
 	//	  int 		pingalertceiling;
 	//	  int 	compass;
-	client_ctf_t ctftemp;
 	stats_player_s *playertemp;
 	
 	ctftemp = client->ctf;
@@ -1786,7 +1790,6 @@ int i, numspec;
 
 //==============================================================
 
-
 /*
 ===========
 PutClientInServer
@@ -1802,12 +1805,12 @@ void PutClientInServer (edict_t *ent)
 	vec3_t mins = {-16, -16, -24};
 	vec3_t maxs = {16, 16, 32};
 	int 	index;
-	vec3_t spawn_origin, spawn_angles;
+	vec3_t spawn_origin;
+	vec3_t spawn_angles;
 	gclient_t *client;
 	int 	i;
  	client_persistant_t	saved;
 	client_respawn_t	resp;
-	client_ctf_t ctftemp;
 	stats_player_s *p_saved_stats = NULL; // STATS - LM_Hati
 
 	static unsigned long unique_id = 6; //guaranteed 0-5 are special
