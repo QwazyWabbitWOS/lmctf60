@@ -138,7 +138,6 @@ void DoRespawn (edict_t *ent)
 			;
 	}
 
-	assert(ent != NULL);
 	ent->svflags &= ~SVF_NOCLIENT;
 	ent->solid = SOLID_TRIGGER;
 	gi.linkentity (ent);
