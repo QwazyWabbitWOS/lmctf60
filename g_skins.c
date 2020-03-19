@@ -49,7 +49,7 @@ void SkinsReadFile()
 
 	// Read the whole skins file and place it in a spot of memory
 	
-	tempbuf = (char *) gi.TagMalloc(400000, TAG_LEVEL); //.ent files cannot exceed 400k
+	tempbuf = (char *) gi.TagMalloc(400000, TAG_GAME); //skins file cannot exceed 400k
 	if (tempbuf)
 	{
 		size = fread(tempbuf, 1, 400000, fp);
