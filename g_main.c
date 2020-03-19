@@ -262,9 +262,9 @@ void Randomize_Map_List(int Num_Of_Maps)
 	for (i = 0; i < MAX_MAPS; i++)
 		Maps_Picked[i] = 0;
 
-	for (i = 0; i <= Num_Of_Maps; i++)
+	for (i = 1; i < Num_Of_Maps; i++)
 	{
-		Rand_Num = rand() % Num_Of_Maps;
+		Rand_Num = rand() % (Num_Of_Maps - 2);
 		while (Maps_Picked[Rand_Num])
 		{
 			Rand_Num++;
