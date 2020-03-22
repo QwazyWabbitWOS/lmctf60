@@ -127,7 +127,7 @@ CC = gcc -std=c11
 
 SHELL = /bin/sh
 
-CFLAGS += -g -Wall
+CFLAGS += -g -Wall -Wparentheses
 
 # flavors of Linux
 ifeq ($(shell uname),Linux)
