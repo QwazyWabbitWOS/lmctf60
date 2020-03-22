@@ -115,35 +115,45 @@ gitem_t	*FindItem (char *pickup_name)
 
 //======================================================================
 
-void DoRespawn (edict_t *ent)
+void DoRespawn(edict_t* ent)
 {
-	if (!ent)
+	if (ent == NULL)
+	{
+		gi.dprintf("NULL ent passed to %s\n", __func__);
 		return;
-	
+	}
+
 	if (ent->team)
 	{
-		edict_t	*master;
-		int	count;
-		int choice;
+		edict_t* master;
+		unsigned count;
+		unsigned choice;
 
 		master = ent->teammaster;
+		if (master == NULL)
+			return;
 
-		for (count = 0, ent = master; ent; ent = ent->chain, count++)
-			;
+		count = 0;
+		for (ent = master; ent; ent = ent->chain)
+			count++;
 
 		assert(count != 0);
 		choice = rand() % count;
 
-		for (count = 0, ent = master; count < choice; ent = ent->chain, count++)
-			;
+		count = 0;
+		for (ent = master; count < choice; ent = ent->chain)
+			count++;
 	}
 
-	ent->svflags &= ~SVF_NOCLIENT;
-	ent->solid = SOLID_TRIGGER;
-	gi.linkentity (ent);
+	if (ent)
+	{
+		ent->svflags &= ~SVF_NOCLIENT;
+		ent->solid = SOLID_TRIGGER;
+		gi.linkentity(ent);
 
-	// send an effect
-	ent->s.event = EV_ITEM_RESPAWN;
+		// send an effect
+		ent->s.event = EV_ITEM_RESPAWN;
+	}
 }
 
 void SetRespawn (edict_t *ent, float delay)
