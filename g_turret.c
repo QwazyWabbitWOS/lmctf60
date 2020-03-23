@@ -431,13 +431,14 @@ void turret_driver_think (edict_t *self)
 		}
 	}
 
-	assert(self && self->enemy);
-
-	// let the turret know where we want it to aim
-	VectorCopy (self->enemy->s.origin, target);
-	target[2] += self->enemy->viewheight;
-	VectorSubtract (target, self->target_ent->s.origin, dir);
-	vectoangles (dir, self->target_ent->move_angles);
+	if (self->enemy) 
+	{
+		// let the turret know where we want it to aim
+		VectorCopy(self->enemy->s.origin, target);
+		target[2] += self->enemy->viewheight;
+		VectorSubtract(target, self->target_ent->s.origin, dir);
+		vectoangles(dir, self->target_ent->move_angles);
+	}
 
 	// decide if we should shoot
 	if (level.time < self->monsterinfo.attack_finished)

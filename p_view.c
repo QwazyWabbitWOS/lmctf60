@@ -138,9 +138,9 @@ void P_DamageFeedback (edict_t *player)
 		client->damage_alpha = 0;
 	client->damage_alpha += count*0.01;
 	if (client->damage_alpha < 0.2)
-		client->damage_alpha = 0.2;
+		client->damage_alpha = 0.2f;
 	if (client->damage_alpha > 0.6)
-		client->damage_alpha = 0.6;		// don't go too saturated
+		client->damage_alpha = 0.6f;		// don't go too saturated
 
 	// the color of the blend will vary based on how much was absorbed
 	// by different armors

@@ -779,7 +779,6 @@ void Use_PowerArmor (edict_t *ent, gitem_t *item)
 //======================================================================
 // CTF CODE -- LM_JORM
 //======================================================================
-void Reset_Flag (edict_t *ent);
 void tossflag (edict_t *ent, vec3_t dir)
 {	
 	float		*v;
