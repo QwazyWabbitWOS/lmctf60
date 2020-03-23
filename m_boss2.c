@@ -554,7 +554,7 @@ qboolean Boss2_CheckAttack (edict_t *self)
 
 
 	// melee attack
-	if (enemy_range == RANGE_MELEE)
+	if (enemy_range == RANGE_MELEE && enemy_infront)
 	{
 		if (self->monsterinfo.melee)
 			self->monsterinfo.attack_state = AS_MELEE;
