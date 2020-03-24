@@ -185,15 +185,21 @@ void PlayVoiceSound(edict_t *ent, char *sound)
 	ent->client->spam_band_count -= CTF_SPAM_BAND_VOICE; //75 units of spam control for the voice
 }
 
+//QW//
+/* This function validates the name of the requested 
+ sound file. If the path is invalid return the path 
+ of whatever we have initialized 'result' to here. */
 static char* ValidateSoundName(char* sound)
 {
 	static char buffer[MAX_QPATH] = { 0 };
-	static char result[MAX_QPATH] = { 0 };
+	static char result[MAX_QPATH] = { 0 };	//QW// blank path for now
 
 	memset(result, 0, MAX_QPATH);
 	memcpy(buffer, sound, MAX_QPATH - 1);
-	if(sscanf(buffer, "%[^;\\/:*?\"<>| \t\n\r]", result));
-	return result;
+	if (sscanf(buffer, "%[^;\\/:*?\"<>| \t\n\r]", result))
+		return result;	// a valid sound file
+	else
+		return result;	// a default sound file
 }
 
 void Cmd_PlayTeamSound_f(edict_t *ent)
