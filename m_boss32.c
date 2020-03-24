@@ -598,7 +598,8 @@ void makron_attack(edict_t *self)
 
 	VectorSubtract (self->enemy->s.origin, self->s.origin, vec);
 	range = VectorLength (vec);
-
+	if (range)
+		; //do nothing
 
 	if (r <= 0.3)
 		self->monsterinfo.currentmove = &makron_move_attack3;
