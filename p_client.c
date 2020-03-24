@@ -3218,33 +3218,33 @@ void ClientOldSetSkin(edict_t *ent, char *input)
 	skin[0] = 0;
 	
 	// See if we have only specified a skin number
-	if(sscanf(s, "%d", &skinnum));
-	
-	// First, check if skin matches proper format MJD Suggest Parens
-	err = sscanf(s, "%[^/]/%[^-]-%c%c%d", dir, set, &color, &gender, &num);
-	if (err)
+	if (sscanf(s, "%d", &skinnum))
 	{
-		// Next, check if gender matches properly
-		if (!strcmp(dir, "female"))
+		// First, check if skin matches proper format MJD Suggest Parens
+		err = sscanf(s, "%[^/]/%[^-]-%c%c%d", dir, set, &color, &gender, &num);
+		if (err)
 		{
-			dirvalid = 2;
-			// Check if skin is valid, ignoring color
-			if (gender == 'f' && num <= 2 && num >= 1)
+			// Next, check if gender matches properly
+			if (!strcmp(dir, "female"))
 			{
-				skinvalid = 1;
+				dirvalid = 2;
+				// Check if skin is valid, ignoring color
+				if (gender == 'f' && num <= 2 && num >= 1)
+				{
+					skinvalid = 1;
+				}
 			}
-		}
-		else if (!strcmp(dir, "male"))
-		{
-			dirvalid = 1;
-			// Check if skin is valid, ignoring color
-			if (gender == 'm' && num <= 3 && num >= 1)
+			else if (!strcmp(dir, "male"))
 			{
-				skinvalid = 1;
+				dirvalid = 1;
+				// Check if skin is valid, ignoring color
+				if (gender == 'm' && num <= 3 && num >= 1)
+				{
+					skinvalid = 1;
+				}
 			}
 		}
 	}
-	
 	
 	// If our skin is valid, only change if our color doesn't match
 	if (skinvalid)
