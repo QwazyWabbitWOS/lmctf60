@@ -1,6 +1,11 @@
 language: c
 
-compiler: gcc
+os:
+- linux
+- osx
+
+compiler: 
+- gcc
 
 script:
   - make all -C ./
