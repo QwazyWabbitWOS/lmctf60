@@ -1720,18 +1720,18 @@ void Ref_Map_Menu (edict_t *ent)
 }
 
 
-void SelectKick (edict_t *ent)
+void SelectKick(edict_t* ent)
 {
 	int i; //initialize j or you read off into memory
 	unsigned long id;
 	char kickcommand[MAX_INFO_STRING];
 
 	i = ent->client->menuselect;
-	if(sscanf(ent->client->localmenu[i].text, "%lu", &id ));
-	if (id)
+	if (sscanf(ent->client->localmenu[i].text, "%lu", &id))
+	{
 		Com_sprintf(kickcommand, sizeof kickcommand, "\nctfkick %lu\n", id);
-
-	ForceCommand(ent, kickcommand);
+		ForceCommand(ent, kickcommand);
+	}
 }
 
 void Ref_Kick_Menu (edict_t *ent)
