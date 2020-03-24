@@ -1261,7 +1261,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 		if ( ! ((int)ctfflags->value & CTF_ALLOW_INVULN) )
 		{
 			//unless they enabled the allow invulnerability flag, take it out
-			if ( (item->use == Use_Invulnerability) )
+			if (item->use == Use_Invulnerability)
 			{
 				G_FreeEdict(ent);
 				return;

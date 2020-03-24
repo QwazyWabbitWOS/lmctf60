@@ -285,15 +285,15 @@ void replace_location(edict_t *person, char *temp,
 			strcpy(temp, "at ");
 		else
 		{
-			if (abs(distvector[0]) > abs(distvector[1]) &&		// 0 Biggest
-				abs(distvector[0]) > abs(distvector[2]))
+			if (fabsf(distvector[0]) > fabsf(distvector[1]) &&		// 0 Biggest
+				fabsf(distvector[0]) > fabsf(distvector[2]))
 			{
 				if (distvector[0] > 0)
 					strcpy(temp, "north of ");
 				else
 					strcpy(temp, "south of ");
 			}
-			else if (abs(distvector[1]) > abs(distvector[2]))	// 1 biggest
+			else if (fabsf(distvector[1]) > fabsf(distvector[2]))	// 1 biggest
 			{
 				if (distvector[1] > 0)
 					strcpy(temp, "west of ");
