@@ -2069,16 +2069,14 @@ void Cmd_Say_f (edict_t *ent, qboolean team, qboolean arg0)
 	//return;
 	//
 
-	string_replace(ent, temp, temp, 1000);
-	strcat(text, temp); 
+	string_replace(ent, temp, temp, sizeof temp);
+	strcat(text, temp);
 
-	
 	// don't let text be too long for malicious reasons
 	if (strlen(text) > 150)
 		text[150] = 0;
 
 	ent->client->spam_band_count -= (strlen(text) * 2 + CTF_SPAM_BAND_SAY); //surt spam control
-
 
 	strcat(text, "\n");
 

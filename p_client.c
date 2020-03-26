@@ -99,7 +99,6 @@ static void SP_CreateCoopSpots (edict_t *self)
 }
 
 // TEAM CODE -- LM_JORM
-void ClientSetSkin(edict_t *ent, char *skin);
 
 
 edict_t *ClientHasFlag(edict_t *ent)
