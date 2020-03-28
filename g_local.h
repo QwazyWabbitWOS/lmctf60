@@ -32,7 +32,7 @@ _CrtMemState startup1;	// memory diagnostics
 #include "game.h"
 
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION     "LMCTF 6.0" //surt was baseq2
+#define GAMEVERSION     "LMCTF 6.1" //surt was baseq2
 
 #include "p_stats.h" // STATS - LM_Hati
 #include "g_menu.h" // MENUS - LM_Jorm
@@ -578,6 +578,7 @@ extern  cvar_t  *motd_file;     // CTF CODE -- LM_SURT
 extern  cvar_t  *server_file;   // CTF CODE -- LM_SURT
 extern  cvar_t  *maplist_file;  // CTF CODE -- LM_SURT
 extern  cvar_t  *skin_file;     // CTF CODE -- LM_SURT
+extern  cvar_t  *skin_debug;    // For debugging skins file
 extern  cvar_t  *disabled_weps; // CTF CODE -- LM_SURT
 
 

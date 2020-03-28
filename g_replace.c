@@ -553,16 +553,13 @@ void replace_carrierinfo(edict_t *person, char *temp)
 }
 
 
-void LowerCase(char * src)
+void LowerCase(char* src)
 {
-	int len;
+	size_t len;
 	int i;
 	len = strlen(src);
 	for (i = 0; i < len; i++)
 	{
-		src[i] = tolower(src[i]); //Implicit tolower include ctype.h
+		src[i] = tolower(src[i]);
 	}
 }
-
-
-	

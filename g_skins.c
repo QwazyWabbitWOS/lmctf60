@@ -15,12 +15,12 @@
 qboolean skinlistinuse = false;
 char *skinlist[SKIN_MAXCOLOR][SKIN_MAXSKINS][SKIN_MAXNAME];
 
-char *CopyString (char *in)
+char* CopyString(char* in)
 {
-	char	*out;
-	
-	out = gi.TagMalloc (strlen(in)+1, TAG_GAME);
-	strcpy (out, in);
+	char* out;
+
+	out = gi.TagMalloc((int)strlen(in) + 1, TAG_GAME);
+	strcpy(out, in);
 	return out;
 }
 
@@ -29,7 +29,7 @@ void SkinsReadFile()
 	FILE	*fp;
 
 	char	name[MAX_INFO_STRING], *newb = NULL;
-	int		size;
+	size_t	size;
 	char    *tempbuf;
 	char	line[MAX_INFO_STRING] = { 0 };
 	int		colorindex;
@@ -137,28 +137,27 @@ void SkinsReadFile()
 	// Free the memory
 	gi.TagFree(newb);
 
-
-	// DEBUG ONLY!
-	#ifdef _DEBUG	// ISO C compliant macro name
-	red = 0;
-	gi.dprintf("[red]\n");
-	while (skinlist[SKIN_RED][red][SKIN_MODELNAME])
+	if (skin_debug->value)
 	{
-		gi.dprintf("MODEL: [%s]  SKIN: [%s]\n",
-			skinlist[SKIN_RED][red][SKIN_MODELNAME],
-			skinlist[SKIN_RED][red][SKIN_SKINNAME]);
-		red++;
+		red = 0;
+		gi.dprintf("[red]\n");
+		while (skinlist[SKIN_RED][red][SKIN_MODELNAME])
+		{
+			gi.dprintf("MODEL: [%s]  SKIN: [%s]\n",
+				skinlist[SKIN_RED][red][SKIN_MODELNAME],
+				skinlist[SKIN_RED][red][SKIN_SKINNAME]);
+			red++;
+		}
+		red = 0;
+		gi.dprintf("\n[blue]\n");
+		while (skinlist[SKIN_BLUE][red][SKIN_MODELNAME])
+		{
+			gi.dprintf("MODEL: [%s]  SKIN: [%s]\n",
+				skinlist[SKIN_BLUE][red][SKIN_MODELNAME],
+				skinlist[SKIN_BLUE][red][SKIN_SKINNAME]);
+			red++;
+		}
 	}
-	red = 0;
-	gi.dprintf("\n[blue]\n");
-	while (skinlist[SKIN_BLUE][red][SKIN_MODELNAME])
-	{
-		gi.dprintf("MODEL: [%s]  SKIN: [%s]\n",
-			skinlist[SKIN_BLUE][red][SKIN_MODELNAME],
-			skinlist[SKIN_BLUE][red][SKIN_SKINNAME]);
-		red++;
-	}
-#endif
 }
 
 qboolean

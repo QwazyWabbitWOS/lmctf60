@@ -1669,16 +1669,17 @@ void SP_target_character (edict_t *self)
 void target_string_use (edict_t *self, edict_t *other, edict_t *activator)
 {
 	edict_t *e;
-	int		n, l;
+	int		n;
+	size_t	len;
 	char	c;
 
-	l = strlen(self->message);
+	len = strlen(self->message);
 	for (e = self->teammaster; e; e = e->teamchain)
 	{
 		if (!e->count)
 			continue;
 		n = e->count - 1;
-		if (n > l)
+		if (n > len)
 		{
 			e->s.frame = 12;
 			continue;

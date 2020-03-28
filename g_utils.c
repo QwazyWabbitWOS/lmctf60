@@ -403,12 +403,12 @@ void vectoangles (vec3_t value1, vec3_t angles)
 	angles[ROLL] = 0;
 }
 
-char *G_CopyString (char *in)
+char* G_CopyString(char* in)
 {
-	char	*out;
-	
-	out = gi.TagMalloc (strlen(in)+1, TAG_LEVEL);
-	strcpy (out, in);
+	char* out;
+
+	out = gi.TagMalloc((int)strlen(in) + 1, TAG_LEVEL);
+	strcpy(out, in);
 	return out;
 }
 

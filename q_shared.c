@@ -1331,7 +1331,7 @@ void Info_SetValueForKey (char *s, char *key, char *value)
 {
 	char	newi[MAX_INFO_STRING], *v;
 	int		c;
-	int		maxsize = MAX_INFO_STRING;
+	size_t	maxsize = MAX_INFO_STRING;
 
 	if (strstr (key, "\\") || strstr (value, "\\") )
 	{

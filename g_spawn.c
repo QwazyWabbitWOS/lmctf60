@@ -310,43 +310,48 @@ void WriteEntFile (char *mapname, char *entities)
 	fclose(fp);
 }
 
-char *ReadEntFile (char *mapname, char *entities)
+//QW//
+/* FIXME: This function needs some cleanup. Lots of fudging of the 
+ size of the tempbuf to accomodate a cr-lf at the end of the file
+ when it might have been better to let OS translation of '\n' do
+ the job. It looks like we also assume sizof(int) == 4 */
+char* ReadEntFile(char* mapname, char* entities)
 {
-	FILE	*fp;
+	FILE* fp;
 
 	char	name[MAX_INFO_STRING];
-	char	*newb = NULL;
-	int		size;
-	char * tempbuf;
+	char*	newb = NULL;
+	size_t	size;
+	char*	tempbuf;
 
 	if (!deathmatch->value)
 		return entities;
 
-	strcpy (name, gamedir->string);
-	strcat (name, "/ent/");
-	strcat (name, mapname);
-	strcat (name, ".ent");
+	strcpy(name, gamedir->string);
+	strcat(name, "/ent/");
+	strcat(name, mapname);
+	strcat(name, ".ent");
 
-	fp = fopen (name, "r");
+	fp = fopen(name, "r");
 	if (!fp)
 		return entities;
 
-	tempbuf = (char *) gi.TagMalloc(400002, TAG_LEVEL); //.ent files cannot exceed 400k
+	tempbuf = (char*)gi.TagMalloc(400002, TAG_LEVEL); //.ent files cannot exceed 400k
 
 	if (tempbuf)
 	{
-		size = fread(tempbuf, 1, 399999, fp);
+		size = (int)fread(tempbuf, 1, 399999, fp);
 		memset(&tempbuf[size], 0, 400002 - size);
 		fclose(fp);
 		// force CR-LF at end of file
 		tempbuf[size] = 13;
-		tempbuf[size+1] = 10;
+		tempbuf[size + 1] = 10;
 		size += 2;
 
 		if (size > 0 && size < 400001)
 		{
-			newb = gi.TagMalloc (size+4, TAG_LEVEL); //deallocated at end of level
-			memset(newb, 0, size+4);
+			newb = gi.TagMalloc((int)size + 4, TAG_LEVEL); //deallocated at end of level
+			memset(newb, 0, size + 4);
 			strcpy(newb, tempbuf);
 		}
 		else
@@ -370,17 +375,15 @@ char *ReadEntFile (char *mapname, char *entities)
 		if (strncmp(newb, ":append", 7) == 0) //strings match- changed from strnicmp --- ZL
 		{
 			gi.dprintf("Using .ent file for added ents.\n");
-			strcat(entities,&newb[8]);
+			strcat(entities, &newb[8]);
 		}
 		else
 		{
 			gi.dprintf("Using .ent file for replaced ents.\n");
-			strcpy(entities,newb);
+			strcpy(entities, newb);
 		}
 	}
-
 	return entities;
-	
 }
 
 
@@ -435,17 +438,18 @@ ED_NewString
 char *ED_NewString (char *string)
 {
 	char	*newb, *new_p;
-	int		i,l;
+	int		i;
+	int		len;
 	
-	l = strlen(string) + 1;
+	len = (int)strlen(string) + 1;
 
-	newb = gi.TagMalloc (l, TAG_LEVEL);
+	newb = gi.TagMalloc (len, TAG_LEVEL);
 
 	new_p = newb;
 
-	for (i=0 ; i< l ; i++)
+	for (i=0 ; i< len ; i++)
 	{
-		if (string[i] == '\\' && i < l-1)
+		if (string[i] == '\\' && i < len-1)
 		{
 			i++;
 			if (string[i] == 'n')

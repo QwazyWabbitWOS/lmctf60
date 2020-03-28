@@ -1465,7 +1465,8 @@ void ctf_SetLogName()
 
 void ctf_SafePrint(edict_t * ent, long print_priority, char * buf)
 {
-	long i,printsize;
+	long i;
+	size_t printsize;
 	char *cptr = NULL;
 	char tempbuf[MAX_INFO_STRING];
 

@@ -750,12 +750,11 @@ void SaveServer_Exec(edict_t *ent)
 
 	char	name[MAX_INFO_STRING];
 	char	text[MAX_INFO_STRING];
-	int		size;
+	size_t	size;
 	char*	tempbuf;
 	long	i = 0;
 
 	strcpy(name, gamedir->string);
-//	strcat (name, "/server.cfg");
 	strcat(name,"/");
 	strcat(name, server_file->string);
 
@@ -763,7 +762,7 @@ void SaveServer_Exec(edict_t *ent)
 	if (!fp)
 		return;
 	
-	tempbuf = (char *) gi.TagMalloc(40000, TAG_GAME); //server.cfg files cannot exceed 40k arbitrary
+	tempbuf = (char *) gi.TagMalloc(40000, TAG_GAME); //server.cfg files must not exceed 40k arbitrary
 
 	if (tempbuf)
 	{

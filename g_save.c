@@ -227,6 +227,7 @@ void InitGame (void)
 	server_file = gi.cvar("server_file","server.cfg", 0); //CTF CODE -- LM_CTF
 	maplist_file = gi.cvar("maplist_file", "maplist.txt", 0);  //CTF CODE -- LM_CTF
 	skin_file = gi.cvar("skin_file", "skins.ini", 0);
+	skin_debug = gi.cvar("skin_debug", "0", 0);	// for debugging team skins in SkinsReadFile
 
 
 

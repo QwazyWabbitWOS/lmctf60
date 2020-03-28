@@ -70,6 +70,7 @@ cvar_t	*motd_file;	// CTF CODE -- LM_SURT
 cvar_t	*server_file;	// CTF CODE -- LM_SURT
 cvar_t	*maplist_file;	// CTF CODE -- LM_SURT
 cvar_t	*skin_file;	// CTF CODE -- LM_SURT
+cvar_t	*skin_debug; // For debugging skin files
 cvar_t	*disabled_weps;	// CTF CODE -- LM_SURT
 
 

@@ -184,8 +184,10 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
     int     blue, red;  // TEAM PLAY -- LM_JORM
     int     bluepings, redpings;  //bat
     int     Avg_Bluepings, Avg_Redpings;  //bat
-    int     stringlength;
-    int     i, j, k;
+    size_t  stringlength;
+    int     i;
+    size_t  j;
+    int     k;
     //int       sortedscores[MAX_CLIENTS];
     int     redsorted[MAX_CLIENTS];
     int     redsortedscores[MAX_CLIENTS];
@@ -937,7 +939,7 @@ void CTFSquadboardMessage (edict_t *ent, edict_t* killer) // ADC
 	char notReadyString [] = "string"; // white string
 
 	char statusStart [MAX_STATUS_LEN];
-	int greenStatusLen = strlen (GREEN_STATUS_STR);
+	int greenStatusLen = (int)strlen (GREEN_STATUS_STR);
 
 	int widestName = 0; // in chars
 
@@ -960,7 +962,7 @@ void CTFSquadboardMessage (edict_t *ent, edict_t* killer) // ADC
 
 		if (team == teamOfInterest)
 		{
-			len = strlen(game.clients[i].pers.netname);
+			len = (int)strlen(game.clients[i].pers.netname);
 			clients [clientCount++] = &game.clients [i];
 
 			if (len > widestName)
@@ -1054,9 +1056,9 @@ void CTFSquadboardMessage (edict_t *ent, edict_t* killer) // ADC
 			widestName, sortedClients[i]->pers.netname,
 			sortedClients[i]->pers.squadStatus);
 
-		if (maxsize - len > strlen(entry)) {
+		if (maxsize - len > (int)strlen(entry)) {
 			strcat(string, entry);
-			len = strlen(string);
+			len = (int)strlen(string);
 		}
 	}
 

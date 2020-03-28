@@ -188,7 +188,7 @@ void PlayVoiceSound(edict_t *ent, char *sound)
 //QW//
 /* This function validates the name of the requested 
  sound file. If the path is invalid return the path 
- of whatever we have initialized 'result' to here. */
+ of whatever we have initialized 'result' to be here. */
 static char* ValidateSoundName(char* sound)
 {
 	static char buffer[MAX_QPATH] = { 0 };
@@ -216,9 +216,6 @@ void Cmd_PlayVoiceSound_f(edict_t *ent)
 
 qboolean OnSameTeam (edict_t *ent1, edict_t *ent2)
 {
-	//char	ent1Team [512];
-	//char	ent2Team [512];
-
 	if ((int)ctfflags->value & CTF_TEAM_NOTEAMS)
 		return false; //surt there are no teams allowed
 
@@ -226,17 +223,6 @@ qboolean OnSameTeam (edict_t *ent1, edict_t *ent2)
 		(ent1->client->ctf.teamnum == ent2->client->ctf.teamnum) &&
 		ent1->inuse && ent2->inuse)
 		return true;
-	/*
-	if (!((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS)))
-		return false;
-
-	strcpy (ent1Team, ClientTeam (ent1));
-	strcpy (ent2Team, ClientTeam (ent2));
-
-	if (strcmp(ent1Team, ent2Team) == 0)
-		return true;
-	return false;
-	*/
 	return false;
 }
 
@@ -1776,7 +1762,7 @@ void Cmd_GotoMap_f (edict_t *ent)
 	if (strlen(p))
 	{
 		// convert to lower case for comparison
-		for (i = 0; i < strlen(p); i++)
+		for (i = 0; i < (int)strlen(p); i++)
 			p[i] = tolower(p[i]);
 
 		for (i=0; maplist[i][0]; i++)
@@ -2076,7 +2062,7 @@ void Cmd_Say_f (edict_t *ent, qboolean team, qboolean arg0)
 	if (strlen(text) > 150)
 		text[150] = 0;
 
-	ent->client->spam_band_count -= (strlen(text) * 2 + CTF_SPAM_BAND_SAY); //surt spam control
+	ent->client->spam_band_count -= ((long)strlen(text) * 2 + CTF_SPAM_BAND_SAY); //surt spam control
 
 	strcat(text, "\n");
 
