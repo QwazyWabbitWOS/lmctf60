@@ -1820,7 +1820,7 @@ void hook_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *sur
 			if (ctf_validateplayer(other,CTF_TEAM_ANYTEAM)) //noise for hitting players
 				gi.sound(self, CHAN_AUTO, gi.soundindex("weapons/grapple/ghit.wav"), 1, ATTN_NORM, 0);
 			else
-				gi.sound(self, CHAN_AUTO, gi.soundindex("weapons/grapple/ghitwall.wav"), 0.8, ATTN_NORM, 0);
+				gi.sound(self, CHAN_AUTO, gi.soundindex("weapons/grapple/ghitwall.wav"), 0.8f, ATTN_NORM, 0);
 			
 			// Bonus damage for first hit
 			T_Damage (other, self, self->owner, self->velocity, self->s.origin, plane->normal, 8, 8, DAMAGE_ENERGY, MOD_CTF_GRAPPLE); //damage, knockback
@@ -1926,7 +1926,7 @@ edict_t *fire_hook (edict_t *self, vec3_t start, vec3_t dir, int speed)
 
 	//surt can that be avoided?
 
-	gi.sound(self, CHAN_AUTO, gi.soundindex("weapons/grapple/grfire.wav"), 0.8, ATTN_NORM, 0);
+	gi.sound(self, CHAN_AUTO, gi.soundindex("weapons/grapple/grfire.wav"), 0.8f, ATTN_NORM, 0);
 //	gi.dprintf("Played grapple sound.\n");
 
 //	bolt->s.sound = gi.soundindex ("weapons/grapple/grfire.wav");

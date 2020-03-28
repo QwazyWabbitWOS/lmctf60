@@ -5,7 +5,6 @@
 // unknown pragmas are SUPPOSED to be ignored, but....
 #pragma warning(disable : 4244)     // data conversions
 #pragma warning(disable : 4018)     // signed/unsigned mismatch
-#pragma warning(disable : 4305)		// truncation from double to float
 #pragma warning(disable : 4459)		// declaration of 'var' hides global declaration
 
 //surt ... trying to find errors at max debug level

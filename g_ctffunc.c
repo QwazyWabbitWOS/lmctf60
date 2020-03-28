@@ -601,9 +601,9 @@ void ctf_flagwave (edict_t *ent) //flag animation
 		if (!ctf_validateplayer(ent->owner,CTF_TEAM_ANYTEAM))
 		{
 			if (ent == redflag)
-				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/r_returned.wav"), 0.8, ATTN_NONE, 0);	
+				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/r_returned.wav"), 0.8f, ATTN_NONE, 0);	
 			else if (ent == blueflag)
-				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/b_returned.wav"), 0.8, ATTN_NONE, 0);	
+				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/b_returned.wav"), 0.8f, ATTN_NONE, 0);	
 			ctf_resetflagandplayer(ent, NULL);
 		}
 	}
@@ -916,10 +916,10 @@ qboolean ctf_flagtouch (edict_t *ent, edict_t *other)
 			switch (ent->flagteam)
 			{
 			case CTF_TEAM_RED:
-				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/r_returned.wav"), 0.8, ATTN_NONE, 0);	
+				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/r_returned.wav"), 0.8f, ATTN_NONE, 0);	
 				break;
 			case CTF_TEAM_BLUE: 
-				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/b_returned.wav"), 0.8, ATTN_NONE, 0);	
+				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/b_returned.wav"), 0.8f, ATTN_NONE, 0);	
 				break;
 			}
 
@@ -1019,14 +1019,14 @@ qboolean ctf_flagtouch (edict_t *ent, edict_t *other)
 //		if (FlagCompare (ent->homeposition, ent->s.origin))
 		if (ctf_flagathome(ent))
 		{
-			gi.sound(ent, CHAN_AUTO, gi.soundindex("ctf/flagtk.wav"), 0.7, ATTN_NORM, 0);	
+			gi.sound(ent, CHAN_AUTO, gi.soundindex("ctf/flagtk.wav"), 0.7f, ATTN_NORM, 0);	
 			switch (ent->flagteam)
 			{
 			case CTF_TEAM_RED:
-				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/r_stolen.wav"), 0.8, ATTN_NONE, 0);	
+				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/r_stolen.wav"), 0.8f, ATTN_NONE, 0);	
 				break;
 			case CTF_TEAM_BLUE: 
-				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/b_stolen.wav"), 0.8, ATTN_NONE, 0);	
+				gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/b_stolen.wav"), 0.8f, ATTN_NONE, 0);	
 				break;
 			default:
 				break;
@@ -1045,10 +1045,10 @@ qboolean ctf_flagtouch (edict_t *ent, edict_t *other)
 				switch (ent->flagteam)
 				{
 				case CTF_TEAM_RED:
-					gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/r_stolen.wav"), 0.8, ATTN_NORM, 0);	
+					gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/r_stolen.wav"), 0.8f, ATTN_NORM, 0);	
 					break;
 				case CTF_TEAM_BLUE: 
-					gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/b_stolen.wav"), 0.8, ATTN_NORM, 0);	
+					gi.sound(ent, CHAN_CTF, gi.soundindex("ctf/b_stolen.wav"), 0.8f, ATTN_NORM, 0);	
 					break;
 				default:
 					break;

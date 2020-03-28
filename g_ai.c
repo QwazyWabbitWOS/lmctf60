@@ -634,19 +634,19 @@ qboolean M_CheckAttack (edict_t *self)
 
 	if (self->monsterinfo.aiflags & AI_STAND_GROUND)
 	{
-		chance = 0.4;
+		chance = 0.4f;
 	}
 	else if (enemy_range == RANGE_MELEE)
 	{
-		chance = 0.2;
+		chance = 0.2f;
 	}
 	else if (enemy_range == RANGE_NEAR)
 	{
-		chance = 0.1;
+		chance = 0.1f;
 	}
 	else if (enemy_range == RANGE_MID)
 	{
-		chance = 0.02;
+		chance = 0.02f;
 	}
 	else
 	{
@@ -656,7 +656,7 @@ qboolean M_CheckAttack (edict_t *self)
 	if (skill->value == 0)
 		chance *= 0.5;
 	else if (skill->value >= 2)
-		chance *= 2;
+		chance *= 2.0;
 
 	if (random () < chance)
 	{
@@ -714,7 +714,7 @@ void ai_run_missile(edict_t *self)
 		self->monsterinfo.attack (self);
 		self->monsterinfo.attack_state = AS_STRAIGHT;
 	}
-};
+}
 
 
 /*
@@ -837,7 +837,7 @@ qboolean ai_checkattack (edict_t *self, float dist)
 			{
 				// we need the pausetime otherwise the stand code
 				// will just revert to walking with no target and
-				// the monsters will wonder around aimlessly trying
+				// the monsters will wander around aimlessly trying
 				// to hunt the world entity
 				self->monsterinfo.pausetime = level.time + 100000000;
 				self->monsterinfo.stand (self);
