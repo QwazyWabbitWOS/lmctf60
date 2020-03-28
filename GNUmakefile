@@ -53,6 +53,9 @@ ARCH := $(shell uname -m | sed -e s/i.86/i386/ \
 	-e s/sun4u/sparc64/ -e s/arm.*/arm/ \
 	-e s/sa110/arm/ -e s/alpha/axp/)
 
+# On 64-bit OS use the command: 'setarch i386 make' after 'make clean'
+# to obtain the 32-bit binary DLL on 64-bit Linux.
+
 # on x64 machines do this preparation:
 # sudo apt-get install ia32-libs
 # sudo apt-get install libc6-dev-i386
