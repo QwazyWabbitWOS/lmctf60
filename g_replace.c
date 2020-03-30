@@ -556,7 +556,8 @@ void replace_carrierinfo(edict_t *person, char *temp)
 void LowerCase(char* src)
 {
 	size_t len;
-	int i;
+	size_t i;
+
 	len = strlen(src);
 	for (i = 0; i < len; i++)
 	{

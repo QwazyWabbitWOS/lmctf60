@@ -115,7 +115,7 @@ void Victory()
 	edict_t *ent=NULL; 
 	long redscore, bluescore; 
 	long	temp, oscore, dscore;
-	char victory_buf[512];
+	char victory_buf[MAX_INFO_STRING];
 	char temp_buf[MAX_INFO_STRING];
 	char teambuf[MAX_INFO_STRING];
 	

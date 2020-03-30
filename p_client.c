@@ -2989,7 +2989,7 @@ void PingAlert (edict_t *ent)
 {
 	edict_t *other;
 	int j;
-	char message[512];
+	char message[MAX_INFO_STRING];
 	
 	// Check if they are turned off
 	if (!ent->client->ctf.pingalertfloor && !ent->client->ctf.pingalertceiling)

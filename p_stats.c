@@ -168,8 +168,8 @@ void stats_output(edict_t *ent, stats_player_s *p_player)
 	int total_encounters;
 	char teambuf[MAX_INFO_STRING];
 	char *conbuf;
-	char outbuf[512];
-	char tmpbuf[512];
+	char outbuf[MAX_INFO_STRING];
+	char tmpbuf[MAX_INFO_STRING];
 
 	strcpy(teambuf,"");
 	ctf_teamstring(teambuf, p_player->info.teamnum, CTF_TEAM_MATCHING);

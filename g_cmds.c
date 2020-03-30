@@ -1022,10 +1022,8 @@ void Cmd_Team_f (edict_t *ent)
 	int newnum = 0;
 	char *message = "";
 
-
 	if(matchstate == MATCH_RAILGUN_INPLAY)
 		return;
-
 
 	if ((int)ctfflags->value & CTF_TEAM_NOSWITCH)
 	{
@@ -1054,8 +1052,6 @@ void Cmd_Team_f (edict_t *ent)
 		
 		return;
 	}
-
-
 
 	if (!strcmp(rawnew, "red"))
 	{
@@ -1109,20 +1105,17 @@ void Cmd_Team_f (edict_t *ent)
 			newnum = 2;
 	}
 
-
 	Team_Change(ent, newnum);
-	
 }
 
 
-void Cmd_FlagStatus_f (edict_t *ent)
+void Cmd_FlagStatus_f(edict_t* ent)
 {
-	char buf[512];
+	char buf[MAX_INFO_STRING];
 	buf[0] = 0;
 
 	replace_flaginfo(ent, buf);
-	ctf_SafePrint(ent,PRINT_HIGH,buf);
-
+	ctf_SafePrint(ent, PRINT_HIGH, buf);
 }
 
 

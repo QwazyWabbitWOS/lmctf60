@@ -1189,17 +1189,18 @@ int Q_strnicmp(const char* s1, const char* s2, size_t count)
 
 static char	bigbuffer[0x10000];	// For Com_sprintf
 
-void Com_sprintf (char *dest, int size, char *fmt, ...)
+void Com_sprintf(char* dest, int size, char* fmt, ...)
 {
 	int		len;
-	va_list		argptr;
+	va_list	argptr;
 
-	va_start (argptr,fmt);
-	len = vsprintf (bigbuffer,fmt,argptr);
-	va_end (argptr);
-	if (len >= size)
-		Com_Printf ("Com_sprintf: overflow of %i in %i\n", len, size);
-	strncpy (dest, bigbuffer, size-1);
+	va_start(argptr, fmt);
+	len = vsprintf(bigbuffer, fmt, argptr);
+	va_end(argptr);
+	if (len < size)
+		strncpy(dest, bigbuffer, size - 1);
+	else
+		Com_Printf("Com_sprintf: overflow of %i in %i\n", len, size);
 }
 
 /*
@@ -1220,9 +1221,8 @@ key and returns the associated value, or an empty string.
 */
 char *Info_ValueForKey (char *s, char *key)
 {
-	char	pkey[512];
-	static	char value[2][512];	// use two buffers so compares
-								// work without stomping on each other
+	char	pkey[MAX_INFO_STRING];
+	static	char value[2][MAX_INFO_STRING]; // Use two buffers so compares work without stomping on each other.
 	static	int	valueindex;
 	char	*o;
 	
@@ -1263,8 +1263,8 @@ char *Info_ValueForKey (char *s, char *key)
 void Info_RemoveKey (char *s, char *key)
 {
 	char	*start;
-	char	pkey[512];
-	char	value[512];
+	char	pkey[MAX_INFO_STRING];
+	char	value[MAX_INFO_STRING];
 	char	*o;
 
 	if (strstr (key, "\\"))
