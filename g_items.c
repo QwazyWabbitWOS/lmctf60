@@ -117,11 +117,8 @@ gitem_t	*FindItem (char *pickup_name)
 
 void DoRespawn(edict_t* ent)
 {
-	if (ent == NULL)
-	{
-		gi.dprintf("NULL ent passed to %s\n", __func__);
+	if (!ent)
 		return;
-	}
 
 	if (ent->team)
 	{
@@ -137,8 +134,7 @@ void DoRespawn(edict_t* ent)
 		for (ent = master; ent; ent = ent->chain)
 			count++;
 
-		assert(count != 0);
-		choice = rand() % count;
+		choice = count ? (rand() % count) : 0;
 
 		count = 0;
 		for (ent = master; count < choice; ent = ent->chain)
