@@ -29,7 +29,7 @@ extern void Weapon_Plasma (edict_t *ent);
 extern void Use_PLASMA (edict_t *ent, gitem_t *inv);
 // END
 
-
+int quad_respawn_time;
 
 void Weapon_Hook (edict_t *ent); // CTF CODE -- LM_JORM
 
@@ -1918,7 +1918,7 @@ always owned, never in the world
 /* icon */		"p_quad",
 /* pickup */	"Quad Damage",
 /* width */		2,
-		60,  //Quad respawn time right here
+		LM_QUAD_DEFAULT_TIME,  //Quad respawn time right here
 		NULL,
 		IT_POWERUP,
 		0,

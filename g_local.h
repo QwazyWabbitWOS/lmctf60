@@ -32,7 +32,7 @@ _CrtMemState startup1;	// memory diagnostics
 #include "game.h"
 
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION     "LMCTF 6.1" //surt was baseq2
+#define GAMEVERSION     "LMCTF 6.1.1-raven" //surt was baseq2
 
 #include "p_stats.h" // STATS - LM_Hati
 #include "g_menu.h" // MENUS - LM_Jorm
@@ -586,12 +586,19 @@ extern  cvar_t  *disabled_weps; // CTF CODE -- LM_SURT
 extern  cvar_t  *use_zbotdetect; // CTF CODE -- LM_Hati
 #endif
 
+typedef struct MapInfo {
+	char *mapname;
+	int  minplayers;
+	int  maxplayers;
+        struct MapInfo *next;
+} MapInfo;
+
 extern  edict_t *redflag; // CTF CODE -- LM_JORM
 extern  edict_t *blueflag; // CTF CODE -- LM_JORM
 
 extern  char    motd[1000]; // CTF CODE -- LM_JORM
 
-extern  char    maplist[100][100]; // CTF CODE -- LM_JORM
+extern  MapInfo maplist[300]; // CTF CODE -- LM_JORM
 extern  int     maplistindex; // CTF CODE -- LM_JORM
 
 extern  int     bluescore, redscore; // CTF CODE -- LM_JORM
@@ -645,7 +652,9 @@ typedef struct
 extern	field_t fields[];
 extern	gitem_t	itemlist[];
 
-
+void SortMaplist(MapInfo arr[], int min, int max);
+int MapDivide(MapInfo arr[], int min, int max);
+void flip(MapInfo* x, MapInfo* y);
 //
 // g_cmds.c
 //
@@ -1322,4 +1331,5 @@ struct edict_s
 	// END CTF CODE
 };
 
+#define LM_QUAD_DEFAULT_TIME 60
 #endif
