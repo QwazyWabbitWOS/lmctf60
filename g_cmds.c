@@ -1758,9 +1758,9 @@ void Cmd_GotoMap_f (edict_t *ent)
 		for (i = 0; i < (int)strlen(p); i++)
 			p[i] = tolower(p[i]);
 
-		for (i=0; maplist[i][0]; i++)
+		for (i=0; maplist[i].mapname; i++)
 		{
-			if (!strcmp(maplist[i], p))
+			if (!strcmp(maplist[i].mapname, p))
 			{
 				ctf_ChangeMap(p, false);
 				return;
@@ -1886,9 +1886,9 @@ void Cmd_Match_f (edict_t *ent)
 	}
 	else
 	{
-		for (i=0; maplist[i][0]; i++)
+		for (i=0; maplist[i].mapname; i++)
 		{
-			if (!strcmp(maplist[i], p))
+			if (!strcmp(maplist[i].mapname, p))
 			{
 				ctf_SafePrint(ent, PRINT_HIGH, "Match countdown beginning.\n");
 				StartMatch (p);

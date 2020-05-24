@@ -85,7 +85,7 @@ cvar_t	*sv_maplist;
 
 char	motd[1000]; // CTF CODE -- LM_JORM
 
-char	maplist[100][100]; // CTF CODE -- LM_JORM
+MapInfo	maplist[256]; // CTF CODE -- LM_JORM
 int		maplistindex  = 0; // CTF CODE -- LM_JORM
 
 int		bluescore = 0, redscore = 0; // CTF CODE -- LM_JORM
@@ -488,7 +488,7 @@ int map_count = 0;
 		//bat
 		while(Maps_Picked[maplistindex] == Last_Map)
 		{
-			if(maplistindex > -1 && !maplist[maplistindex][0]) // Did we reach the end of the list?
+			if(maplistindex > -1 && !maplist[maplistindex].mapname) // Did we reach the end of the list?
 				maplistindex = 0;
 
 			maplistindex++;
@@ -500,14 +500,14 @@ int map_count = 0;
 
 		if((int)ctfflags->value & CTF_RANDOM_MAPS)
 		{
-			ent->map = maplist[Maps_Picked[maplistindex]];
+			ent->map = maplist[Maps_Picked[maplistindex]].mapname;
 			Last_Map = Maps_Picked[maplistindex]; 
-			gi.dprintf("Map #%d:  %s\n", Maps_Picked[maplistindex] + 1, maplist[Maps_Picked[maplistindex]]);
+			gi.dprintf("Map #%d:  %s\n", Maps_Picked[maplistindex] + 1, maplist[Maps_Picked[maplistindex]].mapname);
 		}
 		else
 		{
-			ent->map = maplist[maplistindex];
-			gi.dprintf("Map #%d:  %s\n", maplistindex+1, maplist[maplistindex]);
+			ent->map = maplist[maplistindex].mapname;
+			gi.dprintf("Map #%d:  %s\n", maplistindex+1, maplist[maplistindex].mapname);
 		}
 
 		maplistindex++; 
@@ -592,7 +592,7 @@ void CheckDMRules (void)
 	if (maplistindex == -1) // First time through the list
 	{
 		gi.dprintf ("Using Maplist.\n");
-		if (!strcmp(maplist[0], level.mapname))
+		if (!strcmp(maplist[0].mapname, level.mapname))
 		{
 			maplistindex = 1;
 			return;
@@ -601,7 +601,7 @@ void CheckDMRules (void)
 		{
 			ent = G_Spawn ();
 			ent->classname = "target_changelevel";
-			ent->map = maplist[0];
+			ent->map = maplist[0].mapname;
 			maplistindex = 1;
 			level.changemap = ent->map;
 			level.exitintermission = 1;

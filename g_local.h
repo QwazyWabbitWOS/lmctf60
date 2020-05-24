@@ -586,12 +586,18 @@ extern  cvar_t  *disabled_weps; // CTF CODE -- LM_SURT
 extern  cvar_t  *use_zbotdetect; // CTF CODE -- LM_Hati
 #endif
 
+typedef struct MapInfo {
+	char *mapname;
+	int  minplayers;
+	int  maxplayers;
+} MapInfo;
+
 extern  edict_t *redflag; // CTF CODE -- LM_JORM
 extern  edict_t *blueflag; // CTF CODE -- LM_JORM
 
 extern  char    motd[1000]; // CTF CODE -- LM_JORM
 
-extern  char    maplist[100][100]; // CTF CODE -- LM_JORM
+extern  MapInfo maplist[256]; // CTF CODE -- LM_JORM
 extern  int     maplistindex; // CTF CODE -- LM_JORM
 
 extern  int     bluescore, redscore; // CTF CODE -- LM_JORM

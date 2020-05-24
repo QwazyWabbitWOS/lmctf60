@@ -1424,7 +1424,7 @@ void SetMap (edict_t *ent)
 	{
 		Ctf_Menu(ent); // turn off menu
 		i = (ent->client->menuselect - 2)+ent->client->menulastpage*15;
-		StartMatch (maplist[i]);
+		StartMatch (maplist[i].mapname);
 	}
 	else if (ent->client->prevmenu == Ref_Map_A_Menu)
 	{
@@ -1445,7 +1445,7 @@ void SetMap (edict_t *ent)
 	{
 		Ctf_Menu(ent); // turn off menu
 		i = (ent->client->menuselect - 2)+ent->client->menulastpage*15;
-		ctf_ChangeMap(maplist[i], false);
+		ctf_ChangeMap(maplist[i].mapname, false);
 	}
 }
 
@@ -1462,7 +1462,7 @@ void Ref_Match_Maplist_Menu (edict_t *ent)
 	{
 		for (i=start-15;i < start; i++)
 		{
-			if (!maplist[i][0]) // Last entry
+			if (!maplist[i].mapname) // Last entry
 			{
 				start = 0;			// Go to first page
 				ent->client->menupage = 0;
@@ -1474,11 +1474,11 @@ void Ref_Match_Maplist_Menu (edict_t *ent)
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 0;
 
-	Menu_Set(ent, 0, "Match Maplist", Ref_Main_Menu);
+	Menu_Set(ent, 0, "Match Maplist <min> <max>", Ref_Main_Menu);
 	Menu_Set(ent, 1, "-------------", NULL);
-	for (i=2, j=start; i < 17 && maplist[j][0]; i++, j++)
+	for (i=2, j=start; i < 17 && maplist[j].mapname; i++, j++)
 	{
-		sprintf(text, "%s", maplist[j]);
+		sprintf(text, "%s %d %d", maplist[j].mapname, maplist[j].minplayers, maplist[j].maxplayers);
 		Menu_Set(ent, i, text, SetMap);
 	}
 	Menu_Set(ent, 17, "<next page>", Ref_Match_Maplist_Menu);
@@ -1500,7 +1500,7 @@ void Ref_Map_Maplist_Menu (edict_t *ent)
 	{
 		for (i=start-15;i < start; i++)
 		{
-			if (!maplist[i][0]) // Last entry
+			if (!maplist[i].mapname) // Last entry
 			{
 				start = 0;			// Go to first page
 				ent->client->menupage = 0;
@@ -1512,11 +1512,11 @@ void Ref_Map_Maplist_Menu (edict_t *ent)
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 0;
 
-	Menu_Set(ent, 0, "Maplist", Ref_Main_Menu);
+	Menu_Set(ent, 0, "Maplist <min> <max>", Ref_Main_Menu);
 	Menu_Set(ent, 1, "-------", NULL);
-	for (i=2, j=start; i < 17 && maplist[j][0]; i++, j++)
+	for (i=2, j=start; i < 17 && maplist[j].mapname; i++, j++)
 	{
-		sprintf(text, "%s", maplist[j]);
+		sprintf(text, "%s %d %d", maplist[j].mapname, maplist[j].minplayers, maplist[j].maxplayers);
 		Menu_Set(ent, i, text, SetMap);
 	}
 	Menu_Set(ent, 17, "<next page>", Ref_Map_Maplist_Menu);

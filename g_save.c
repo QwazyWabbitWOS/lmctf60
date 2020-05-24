@@ -275,15 +275,31 @@ void InitGame (void)
 			maplistindex = 0;
 			while ( fgets(line, 255, file) )
 			{
-				if (sscanf(line, "%s", maplist[maplistindex]))
-				{
-					// convert to lower case for subsequent comparisons
-					for (i = 0; i < strlen(maplist[maplistindex]); i++)
-						maplist[maplistindex][i] = tolower(maplist[maplistindex][i]);
-					maplistindex++;
+				char *tempname = gi.TagMalloc(100, TAG_GAME);
+				int tempmin = 0;
+				int tempmax = 99;
+				if (sscanf(line, "%s %d %d", tempname, &tempmin, &tempmax) != 3) {
+					if (sscanf(line, "%s %d", tempname, &tempmin) != 2) {
+						if (sscanf(line, "%s", tempname) != 1) {
+							sprintf(line, "Bad entry in maplist");
+							gi.dprintf(line);
+							gi.TagFree(tempname);
+							continue;
+						}
+					}
 				}
+//, maplist[maplistindex]))
+				// convert to lower case for subsequent comparisons
+				for (i = 0; i < strlen(tempname); i++)
+					tempname[i] = tolower(tempname[i]);
+				maplist[maplistindex].mapname = tempname;
+				maplist[maplistindex].minplayers = tempmin;
+				maplist[maplistindex].maxplayers = tempmax;
+
+				maplistindex++;
+				
 			}
-			maplist[maplistindex][0] = 0; // Blank last entry
+//			maplist[maplistindex][0] = 0; // Blank last entry
 			sprintf(line, "%d entries in maplist.\n", maplistindex);
 			gi.dprintf(line);
 			fclose(file);
