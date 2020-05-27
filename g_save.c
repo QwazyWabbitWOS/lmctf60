@@ -299,6 +299,7 @@ void InitGame (void)
 				maplistindex++;
 				
 			}
+			SortMaplist(maplist, 0, maplistindex-1);
 //			maplist[maplistindex][0] = 0; // Blank last entry
 			sprintf(line, "%d entries in maplist.\n", maplistindex);
 			gi.dprintf(line);
@@ -356,7 +357,7 @@ void InitGame (void)
 	else
 		sprintf (fname, "%s/motd.txt", gamedir->string);
 	file = fopen(fname, "r");
-	if (!file)
+	if (!filee
 		file = fopen("motd.txt", "r");
 	if (file)
     {
@@ -372,6 +373,37 @@ void InitGame (void)
 	// END CTF CODE -- LM_JORM
 
 }
+
+void SortMaplist(MapInfo arr[], int min, int max) {
+	if (min < max) {
+		int ndx = MapDivide(arr, min, max);
+		SortMaplist(arr, min, ndx - 1);
+		SortMaplist(arr, ndx + 1, max);
+	}
+}
+
+
+int MapDivide(MapInfo arr[], int min, int max) {
+	MapInfo tmp = arr[max];
+	int nndx = (min - 1);
+
+	for (int x = min; x <= max-1; x++) {
+		if (strcmp(arr[x].mapname, tmp.mapname) < 0) {
+			nndx++;
+			flip(&arr[nndx], &arr[x]);
+		}
+	}
+	flip(&arr[nndx+1], &arr[max]);
+	return(nndx + 1);
+}
+
+void flip(MapInfo* x, MapInfo* y) {
+	MapInfo tmp = *x;
+	*x = *y;
+	*y=  tmp;
+}
+
+
 
 //=========================================================
 

@@ -651,7 +651,9 @@ typedef struct
 extern	field_t fields[];
 extern	gitem_t	itemlist[];
 
-
+void SortMaplist(MapInfo arr[], int min, int max);
+int MapDivide(MapInfo arr[], int min, int max);
+void flip(MapInfo* x, MapInfo* y);
 //
 // g_cmds.c
 //
