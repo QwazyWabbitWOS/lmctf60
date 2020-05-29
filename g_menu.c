@@ -61,9 +61,13 @@ void Ref_Map_Menu (edict_t *ent);
 void Ref_Match_A_Menu (edict_t *ent);
 void Ref_Match_B_Menu (edict_t *ent);
 void Ref_Match_C_Menu (edict_t *ent);
+void Ref_Match_D_Menu (edict_t *ent);
+void Ref_Match_E_Menu (edict_t *ent);
 void Ref_Map_A_Menu (edict_t *ent);
 void Ref_Map_B_Menu (edict_t *ent);
 void Ref_Map_C_Menu (edict_t *ent);
+void Ref_Map_D_Menu (edict_t *ent);
+void Ref_Map_E_Menu (edict_t *ent);
 void Ref_Match_Maplist_Menu (edict_t *ent);
 void Ref_Map_Maplist_Menu (edict_t *ent);
 
@@ -1378,6 +1382,50 @@ char *mapclist[] =
 	0
 };
 
+char *mapdlist[] = 
+{
+	0,
+	0,
+	"lmctf31",
+	"lmctf32",
+	"lmctf33",
+	"lmctf34",
+	"lmctf35",
+	"lmctf36",
+	"lmctf37",
+	"lmctf38",
+	"lmctf39",
+	"lmctf40",
+	0,
+	0,
+	0,
+	0,
+	0,
+	0
+};
+
+char *mapelist[] = 
+{
+	0,
+	0,
+	"lmctf41",
+	"lmctf42",
+	"lmctf43",
+	"lmctf44",
+	"lmctf45",
+	"lmctf46",
+	"lmctf47",
+	"lmctf48",
+	"lmctf49",
+	"lmctf50",
+	0,
+	0,
+	0,
+	0,
+	0,
+	0
+};
+
 char *maplmlist[] = 
 {
         "lmctf01",
@@ -1410,6 +1458,26 @@ char *maplmlist[] =
         "lmctf28",
         "lmctf29",
         "lmctf30"
+        "lmctf31",
+        "lmctf32",
+        "lmctf33",
+        "lmctf34",
+        "lmctf35",
+        "lmctf36",
+        "lmctf37",
+        "lmctf38",
+        "lmctf39",
+        "lmctf40"
+        "lmctf41",
+        "lmctf42",
+        "lmctf43",
+        "lmctf44",
+        "lmctf45",
+        "lmctf46",
+        "lmctf47",
+        "lmctf48",
+        "lmctf49",
+        "lmctf50"
 };
 /*
 void SetMatchBMap (edict_t *ent)
@@ -1451,6 +1519,16 @@ void SetMap (edict_t *ent)
 		Ctf_Menu(ent); // turn off menu
 		StartMatch (mapclist[ent->client->menuselect]);
 	}
+	else if (ent->client->prevmenu == Ref_Match_D_Menu)
+	{
+		Ctf_Menu(ent); // turn off menu
+		StartMatch (mapdlist[ent->client->menuselect]);
+	}
+	else if (ent->client->prevmenu == Ref_Match_E_Menu)
+	{
+		Ctf_Menu(ent); // turn off menu
+		StartMatch (mapelist[ent->client->menuselect]);
+	}
 	else if (ent->client->prevmenu == Ref_Match_Maplist_Menu)
 	{
 		Ctf_Menu(ent); // turn off menu
@@ -1471,6 +1549,16 @@ void SetMap (edict_t *ent)
 	{
 		Ctf_Menu(ent); // turn off menu
 		ctf_ChangeMap(mapclist[ent->client->menuselect], false);
+	}
+	else if (ent->client->prevmenu == Ref_Map_D_Menu)
+	{
+		Ctf_Menu(ent); // turn off menu
+		ctf_ChangeMap(mapdlist[ent->client->menuselect], false);
+	}
+	else if (ent->client->prevmenu == Ref_Map_E_Menu)
+	{
+		Ctf_Menu(ent); // turn off menu
+		ctf_ChangeMap(mapelist[ent->client->menuselect], false);
 	}
 	else if (ent->client->prevmenu == Ref_Map_Maplist_Menu)
 	{
@@ -1684,6 +1772,54 @@ void Ref_Match_C_Menu (edict_t *ent)
 	gi.unicast (ent, true);
 }
 
+void Ref_Match_D_Menu (edict_t *ent)
+{
+	char text[MAX_INFO_STRING];
+	int i;
+
+	Menu_Free(ent);
+	ent->client->menu = MENU_LOCAL;
+	ent->client->menuselect = 0;
+
+	Menu_Set(ent, 0, "Set 4 Match", Ref_Main_Menu);
+	Menu_Set(ent, 1, "-----------", NULL);
+	for (i=2; i < 18; i++)
+	{
+		if (mapdlist[i])
+		{
+			sprintf(text, "%s", mapdlist[i]);
+			Menu_Set(ent, i, text, SetMap);
+		}
+	}
+
+	Menu_Draw (ent);
+	gi.unicast (ent, true);
+}
+
+void Ref_Match_E_Menu (edict_t *ent)
+{
+	char text[MAX_INFO_STRING];
+	int i;
+
+	Menu_Free(ent);
+	ent->client->menu = MENU_LOCAL;
+	ent->client->menuselect = 0;
+
+	Menu_Set(ent, 0, "Set 5 Match", Ref_Main_Menu);
+	Menu_Set(ent, 1, "-----------", NULL);
+	for (i=2; i < 18; i++)
+	{
+		if (mapelist[i])
+		{
+			sprintf(text, "%s", mapelist[i]);
+			Menu_Set(ent, i, text, SetMap);
+		}
+	}
+
+	Menu_Draw (ent);
+	gi.unicast (ent, true);
+}
+
 
 void Ref_Map_B_Menu (edict_t *ent)
 {
@@ -1734,6 +1870,54 @@ void Ref_Map_C_Menu (edict_t *ent)
 	gi.unicast (ent, true);
 }
 
+void Ref_Map_D_Menu (edict_t *ent)
+{
+	char text[MAX_INFO_STRING];
+	int i;
+
+	Menu_Free(ent);
+	ent->client->menu = MENU_LOCAL;
+	ent->client->menuselect = 0;
+
+	Menu_Set(ent, 0, "Set 4 Maps", Ref_Main_Menu);
+	Menu_Set(ent, 1, "----------", NULL);
+	for (i=2; i < 18; i++)
+	{
+		if (mapdlist[i])
+		{
+			sprintf(text, "%s", mapdlist[i]);
+			Menu_Set(ent, i, text, SetMap);
+		}
+	}
+
+	Menu_Draw (ent);
+	gi.unicast (ent, true);
+}
+
+void Ref_Map_E_Menu (edict_t *ent)
+{
+	char text[MAX_INFO_STRING];
+	int i;
+
+	Menu_Free(ent);
+	ent->client->menu = MENU_LOCAL;
+	ent->client->menuselect = 0;
+
+	Menu_Set(ent, 0, "Set 5 Maps", Ref_Main_Menu);
+	Menu_Set(ent, 1, "----------", NULL);
+	for (i=2; i < 18; i++)
+	{
+		if (mapelist[i])
+		{
+			sprintf(text, "%s", mapelist[i]);
+			Menu_Set(ent, i, text, SetMap);
+		}
+	}
+
+	Menu_Draw (ent);
+	gi.unicast (ent, true);
+}
+
 
 
 void Ref_End_Match (edict_t *ent)
@@ -1754,8 +1938,10 @@ void Ref_Match_Menu (edict_t *ent)
 	Menu_Set(ent, 2, "LMCTF Set 1", Ref_Match_A_Menu);
 	Menu_Set(ent, 3, "LMCTF Set 2", Ref_Match_B_Menu);
 	Menu_Set(ent, 4, "LMCTF Set 3", Ref_Match_C_Menu);
+	Menu_Set(ent, 5, "LMCTF Set 4", Ref_Match_D_Menu);
+	Menu_Set(ent, 6, "LMCTF Set 5", Ref_Match_E_Menu);
 	if (maplistindex != -2) // No list
-		Menu_Set(ent, 5, "Maplist", Ref_Match_Maplist_Menu);
+		Menu_Set(ent, 7, "Maplist", Ref_Match_Maplist_Menu);
 	Menu_Draw (ent);
 	gi.unicast (ent, true);
 }
@@ -1772,8 +1958,10 @@ void Ref_Map_Menu (edict_t *ent)
 	Menu_Set(ent, 2, "LMCTF Set 1", Ref_Map_A_Menu);
 	Menu_Set(ent, 3, "LMCTF Set 2", Ref_Map_B_Menu);
 	Menu_Set(ent, 4, "LMCTF Set 3", Ref_Map_C_Menu);
+	Menu_Set(ent, 5, "LMCTF Set 4", Ref_Map_D_Menu);
+	Menu_Set(ent, 6, "LMCTF Set 5", Ref_Map_E_Menu);
 	if (maplistindex != -2) // No list
-		Menu_Set(ent, 5, "Maplist", Ref_Map_Maplist_Menu);
+		Menu_Set(ent, 7, "Maplist", Ref_Map_Maplist_Menu);
 
 	Menu_Draw (ent);
 	gi.unicast (ent, true);
