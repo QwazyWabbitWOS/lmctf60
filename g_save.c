@@ -357,7 +357,7 @@ void InitGame (void)
 	else
 		sprintf (fname, "%s/motd.txt", gamedir->string);
 	file = fopen(fname, "r");
-	if (!filee
+	if (!file) 
 		file = fopen("motd.txt", "r");
 	if (file)
     {

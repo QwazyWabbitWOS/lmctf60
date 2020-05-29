@@ -1378,8 +1378,39 @@ char *mapclist[] =
 	0
 };
 
-
-
+char *maplmlist[] = 
+{
+        "lmctf01",
+        "lmctf02",
+        "lmctf03",
+        "lmctf04",
+        "lmctf05",
+        "lmctf06",
+        "lmctf07",
+        "lmctf08",
+        "lmctf09",
+        "lmctf10",
+        "lmctf11",
+        "lmctf12",
+        "lmctf13",
+        "lmctf14",
+        "lmctf15",
+        "lmctf16",
+        "lmctf17",
+        "lmctf18",
+        "lmctf19",
+        "lmctf20",
+        "lmctf21",
+        "lmctf22",
+        "lmctf23",
+        "lmctf24",
+        "lmctf25",
+        "lmctf26",
+        "lmctf27",
+        "lmctf28",
+        "lmctf29",
+        "lmctf30"
+};
 /*
 void SetMatchBMap (edict_t *ent)
 {
@@ -1464,7 +1495,8 @@ void Ref_Match_Maplist_Menu (edict_t *ent)
 		{
 			if (!maplist[i].mapname) // Last entry
 			{
-				start = 0;			// Go to first page
+				start = 0;
+		// Go to first page
 				ent->client->menupage = 0;
 			}
 		}
@@ -1492,15 +1524,41 @@ void Ref_Map_Maplist_Menu (edict_t *ent)
 	char text[MAX_INFO_STRING];
 	int i,j, start;
 
+	MapInfo *shortList = NULL;	
+	MapInfo *slPtr = NULL;
+	for(int ctr = 0; maplist[ctr].mapname; ctr++) {
+		char *thisMap = maplist[ctr].mapname;
+		for(int lmNdx = 0; maplmlist[lmNdx]; lmNdx++) {
+			if (!strcmp(maplmlist[lmNdx], thisMap)) {
+				goto end;
+			}
+		}
+		if (!slPtr) 
+			shortList = slPtr = &maplist[ctr];
+		else {
+			slPtr->next = &maplist[ctr];
+			slPtr = slPtr->next;
+			slPtr->next = NULL;
+		}			
+		end:
+			continue;
+	}
+
+	if (!shortList) 
+		return;
 	// Calculate our page
 	start = 15*ent->client->menupage;
-	
+	slPtr = shortList;
+	for (i=0;i<start && slPtr;i++)
+		slPtr = slPtr->next;
+		
 	// Find if last page was the last
 	if (start > 14)
 	{
 		for (i=start-15;i < start; i++)
 		{
-			if (!maplist[i].mapname) // Last entry
+			
+			if (!slPtr) // Last entry
 			{
 				start = 0;			// Go to first page
 				ent->client->menupage = 0;
@@ -1514,9 +1572,12 @@ void Ref_Map_Maplist_Menu (edict_t *ent)
 
 	Menu_Set(ent, 0, "Maplist <min> <max>", Ref_Main_Menu);
 	Menu_Set(ent, 1, "-------", NULL);
-	for (i=2, j=start; i < 17 && maplist[j].mapname; i++, j++)
+	slPtr = shortList;
+	for(i=0;i<start&&slPtr;i++)
+		slPtr = slPtr->next;
+	for (i=2, j=start; i < 17 && slPtr; i++, j++, slPtr = slPtr->next)
 	{
-		sprintf(text, "%s %d %d", maplist[j].mapname, maplist[j].minplayers, maplist[j].maxplayers);
+		sprintf(text, "%s %d %d", slPtr->mapname, slPtr->minplayers, slPtr->maxplayers);
 		Menu_Set(ent, i, text, SetMap);
 	}
 	Menu_Set(ent, 17, "<next page>", Ref_Map_Maplist_Menu);

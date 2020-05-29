@@ -590,6 +590,7 @@ typedef struct MapInfo {
 	char *mapname;
 	int  minplayers;
 	int  maxplayers;
+        struct MapInfo *next;
 } MapInfo;
 
 extern  edict_t *redflag; // CTF CODE -- LM_JORM
