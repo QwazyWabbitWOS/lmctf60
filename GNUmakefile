@@ -64,7 +64,7 @@ ARCH := $(shell uname -m | sed -e s/i.86/i386/ \
 #
 
 # This is for native build
-CFLAGS= -DARCH="$(ARCH)" -DSTDC_HEADERS
+CFLAGS=-O3 -DARCH="$(ARCH)" -DSTDC_HEADERS
 # This is for 32-bit build on 64-bit host
 ifeq ($(ARCH),i386)
 CFLAGS =-m32 -O3 -DARCH="$(ARCH)" -DSTDC_HEADERS -I/usr/include

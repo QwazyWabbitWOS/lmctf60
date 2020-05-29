@@ -58,6 +58,7 @@ void ClearPassword_Exec (edict_t *ent);
 void Ref_Kick_Menu (edict_t *ent);
 void RefTogglePause(edict_t *ent);
 void Ref_Map_Menu (edict_t *ent);
+void MapMenu (edict_t *ent, char *maplist[], char *msg);
 void Ref_Match_A_Menu (edict_t *ent);
 void Ref_Match_B_Menu (edict_t *ent);
 void Ref_Match_C_Menu (edict_t *ent);
@@ -1457,7 +1458,7 @@ char *maplmlist[] =
         "lmctf27",
         "lmctf28",
         "lmctf29",
-        "lmctf30"
+        "lmctf30",
         "lmctf31",
         "lmctf32",
         "lmctf33",
@@ -1467,7 +1468,7 @@ char *maplmlist[] =
         "lmctf37",
         "lmctf38",
         "lmctf39",
-        "lmctf40"
+        "lmctf40",
         "lmctf41",
         "lmctf42",
         "lmctf43",
@@ -1475,7 +1476,7 @@ char *maplmlist[] =
         "lmctf45",
         "lmctf46",
         "lmctf47",
-        "lmctf48",
+        "lmctf48"
 };
 /*
 void SetMatchBMap (edict_t *ent)
@@ -1672,251 +1673,82 @@ void Ref_Map_Maplist_Menu (edict_t *ent)
 	gi.unicast (ent, true);
 }
 
-
-void Ref_Match_A_Menu (edict_t *ent)
+void MapMenu(edict_t *ent, char *maplist[], char *msg) 
 {
 	char text[MAX_INFO_STRING];
+        char title[MAX_INFO_STRING];
 	int i;
 
 	Menu_Free(ent);
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 0;
 
-	Menu_Set(ent, 0, "Set 1 Match", Ref_Main_Menu);
+	sprintf(title, "%s", msg);
+	
+	Menu_Set(ent, 0, title, Ref_Main_Menu);
 	Menu_Set(ent, 1, "-----------", NULL);
 	for (i=2; i < 18; i++)
 	{
-		if (mapalist[i])
+		if (maplist[i])
 		{
-			sprintf(text, "%s", mapalist[i]);
+			sprintf(text, "%s", maplist[i]);
 			Menu_Set(ent, i, text, SetMap);
 		}
 	}
 
 	Menu_Draw (ent);
 	gi.unicast (ent, true);
+}
+
+void Ref_Match_A_Menu (edict_t *ent)
+{
+	MapMenu(ent, mapalist, "Set 1 maps");
 }
 
 void Ref_Map_A_Menu (edict_t *ent)
 {
-	char text[MAX_INFO_STRING];
-	int i;
-
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 1 Maps", Ref_Main_Menu);
-	Menu_Set(ent, 1, "----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapalist[i])
-		{
-			sprintf(text, "%s", mapalist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
+	MapMenu(ent, mapalist, "Set 1 Maps");
 }
 
 void Ref_Match_B_Menu (edict_t *ent)
 {
-	char text[MAX_INFO_STRING];
-	int i;
-
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 2 Match", Ref_Main_Menu);
-	Menu_Set(ent, 1, "-----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapblist[i])
-		{
-			sprintf(text, "%s", mapblist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
+	MapMenu(ent, mapblist, "Set 2 Maps");
 }
 
+void Ref_Map_B_Menu (edict_t *ent)
+{
+	MapMenu(ent, mapblist, "Set 2 Maps");
+}
 
 void Ref_Match_C_Menu (edict_t *ent)
 {
-	char text[MAX_INFO_STRING];
-	int i;
+	MapMenu(ent, mapclist, "Set 3 Maps");
+}
 
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 3 Match", Ref_Main_Menu);
-	Menu_Set(ent, 1, "-----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapclist[i])
-		{
-			sprintf(text, "%s", mapclist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
+void Ref_Map_C_Menu (edict_t *ent)
+{
+	MapMenu(ent, mapclist, "Set 3 Maps");
 }
 
 void Ref_Match_D_Menu (edict_t *ent)
 {
-	char text[MAX_INFO_STRING];
-	int i;
-
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 4 Match", Ref_Main_Menu);
-	Menu_Set(ent, 1, "-----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapdlist[i])
-		{
-			sprintf(text, "%s", mapdlist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
-}
-
-void Ref_Match_E_Menu (edict_t *ent)
-{
-	char text[MAX_INFO_STRING];
-	int i;
-
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 5 Match", Ref_Main_Menu);
-	Menu_Set(ent, 1, "-----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapelist[i])
-		{
-			sprintf(text, "%s", mapelist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
-}
-
-
-void Ref_Map_B_Menu (edict_t *ent)
-{
-	char text[MAX_INFO_STRING];
-	int i;
-
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 2 Maps", Ref_Main_Menu);
-	Menu_Set(ent, 1, "----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapblist[i])
-		{
-			sprintf(text, "%s", mapblist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
-}
-
-
-void Ref_Map_C_Menu (edict_t *ent)
-{
-	char text[MAX_INFO_STRING];
-	int i;
-
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 3 Maps", Ref_Main_Menu);
-	Menu_Set(ent, 1, "----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapclist[i])
-		{
-			sprintf(text, "%s", mapclist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
+	MapMenu(ent, mapdlist, "Set 4 Maps");
 }
 
 void Ref_Map_D_Menu (edict_t *ent)
 {
-	char text[MAX_INFO_STRING];
-	int i;
+	MapMenu(ent, mapdlist, "Set 4 Maps");
+}
 
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 4 Maps", Ref_Main_Menu);
-	Menu_Set(ent, 1, "----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapdlist[i])
-		{
-			sprintf(text, "%s", mapdlist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
+void Ref_Match_E_Menu (edict_t *ent)
+{
+	MapMenu(ent, mapelist, "Set 5 Maps");
 }
 
 void Ref_Map_E_Menu (edict_t *ent)
 {
-	char text[MAX_INFO_STRING];
-	int i;
-
-	Menu_Free(ent);
-	ent->client->menu = MENU_LOCAL;
-	ent->client->menuselect = 0;
-
-	Menu_Set(ent, 0, "Set 5 Maps", Ref_Main_Menu);
-	Menu_Set(ent, 1, "----------", NULL);
-	for (i=2; i < 18; i++)
-	{
-		if (mapelist[i])
-		{
-			sprintf(text, "%s", mapelist[i]);
-			Menu_Set(ent, i, text, SetMap);
-		}
-	}
-
-	Menu_Draw (ent);
-	gi.unicast (ent, true);
+	MapMenu(ent, mapelist, "Set 5 Maps");
 }
-
-
 
 void Ref_End_Match (edict_t *ent)
 {
