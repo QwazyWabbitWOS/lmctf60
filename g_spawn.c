@@ -310,19 +310,14 @@ void WriteEntFile (char *mapname, char *entities)
 	fclose(fp);
 }
 
-//QW//
-/* FIXME: This function needs some cleanup. Lots of fudging of the 
- size of the tempbuf to accomodate a cr-lf at the end of the file
- when it might have been better to let OS translation of '\n' do
- the job. It looks like we also assume sizof(int) == 4 */
 char* ReadEntFile(char* mapname, char* entities)
 {
 	FILE* fp;
 
-	char	name[MAX_INFO_STRING];
-	char*	newb = NULL;
+	char	name[MAX_QPATH];
 	size_t	size;
-	char*	tempbuf;
+	char* tempbuf = NULL;
+	int count, ch;
 
 	if (!deathmatch->value)
 		return entities;
@@ -336,53 +331,40 @@ char* ReadEntFile(char* mapname, char* entities)
 	if (!fp)
 		return entities;
 
-	tempbuf = (char*)gi.TagMalloc(400002, TAG_LEVEL); //.ent files cannot exceed 400k
+	// Prescan to get size we need.
+	for (count = 0; (ch = fgetc(fp)) != EOF; count++);
+	fseek(fp, 0, SEEK_SET);  //rewind
+	tempbuf = (char*)gi.TagMalloc(count + 2, TAG_LEVEL);
 
 	if (tempbuf)
 	{
-		size = (int)fread(tempbuf, 1, 399999, fp);
-		memset(&tempbuf[size], 0, 400002 - size);
+		size = (int)fread(tempbuf, 1, count, fp);
 		fclose(fp);
-		// force CR-LF at end of file
-		tempbuf[size] = 13;
-		tempbuf[size + 1] = 10;
-		size += 2;
 
-		if (size > 0 && size < 400001)
+		if (size)
 		{
-			newb = gi.TagMalloc((int)size + 4, TAG_LEVEL); //deallocated at end of level
-			memset(newb, 0, size + 4);
-			strcpy(newb, tempbuf);
+			if (strncmp(tempbuf, ":append", 7) == 0) //strings match- changed from strnicmp --- ZL
+			{
+				gi.dprintf("Using .ent file for added ents.\n");
+				strcat(entities, &tempbuf[8]);
+			}
+			else
+			{
+				gi.dprintf("Using .ent file for replaced ents.\n");
+				strcpy(entities, tempbuf);
+			}
 		}
 		else
 		{
-			if (size >= 400001)
-				gi.dprintf("Error: entity file truncated.\n");
-			else
-				gi.dprintf("Error: entity file empty.\n");
+			gi.dprintf("Error: entity file empty.\n");
 		}
-
+		gi.TagFree(tempbuf);
 	}
 	else
 	{
 		gi.dprintf("Error: unable to allocate memory for entities.\n");
 	}
 
-	gi.TagFree(tempbuf);
-
-	if (newb)
-	{
-		if (strncmp(newb, ":append", 7) == 0) //strings match- changed from strnicmp --- ZL
-		{
-			gi.dprintf("Using .ent file for added ents.\n");
-			strcat(entities, &newb[8]);
-		}
-		else
-		{
-			gi.dprintf("Using .ent file for replaced ents.\n");
-			strcpy(entities, newb);
-		}
-	}
 	return entities;
 }
 
