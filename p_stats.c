@@ -186,7 +186,7 @@ void stats_output(edict_t *ent, stats_player_s *p_player)
 	strcpy(outbuf,"");
 
 
-	sprintf (tmpbuf, "\n(%s) [%s] %s\n", teambuf, conbuf, p_player->info.name);
+	Com_sprintf (tmpbuf, sizeof tmpbuf, "\n(%s) [%s] %s\n", teambuf, conbuf, p_player->info.name);
 	strcat(outbuf,tmpbuf);
 
 	sprintf (tmpbuf,

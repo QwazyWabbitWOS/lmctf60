@@ -1831,17 +1831,17 @@ void PutClientInServer (edict_t *ent)
 		resp = client->resp;
 		memcpy (userinfo, client->pers.userinfo, sizeof(userinfo));
 
-		// We don't want to loose the squad so save it
+		// We don't want to lose the squad so save it
 		// off here first, then copy it back. The unitstatus
 		// will be set to "respawned" elsewhere.
 
-		strncpy (savedsquad, ent->client->pers.squad, MAX_CATEGORY_LEN-1); // ADC
+		strncpy (savedsquad, ent->client->pers.squad, sizeof savedsquad); // ADC
 		savedsquad[MAX_CATEGORY_LEN-1] = 0; // ADC
 
 		InitClientPersistant (client);
 		ClientUserinfoChanged (ent, userinfo);
 
-		strncpy (ent->client->pers.squad, savedsquad, MAX_CATEGORY_LEN-1); // ADC
+		strncpy (ent->client->pers.squad, savedsquad, MAX_CATEGORY_LEN); // ADC
 		ent->client->pers.squad[MAX_CATEGORY_LEN-1] = 0; // ADC
 	}
 	else if (coop->value)
@@ -3254,7 +3254,7 @@ void ClientOldSetSkin(edict_t *ent, char *input)
 			strcmp(set, curset))
 		{
 			color = (ent->client->ctf.teamnum == CTF_TEAM_RED) ? 'r' : 'b';
-			sprintf(skin, "%s/%s-%c%c%d", dir, curset, color, gender, num);
+			Com_sprintf(skin, sizeof skin, "%s/%s-%c%c%d", dir, curset, color, gender, num);
 			s = skin;
 		}
 	}

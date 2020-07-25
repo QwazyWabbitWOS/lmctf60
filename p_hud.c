@@ -178,7 +178,7 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
     char    entry[MAX_MSGLEN];
     char    string[MAX_MSGLEN];
     char    string2[MAX_MSGLEN];  // TEAM PLAY -- LM_JORM
-	char	mvpstring[64];
+	char	mvpstring[100];
 	int     bluescore, redscore;  // TEAM PLAY -- LM_JORM
     int     bluecaps, redcaps;  // TEAM PLAY -- LM_JORM
     int     blue, red;  // TEAM PLAY -- LM_JORM

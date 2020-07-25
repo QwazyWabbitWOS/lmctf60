@@ -148,7 +148,7 @@ void InitGame (void)
 	// CTF CODE -- LM_JORM
 	FILE		*file;
 	char		line[MAX_INFO_STRING];
-	char		fname[MAX_INFO_STRING];
+	char		fname[MAX_QPATH];
 	int			i;
 
 	// END CTF CODE -- LM_JORM
@@ -319,7 +319,8 @@ void InitGame (void)
 		i = 0;
 		while ( fgets(line, 255, file) )
 		{
-			strncpy(helptext[i], line, 24);
+			// Nul termination is guaranteed from fgets.
+			memcpy(helptext[i], line, 24);
 			i++;
 		}
 		helptext[i][0] = 0; // Blank last entry
