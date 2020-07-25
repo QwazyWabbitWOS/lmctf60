@@ -3281,7 +3281,7 @@ void ClientOldSetSkin(edict_t *ent, char *input)
 			else
 				num = skinnum % 2;
 		}
-		sprintf(skin, "%s/%s-%c%c%d", dir, curset, color, gender, num);
+		Com_sprintf(skin, sizeof skin, "%s/%s-%c%c%d", dir, curset, color, gender, num);
 		s = skin;
 	}
 	
