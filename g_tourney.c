@@ -183,7 +183,7 @@ void Victory()
 		strcpy(teambuf,"");
 		ctf_teamstring(teambuf,dmvp->client->ctf.teamnum,CTF_TEAM_MATCHING);
 		
-		sprintf(temp_buf, "Defense MVP: %s (%s)!\n",
+		Com_sprintf(temp_buf, sizeof temp_buf, "Defense MVP: %s (%s)!\n",
 			dmvp->client->pers.netname,
 			teambuf);
 		strcat(victory_buf,temp_buf);
@@ -193,7 +193,7 @@ void Victory()
 		strcpy(teambuf,"");
 		ctf_teamstring(teambuf,omvp->client->ctf.teamnum,CTF_TEAM_MATCHING);
 		
-		sprintf(temp_buf, "Offense MVP: %s (%s)!\n", 
+		Com_sprintf(temp_buf, sizeof temp_buf, "Offense MVP: %s (%s)!\n",
 			omvp->client->pers.netname,
 			teambuf);
 		strcat(victory_buf, temp_buf);

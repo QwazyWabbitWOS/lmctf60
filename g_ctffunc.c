@@ -663,9 +663,8 @@ void ctf_playerdropflag(edict_t * whichplayer, gitem_t *item)
 
 			//annouce to the world
 			ctf_teamstring(flagcolor, whichplayer->client->ctf.teamnum, CTF_TEAM_OPPOSING);
-			sprintf(message,"%s lost the %s flag.\n",
-				whichplayer->client->pers.netname,
-				flagcolor );
+			Com_sprintf(message, sizeof message, "%s lost the %s flag.\n",
+				whichplayer->client->pers.netname, flagcolor );
 			
 			stats_add(whichplayer, STATS_OFFENSE_FLAGLOST, 1); // STATS - LM_Hati
 
@@ -1417,7 +1416,7 @@ void ctf_SetEntTeamEx(edict_t* ent, int whatteam, int nopenalty)
 	//}
 	
 
-	sprintf(message,"%s is now on the %s team.\n", ent->client->pers.netname, buf);
+	Com_sprintf(message, sizeof message, "%s is now on the %s team.\n", ent->client->pers.netname, buf);
 	ctf_BSafePrint(PRINT_HIGH, message);
 }
 
