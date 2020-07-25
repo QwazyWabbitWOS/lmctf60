@@ -396,6 +396,7 @@ void replace_health(edict_t *person, char *temp)
 {
 	edict_t *cur = NULL;
 	int sum = 0;
+	char str[10] = "";
 
 	strcpy(temp,"");
 
@@ -419,11 +420,13 @@ void replace_health(edict_t *person, char *temp)
 			if (!sum)
 				strcat(temp,"none ");
 			else
-				sprintf(temp, "%s%i ",temp,sum);
-			strcat(temp,"nearby");
+			{
+				sprintf(str, "%i ", sum);
+				strcat(temp, str);
+			}
+			strcat(temp, "nearby");
 		}
 	}
-
 }
 
 void replace_artifact(edict_t *person, char *temp)
@@ -526,7 +529,7 @@ void replace_viewinfo(edict_t *person, char *temp)
 	strcpy(temp, "");
 	if (person->client->ctf.popup_ent)
 	{
-		strncpy(temp, person->client->ctf.popup_ent->client->pers.netname, 15);
+		strcpy(temp, person->client->ctf.popup_ent->client->pers.netname);
 		temp[15] = 0;
 	}
 }
