@@ -305,7 +305,7 @@ void WriteEntFile (char *mapname, char *entities)
 	strcat (name, mapname);
 	strcat (name, ".ent");
 
-	fp = fopen (name, "w");
+	fp = fopen (name, "wt");
 	fwrite(entities, 1, strlen(entities), fp);
 	fclose(fp);
 }
@@ -318,9 +318,23 @@ char* ReadEntFile(char* mapname, char* entities)
 	size_t	size;
 	char* tempbuf = NULL;
 	int count, ch;
+	cvar_t* vs;
+	cvar_t* mop;
 
 	if (!deathmatch->value)
 		return entities;
+
+	// expose these cvars so we can inspect them
+	vs = gi.cvar("version", "", 0);
+	mop = gi.cvar("map_override_path", "", 0);
+	
+	//R1Q2 allows us to modify entities.
+	if (strstr(vs->string, "R1Q2") == NULL)
+	{
+		if(strcmp(mop->string, "") == 0)
+			gi.dprintf("LMCTF Error: map_override_path not set for q2pro server.\n");
+		return entities;  //Must use q2pro's internal entity management.
+	}
 
 	strcpy(name, gamedir->string);
 	strcat(name, "/ent/");
@@ -334,16 +348,22 @@ char* ReadEntFile(char* mapname, char* entities)
 	// Prescan to get size we need.
 	for (count = 0; (ch = fgetc(fp)) != EOF; count++);
 	fseek(fp, 0, SEEK_SET);  //rewind
+
+	if (count >= 0x40000)	//QW// This constant comes from MAX_MAP_ENTSTRING
+	{
+		gi.dprintf("Error: ent file %s rejected, entity string exceeds game limits.\n", name);
+		return entities;
+	}
+
 	tempbuf = (char*)gi.TagMalloc(count + 2, TAG_LEVEL);
 
-	if (tempbuf)
-	{
+	if (tempbuf) {
 		size = (int)fread(tempbuf, 1, count, fp);
 		fclose(fp);
 
 		if (size)
 		{
-			if (strncmp(tempbuf, ":append", 7) == 0) //strings match- changed from strnicmp --- ZL
+			if ((strncmp(tempbuf, ":append", 7) == 0) && strlen(entities) + count < 0x40000)
 			{
 				gi.dprintf("Using .ent file for added ents.\n");
 				strcat(entities, &tempbuf[8]);
