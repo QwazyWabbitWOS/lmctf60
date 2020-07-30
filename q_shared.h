@@ -4,7 +4,6 @@
 #ifdef _WIN32
 // unknown pragmas are SUPPOSED to be ignored, but....
 #pragma warning(disable : 4244)     // data conversions
-#pragma warning(disable : 4018)     // signed/unsigned mismatch
 #pragma warning(disable : 4459)		// declaration of 'var' hides global declaration
 
 //surt ... trying to find errors at max debug level
@@ -19,6 +18,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <ctype.h>
 #include <time.h>
 

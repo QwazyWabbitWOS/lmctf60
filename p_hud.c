@@ -186,7 +186,7 @@ void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
     int     Avg_Bluepings, Avg_Redpings;  //bat
     size_t  stringlength;
     int     i;
-    size_t  j;
+    int     j;
     int     k;
     //int       sortedscores[MAX_CLIENTS];
     int     redsorted[MAX_CLIENTS];

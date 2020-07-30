@@ -92,7 +92,7 @@ void SkinsReadFile()
 	skinlistinuse = true;
 	colorindex = SKIN_RED;
 
-	while (tempbuf - newb < size && sscanf(tempbuf,"%[^\n]", line))
+	while (tempbuf - newb < (ptrdiff_t)size && sscanf(tempbuf,"%[^\n]", line))
 	{
 		tempbuf += strlen(line);
 		

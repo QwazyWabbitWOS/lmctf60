@@ -752,7 +752,7 @@ void SaveServer_Exec(edict_t *ent)
 	char	text[MAX_INFO_STRING];
 	size_t	size;
 	char*	tempbuf;
-	long	i = 0;
+	size_t	i = 0;
 
 	strcpy(name, gamedir->string);
 	strcat(name,"/");

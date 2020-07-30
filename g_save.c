@@ -278,7 +278,7 @@ void InitGame (void)
 				if (sscanf(line, "%s", maplist[maplistindex]))
 				{
 					// convert to lower case for subsequent comparisons
-					for (i = 0; i < strlen(maplist[maplistindex]); i++)
+					for (i = 0; i < (int)strlen(maplist[maplistindex]); i++)
 						maplist[maplistindex][i] = tolower(maplist[maplistindex][i]);
 					maplistindex++;
 				}
