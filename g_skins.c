@@ -36,6 +36,7 @@ void SkinsReadFile()
 	char	skin[MAX_INFO_STRING] = { 0 };
 	char	model[MAX_INFO_STRING] = { 0 };
 	int		red, blue;
+	int		count, ch;
 
 	strcpy(name, gamedir->string);
 	strcat(name, "/");
@@ -43,26 +44,30 @@ void SkinsReadFile()
 
 	
 	// Open the skins file
-	fp = fopen (name, "r");
+	fp = fopen (name, "rt");
 	if (!fp)
 		return;
 
+	// Prescan to get size we need.
+	for (count = 0; (ch = fgetc(fp)) != EOF; count++);
+	fseek(fp, 0, SEEK_SET);  //rewind
+
 	// Read the whole skins file and place it in a spot of memory
 	
-	tempbuf = (char *) gi.TagMalloc(400000, TAG_GAME); //skins file cannot exceed 400k
+	tempbuf = (char *) gi.TagMalloc(count + 2, TAG_GAME);
 	if (tempbuf)
 	{
-		size = fread(tempbuf, 1, 400000, fp);
+		size = fread(tempbuf, 1, count, fp);
 		fclose(fp);
 
-		if (size > 0 && size < 400000)
+		if (size)
 		{
 			newb = tempbuf;
 			newb[size] = 0;
 		}
 		else
 		{
-			if (size >= 400000)
+			if (size >= (size_t)count + 1)
 				gi.dprintf("Error: skins file truncated.\n");
 			else
 				gi.dprintf("Error: skins file empty.\n");
@@ -96,8 +101,8 @@ void SkinsReadFile()
 	{
 		tempbuf += strlen(line);
 		
-		// Step over linefeed and carriage return
-		while (*tempbuf == 10 || *tempbuf == 13)
+		// Step over newline
+		while (*tempbuf == '\n')
 			tempbuf++;
 
 		// Ignore lines with # or / or ;
