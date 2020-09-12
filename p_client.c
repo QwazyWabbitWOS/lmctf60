@@ -1766,7 +1766,7 @@ int i, numspec;
 		//I only want to do this shit if they have typed the spectator command!
 		if(ent->client->ctf.teamnum != CTF_TEAM_RED &&
 			ent->client->ctf.teamnum != CTF_TEAM_BLUE)
-		 		ent->client->ctf.New_Team = Team_To_Join(ent);
+	 		ent->client->ctf.New_Team = Team_To_Join(ent);
 
 		gi.bprintf (PRINT_HIGH, "%s joined the game\n", ent->client->pers.netname);
 	}
@@ -2846,6 +2846,9 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	//bat not needed for team observers
 	//if(client->ctf.teamnum != CTF_TEAM_OBSERVER_RED &&
 	//	client->ctf.teamnum != CTF_TEAM_OBSERVER_BLUE)
+	// Paril
+	if (!GamePaused())
+	// Paril
 	{
 		if (client->latched_buttons & BUTTON_ATTACK)
 		{
@@ -2873,7 +2876,6 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 	if (client->resp.spectator) 
 	{
-		
 		if(client->ctf.teamnum == CTF_TEAM_OBSERVER_RED &&
 			!Team_Observer_OK(CTF_TEAM_RED, ent))
 		{
