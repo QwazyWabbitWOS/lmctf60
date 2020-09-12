@@ -241,6 +241,5 @@ void Vote_Menu (edict_t *ent)             //Vampire -- voting menu
 	cl->menuselect = 0;
 		
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 /* END -- Vampire */

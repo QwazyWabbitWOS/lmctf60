@@ -456,6 +456,9 @@ qboolean ctf_spawnflag(int teamnum)
 		//ent->s.effects |= EF_COLOR_SHELL | EF_FLAG1;
 		//ent->s.renderfx |= RF_SHELL_RED;
 		ent->s.effects = EF_FLAG1;
+		// Paril
+		ent->s.frame = 173;
+		// Paril
 		redflag = ent;
 	}
 	else if (teamnum == CTF_TEAM_BLUE && !blueflag) // BLUE FLAG
@@ -499,6 +502,9 @@ qboolean ctf_spawnflag(int teamnum)
 		//ent->s.effects |= EF_COLOR_SHELL | EF_FLAG2;
 		//ent->s.renderfx |= RF_SHELL_BLUE;
 		ent->s.effects = EF_FLAG2;
+		// Paril
+		ent->s.frame = 173;
+		// Paril
 		blueflag = ent;
 	}
 
