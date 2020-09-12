@@ -5,6 +5,7 @@
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN	//non-MFC
+#define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>

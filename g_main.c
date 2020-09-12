@@ -700,7 +700,14 @@ void G_RunFrame (void)
 	// CTF CODE -- LM_JORM
 	int			score;
 	edict_t		*cl_ent;
-		
+
+	// Paril
+	if (GamePaused())
+	{
+		ClientEndServerFrames();
+		return;
+	}
+	// Paril
 
 	bluescore = 0; 
 	redscore = 0;  
@@ -779,7 +786,6 @@ void G_RunFrame (void)
 
 		G_RunEntity (ent);
 	}
-
 
 	// see if it is time to end a deathmatch
 	CheckDMRules ();

@@ -1766,7 +1766,7 @@ int i, numspec;
 		//I only want to do this shit if they have typed the spectator command!
 		if(ent->client->ctf.teamnum != CTF_TEAM_RED &&
 			ent->client->ctf.teamnum != CTF_TEAM_BLUE)
-		 		ent->client->ctf.New_Team = Team_To_Join(ent);
+	 		ent->client->ctf.New_Team = Team_To_Join(ent);
 
 		gi.bprintf (PRINT_HIGH, "%s joined the game\n", ent->client->pers.netname);
 	}
@@ -1831,17 +1831,17 @@ void PutClientInServer (edict_t *ent)
 		resp = client->resp;
 		memcpy (userinfo, client->pers.userinfo, sizeof(userinfo));
 
-		// We don't want to loose the squad so save it
+		// We don't want to lose the squad so save it
 		// off here first, then copy it back. The unitstatus
 		// will be set to "respawned" elsewhere.
 
-		strncpy (savedsquad, ent->client->pers.squad, MAX_CATEGORY_LEN-1); // ADC
+		strncpy (savedsquad, ent->client->pers.squad, sizeof savedsquad); // ADC
 		savedsquad[MAX_CATEGORY_LEN-1] = 0; // ADC
 
 		InitClientPersistant (client);
 		ClientUserinfoChanged (ent, userinfo);
 
-		strncpy (ent->client->pers.squad, savedsquad, MAX_CATEGORY_LEN-1); // ADC
+		strncpy (ent->client->pers.squad, savedsquad, MAX_CATEGORY_LEN); // ADC
 		ent->client->pers.squad[MAX_CATEGORY_LEN-1] = 0; // ADC
 	}
 	else if (coop->value)
@@ -2846,6 +2846,9 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	//bat not needed for team observers
 	//if(client->ctf.teamnum != CTF_TEAM_OBSERVER_RED &&
 	//	client->ctf.teamnum != CTF_TEAM_OBSERVER_BLUE)
+	// Paril
+	if (!GamePaused())
+	// Paril
 	{
 		if (client->latched_buttons & BUTTON_ATTACK)
 		{
@@ -2873,7 +2876,6 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 	if (client->resp.spectator) 
 	{
-		
 		if(client->ctf.teamnum == CTF_TEAM_OBSERVER_RED &&
 			!Team_Observer_OK(CTF_TEAM_RED, ent))
 		{
@@ -3254,7 +3256,7 @@ void ClientOldSetSkin(edict_t *ent, char *input)
 			strcmp(set, curset))
 		{
 			color = (ent->client->ctf.teamnum == CTF_TEAM_RED) ? 'r' : 'b';
-			sprintf(skin, "%s/%s-%c%c%d", dir, curset, color, gender, num);
+			Com_sprintf(skin, sizeof skin, "%s/%s-%c%c%d", dir, curset, color, gender, num);
 			s = skin;
 		}
 	}
@@ -3281,7 +3283,7 @@ void ClientOldSetSkin(edict_t *ent, char *input)
 			else
 				num = skinnum % 2;
 		}
-		sprintf(skin, "%s/%s-%c%c%d", dir, curset, color, gender, num);
+		Com_sprintf(skin, sizeof skin, "%s/%s-%c%c%d", dir, curset, color, gender, num);
 		s = skin;
 	}
 	

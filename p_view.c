@@ -980,125 +980,140 @@ void ClientEndServerFrame (edict_t *ent)
 
 	current_player = ent;
 	current_client = ent->client;
-
-	if (ent->client->hookstate) // We are still grappled
-	{
-		Weapon_Hook_Fire(ent);
-	}
-
-	//
-	// If the origin or velocity have changed since ClientThink(),
-	// update the pmove values.  This will happen when the client
-	// is pushed by a bmodel or kicked by an explosion.
-	// 
-	// If it wasn't updated here, the view position would lag a frame
-	// behind the body position when pushed -- "sinking into plats"
-	//
-	for (i=0 ; i<3 ; i++)
-	{
-		current_client->ps.pmove.origin[i] = ent->s.origin[i]*8.0;
-		current_client->ps.pmove.velocity[i] = ent->velocity[i]*8.0;
-	}
-
-	//
-	// If the end of unit layout is displayed, don't give
-	// the player any normal movement attributes
-	//
-	if (level.intermissiontime)
-	{
-		// FIXME: add view drifting here?
-		current_client->ps.blend[3] = 0;
-		current_client->ps.fov = 90;
-		G_SetStats (ent);
-		return;
-	}
-
-	AngleVectors (ent->client->v_angle, forward, right, up);
-
-	// burn from lava, etc
-	P_WorldEffects ();
-
-	//
-	// set model angles from view angles so other things in
-	// the world can tell which direction you are looking
-	//
-	if (ent->client->v_angle[PITCH] > 180)
-		ent->s.angles[PITCH] = (-360 + ent->client->v_angle[PITCH])/3;
-	else
-		ent->s.angles[PITCH] = ent->client->v_angle[PITCH]/3;
-	ent->s.angles[YAW] = ent->client->v_angle[YAW];
-	ent->s.angles[ROLL] = 0;
-	ent->s.angles[ROLL] = SV_CalcRoll (ent->s.angles, ent->velocity)*4;
-
-	//
-	// calculate speed and cycle to be used for
-	// all cyclic walking effects
-	//
-	xyspeed = sqrtf(ent->velocity[0]*ent->velocity[0] + ent->velocity[1]*ent->velocity[1]);
-
-	if (xyspeed < 5)
-	{
-		bobmove = 0;
-		current_client->bobtime = 0;	// start at beginning of cycle again
-	}
-	else if (ent->groundentity)
-	{	// so bobbing only cycles when on ground
-		if (xyspeed > 210)
-			bobmove = 0.25;
-		else if (xyspeed > 100)
-			bobmove = 0.125;
-		else
-			bobmove = 0.0625;
-	}
 	
-	bobtime = (current_client->bobtime += bobmove);
+	// Paril
+	if (!GamePaused())
+	{
+	// Paril
+		if (ent->client->hookstate) // We are still grappled
+		{
+			Weapon_Hook_Fire(ent);
+		}
 
-	if (current_client->ps.pmove.pm_flags & PMF_DUCKED)
-		bobtime *= 4;
+		//
+		// If the origin or velocity have changed since ClientThink(),
+		// update the pmove values.  This will happen when the client
+		// is pushed by a bmodel or kicked by an explosion.
+		// 
+		// If it wasn't updated here, the view position would lag a frame
+		// behind the body position when pushed -- "sinking into plats"
+		//
+		for (i=0 ; i<3 ; i++)
+		{
+			current_client->ps.pmove.origin[i] = ent->s.origin[i]*8.0;
+			current_client->ps.pmove.velocity[i] = ent->velocity[i]*8.0;
+		}
 
-	bobcycle = (int)bobtime;
-	bobfracsin = fabs(sin(bobtime*M_PI));
+		//
+		// If the end of unit layout is displayed, don't give
+		// the player any normal movement attributes
+		//
+		if (level.intermissiontime)
+		{
+			// FIXME: add view drifting here?
+			current_client->ps.blend[3] = 0;
+			current_client->ps.fov = 90;
+			G_SetStats (ent);
+			return;
+		}
 
-	// detect hitting the floor
-	P_FallingDamage (ent);
+		AngleVectors (ent->client->v_angle, forward, right, up);
 
-	// apply all the damage taken this frame
-	P_DamageFeedback (ent);
+		// burn from lava, etc
+		P_WorldEffects ();
 
-	// determine the view offsets
-	SV_CalcViewOffset (ent);
+		//
+		// set model angles from view angles so other things in
+		// the world can tell which direction you are looking
+		//
+		if (ent->client->v_angle[PITCH] > 180)
+			ent->s.angles[PITCH] = (-360 + ent->client->v_angle[PITCH])/3;
+		else
+			ent->s.angles[PITCH] = ent->client->v_angle[PITCH]/3;
+		ent->s.angles[YAW] = ent->client->v_angle[YAW];
+		ent->s.angles[ROLL] = 0;
+		ent->s.angles[ROLL] = SV_CalcRoll (ent->s.angles, ent->velocity)*4;
 
-	// determine the gun offsets
-	SV_CalcGunOffset (ent);
+		//
+		// calculate speed and cycle to be used for
+		// all cyclic walking effects
+		//
+		xyspeed = sqrtf(ent->velocity[0]*ent->velocity[0] + ent->velocity[1]*ent->velocity[1]);
 
-	// determine the full screen color blend
-	// must be after viewoffset, so eye contents can be
-	// accurately determined
-	// FIXME: with client prediction, the contents
-	// should be determined by the client
-	SV_CalcBlend (ent);
+		if (xyspeed < 5)
+		{
+			bobmove = 0;
+			current_client->bobtime = 0;	// start at beginning of cycle again
+		}
+		else if (ent->groundentity)
+		{	// so bobbing only cycles when on ground
+			if (xyspeed > 210)
+				bobmove = 0.25;
+			else if (xyspeed > 100)
+				bobmove = 0.125;
+			else
+				bobmove = 0.0625;
+		}
+	
+		bobtime = (current_client->bobtime += bobmove);
+
+		if (current_client->ps.pmove.pm_flags & PMF_DUCKED)
+			bobtime *= 4;
+
+		bobcycle = (int)bobtime;
+		bobfracsin = fabs(sin(bobtime*M_PI));
+
+		// detect hitting the floor
+		P_FallingDamage (ent);
+
+		// apply all the damage taken this frame
+		P_DamageFeedback (ent);
+
+		// determine the view offsets
+		SV_CalcViewOffset (ent);
+
+		// determine the gun offsets
+		SV_CalcGunOffset (ent);
+
+		// determine the full screen color blend
+		// must be after viewoffset, so eye contents can be
+		// accurately determined
+		// FIXME: with client prediction, the contents
+		// should be determined by the client
+		SV_CalcBlend (ent);
+	// Paril
+	}
+	// Paril
 
 	// chase cam stuff
 	if (ent->client->resp.spectator)
 		G_SetSpectatorStats(ent);
 	else
 		G_SetStats (ent);
+
 	G_CheckChaseStats(ent);
+	
+	// Paril
+	if (!GamePaused())
+	{
+	// Paril
+		G_SetClientEvent (ent);
 
-	G_SetClientEvent (ent);
+		G_SetClientEffects (ent);
 
-	G_SetClientEffects (ent);
+		G_SetClientSound (ent);
 
-	G_SetClientSound (ent);
+		G_SetClientFrame (ent);
 
-	G_SetClientFrame (ent);
+		VectorCopy (ent->velocity, ent->client->oldvelocity);
+		VectorCopy (ent->client->ps.viewangles, ent->client->oldviewangles);
 
-	VectorCopy (ent->velocity, ent->client->oldvelocity);
-	VectorCopy (ent->client->ps.viewangles, ent->client->oldviewangles);
-
-	// clear weapon kicks
-	VectorClear (ent->client->kick_origin);
-	VectorClear (ent->client->kick_angles);
+		// clear weapon kicks
+		VectorClear (ent->client->kick_origin);
+		VectorClear (ent->client->kick_angles);
+	// Paril
+	}
+	// Paril
 	
 	if (ent->client->showscores &&  deathmatch->value)
 	{
@@ -1125,10 +1140,14 @@ void ClientEndServerFrame (edict_t *ent)
 	}
 	else 
 		ClientShowID(ent, NULL); 
-
-	// END CTF CODE -- LM_CTF
-
-
+	
+	// Paril
+	if (GamePaused())
+	{
+		ent->s.sound = 0;
+	}
+	// Paril
+// END CTF CODE -- LM_CTF
 }
 
 

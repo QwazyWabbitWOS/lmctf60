@@ -305,84 +305,86 @@ void WriteEntFile (char *mapname, char *entities)
 	strcat (name, mapname);
 	strcat (name, ".ent");
 
-	fp = fopen (name, "w");
+	fp = fopen (name, "wt");
 	fwrite(entities, 1, strlen(entities), fp);
 	fclose(fp);
 }
 
-//QW//
-/* FIXME: This function needs some cleanup. Lots of fudging of the 
- size of the tempbuf to accomodate a cr-lf at the end of the file
- when it might have been better to let OS translation of '\n' do
- the job. It looks like we also assume sizof(int) == 4 */
 char* ReadEntFile(char* mapname, char* entities)
 {
 	FILE* fp;
 
-	char	name[MAX_INFO_STRING];
-	char*	newb = NULL;
+	char	name[MAX_QPATH];
 	size_t	size;
-	char*	tempbuf;
+	char* tempbuf = NULL;
+	int count, ch;
+	cvar_t* vs;
+	cvar_t* mop;
 
 	if (!deathmatch->value)
 		return entities;
+
+	// expose these cvars so we can inspect them
+	vs = gi.cvar("version", "", 0);
+	mop = gi.cvar("map_override_path", "", 0);
+	
+	//R1Q2 allows us to modify entities.
+	if (strstr(vs->string, "R1Q2") == NULL)
+	{
+		if(strcmp(mop->string, "") == 0)
+			gi.dprintf("LMCTF Error: map_override_path not set for q2pro server.\n");
+		return entities;  //Must use q2pro's internal entity management.
+	}
 
 	strcpy(name, gamedir->string);
 	strcat(name, "/ent/");
 	strcat(name, mapname);
 	strcat(name, ".ent");
 
-	fp = fopen(name, "r");
+	fp = fopen(name, "rt");
 	if (!fp)
 		return entities;
 
-	tempbuf = (char*)gi.TagMalloc(400002, TAG_LEVEL); //.ent files cannot exceed 400k
+	// Prescan to get size we need.
+	for (count = 0; (ch = fgetc(fp)) != EOF; count++);
+	fseek(fp, 0, SEEK_SET);  //rewind
 
-	if (tempbuf)
+	if (count >= 0x40000)	//QW// This constant comes from MAX_MAP_ENTSTRING
 	{
-		size = (int)fread(tempbuf, 1, 399999, fp);
-		memset(&tempbuf[size], 0, 400002 - size);
-		fclose(fp);
-		// force CR-LF at end of file
-		tempbuf[size] = 13;
-		tempbuf[size + 1] = 10;
-		size += 2;
+		gi.dprintf("Error: ent file %s rejected, entity string exceeds game limits.\n", name);
+		return entities;
+	}
 
-		if (size > 0 && size < 400001)
+	tempbuf = (char*)gi.TagMalloc(count + 2, TAG_LEVEL);
+
+	if (tempbuf) {
+		size = (int)fread(tempbuf, 1, count, fp);
+		fclose(fp);
+
+		if (size)
 		{
-			newb = gi.TagMalloc((int)size + 4, TAG_LEVEL); //deallocated at end of level
-			memset(newb, 0, size + 4);
-			strcpy(newb, tempbuf);
+			if ((strncmp(tempbuf, ":append", 7) == 0) && strlen(entities) + count < 0x40000)
+			{
+				gi.dprintf("Using .ent file for added ents.\n");
+				strcat(entities, &tempbuf[8]);
+			}
+			else
+			{
+				gi.dprintf("Using .ent file for replaced ents.\n");
+				strcpy(entities, tempbuf);
+			}
 		}
 		else
 		{
-			if (size >= 400001)
-				gi.dprintf("Error: entity file truncated.\n");
-			else
-				gi.dprintf("Error: entity file empty.\n");
+			gi.dprintf("Error: entity file empty.\n");
 		}
-
+		gi.TagFree(tempbuf);
 	}
 	else
 	{
 		gi.dprintf("Error: unable to allocate memory for entities.\n");
 	}
 
-	gi.TagFree(tempbuf);
-
-	if (newb)
-	{
-		if (strncmp(newb, ":append", 7) == 0) //strings match- changed from strnicmp --- ZL
-		{
-			gi.dprintf("Using .ent file for added ents.\n");
-			strcat(entities, &newb[8]);
-		}
-		else
-		{
-			gi.dprintf("Using .ent file for replaced ents.\n");
-			strcpy(entities, newb);
-		}
-	}
 	return entities;
 }
 
@@ -1322,10 +1324,10 @@ void SP_worldspawn (edict_t *ent)
 	if (ent->message && ent->message[0])
 	{
 		gi.configstring (CS_NAME, ent->message);
-		strncpy (level.level_name, ent->message, sizeof(level.level_name));
+		strncpy (level.level_name, ent->message, sizeof level.level_name - 1);
 	}
 	else
-		strncpy (level.level_name, level.mapname, sizeof(level.level_name));
+		strncpy (level.level_name, level.mapname, sizeof level.level_name);
 
 	if (st.sky && st.sky[0])
 		gi.configstring (CS_SKY, st.sky);
