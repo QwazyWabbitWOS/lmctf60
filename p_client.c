@@ -2510,7 +2510,7 @@ void ClientDisconnect (edict_t *ent)
 	int 	playernum;
 	edict_t	*flag;  // CTF CODE -- LM_JORM
 	char message[MAX_INFO_STRING];
-	
+
 	if (!ent->client)
 		return;
 	
@@ -2521,7 +2521,11 @@ void ClientDisconnect (edict_t *ent)
 		ent->client->p_stats_player->info.teamnum = ent->client->ctf.teamnum;
 	}
 	// STATS-END LM_Hati
-	
+
+	// Players drop runes on quit. //QW//
+	if(ent->client->rune)
+		Drop_Rune(ent, ent->client->rune->item);
+
 	// CTF CODE -- LM_JORM
 	ent->client->ctf.extra_flags &= ~CTF_EXTRAFLAGS_REFEREE; // Turn off referee mode
 	ent->client->ctf.extra_flags &= ~CTF_EXTRAFLAGS_RCON; //turn off rcon mode

@@ -33,7 +33,7 @@ _CrtMemState startup1;	// memory diagnostics
 #include "game.h"
 
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION     "LMCTF 6.1" //surt was baseq2
+#define GAMEVERSION     "LMCTF 6.2"
 
 #include "p_stats.h" // STATS - LM_Hati
 #include "g_menu.h" // MENUS - LM_Jorm
@@ -570,6 +570,7 @@ extern  cvar_t  *refset; // CTF CODE -- LM_SURT
 extern  cvar_t  *logrename; // CTF CODE -- LM_SURT
 extern  cvar_t  *runes; // CTF CODE -- LM_JORM
 extern  cvar_t  *skinset; // CTF CODE -- LM_JORM
+extern	cvar_t	*flagsspawnstanding; //QwazyWabbit
 #ifdef OLDOBSERVERCODE
 extern  cvar_t  *autoobserve; // CTF CODE -- LM_JORM
 #endif
