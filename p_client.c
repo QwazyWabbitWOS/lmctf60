@@ -1763,7 +1763,7 @@ int i, numspec;
 	}
 	else
 	{
-		//I only want to do this shit if they have typed the spectator command!
+		//I only want to do this if they have typed the spectator command!
 		if(ent->client->ctf.teamnum != CTF_TEAM_RED &&
 			ent->client->ctf.teamnum != CTF_TEAM_BLUE)
 	 		ent->client->ctf.New_Team = Team_To_Join(ent);
