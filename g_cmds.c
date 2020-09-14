@@ -1033,7 +1033,7 @@ void Cmd_Team_f (edict_t *ent)
 	
 	LowerCase(rawnew); //converts to lower case
 
-	//If they are a spectator, team code is fucked up, so do this shit instead.
+	//If they are a spectator, team code screwed up, so do this instead.
 	//if(ent->client->pers.spectator)
 	if(ent->client->resp.spectator)
 	{

@@ -1763,7 +1763,7 @@ int i, numspec;
 	}
 	else
 	{
-		//I only want to do this shit if they have typed the spectator command!
+		//I only want to do this if they have typed the spectator command!
 		if(ent->client->ctf.teamnum != CTF_TEAM_RED &&
 			ent->client->ctf.teamnum != CTF_TEAM_BLUE)
 	 		ent->client->ctf.New_Team = Team_To_Join(ent);
@@ -2510,7 +2510,7 @@ void ClientDisconnect (edict_t *ent)
 	int 	playernum;
 	edict_t	*flag;  // CTF CODE -- LM_JORM
 	char message[MAX_INFO_STRING];
-	
+
 	if (!ent->client)
 		return;
 	
@@ -2521,7 +2521,11 @@ void ClientDisconnect (edict_t *ent)
 		ent->client->p_stats_player->info.teamnum = ent->client->ctf.teamnum;
 	}
 	// STATS-END LM_Hati
-	
+
+	// Players drop runes on quit. //QW//
+	if(ent->client->rune)
+		Drop_Rune(ent, ent->client->rune->item);
+
 	// CTF CODE -- LM_JORM
 	ent->client->ctf.extra_flags &= ~CTF_EXTRAFLAGS_REFEREE; // Turn off referee mode
 	ent->client->ctf.extra_flags &= ~CTF_EXTRAFLAGS_RCON; //turn off rcon mode

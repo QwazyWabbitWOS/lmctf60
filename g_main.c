@@ -72,7 +72,7 @@ cvar_t	*maplist_file;	// CTF CODE -- LM_SURT
 cvar_t	*skin_file;	// CTF CODE -- LM_SURT
 cvar_t	*skin_debug; // For debugging skin files
 cvar_t	*disabled_weps;	// CTF CODE -- LM_SURT
-
+cvar_t* flag_init;
 
 #ifdef ZBOT
 cvar_t  *use_zbotdetect; // ZBOT Detect -- LM_Hati

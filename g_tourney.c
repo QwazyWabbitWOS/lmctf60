@@ -310,9 +310,9 @@ SetPause(qboolean state)
 	match_pause = state;
 
 	if (state)
-		message = "Game Paused";
+		message = "Game Paused\n";
 	else
-		message = "Game Unpaused";
+		message = "Game Unpaused\n";
 
     for (i=0 ; i<game.maxclients ; i++)    //Go through everyone
     {
