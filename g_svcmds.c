@@ -1,5 +1,6 @@
-
 #include "g_local.h"
+
+void ctf_BSafePrint(long print_priority, char * buf);
 
 
 void	Svcmd_Test_f (void)
@@ -261,6 +262,32 @@ void SVCmd_WriteIP_f (void)
 	fclose(f);
 }
 
+void SVCmd_QuadTime_f(void)
+{
+        unsigned long i=0;
+        gitem_t * target = NULL;
+
+        if (gi.argc() < 3) {
+                gi.cprintf(NULL, PRINT_HIGH, "Usage:  sv quadtime <seconds>\n");
+                return;
+        }
+
+        if (!sscanf(gi.argv(2), "%lu", &i))
+        {
+	        gi.cprintf(NULL, PRINT_HIGH, "Usage: sv quadtime <seconds>\n");
+
+                return;
+        }
+
+        target = FindItem("Quad Damage");
+        if (target && i > 0 && i < 1200) {
+                target->quantity = i;
+		char buffer[MAX_INFO_STRING];
+		sprintf(buffer, "Quad respawn updated to %lu\n", i);
+		ctf_BSafePrint(PRINT_HIGH, buffer);
+        }
+}
+
 /*
 =================
 ServerCommand
@@ -285,7 +312,9 @@ void	ServerCommand (void)
 		SVCmd_ListIP_f ();
 	else if (Q_stricmp (cmd, "writeip") == 0)
 		SVCmd_WriteIP_f ();
-	if ((Q_stricmp (cmd, "next") == 0) || (Q_stricmp (cmd, "skip") == 0))
+	else if (Q_stricmp (cmd, "quadtime") == 0)
+		SVCmd_QuadTime_f ();
+	else if ((Q_stricmp (cmd, "next") == 0) || (Q_stricmp (cmd, "skip") == 0))
 		Svcmd_NextLevel_f ();
 	else
 		gi.cprintf (NULL, PRINT_HIGH, "Unknown server command \"%s\"\n", cmd);

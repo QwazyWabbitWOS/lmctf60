@@ -17,6 +17,8 @@ int	sm_meat_index;
 int	snd_fry;
 int meansOfDeath;
 
+int quad_respawn_time = LM_QUAD_DEFAULT_TIME;
+
 edict_t		*g_edicts;
 
 cvar_t	*deathmatch;
@@ -85,7 +87,7 @@ cvar_t	*sv_maplist;
 
 char	motd[1000]; // CTF CODE -- LM_JORM
 
-char	maplist[100][100]; // CTF CODE -- LM_JORM
+MapInfo	maplist[300]; // CTF CODE -- LM_JORM
 int		maplistindex  = 0; // CTF CODE -- LM_JORM
 
 int		bluescore = 0, redscore = 0; // CTF CODE -- LM_JORM
@@ -245,7 +247,7 @@ edict_t *CreateTargetChangeLevel(char *map)
 
 
 
-#define MAX_MAPS	100
+#define MAX_MAPS	300
 
 short Maps_Picked[MAX_MAPS];
 
@@ -276,7 +278,45 @@ void Randomize_Map_List(int Num_Of_Maps)
 	}
 }
 
+MapInfo *getRandomMapByPlayerCount(int count) {
+	MapInfo *criteriaList = NULL;
+	MapInfo *clPtr = NULL;
+	int mapCounter = 0;
+	int randNum;
+	for(int i = 0; maplist[i].mapname; i++) {
+		if (maplist[i].minplayers > count || maplist[i].maxplayers < count) {
+			gi.dprintf("Excluding %s due to min/max playercount\n", maplist[i].mapname);
+			continue;
+		}
+		if (!criteriaList) {
+			criteriaList = clPtr = &maplist[i];			
+		} else {
+			clPtr->next = &maplist[i];
+			clPtr = clPtr->next;
+			clPtr->next = NULL;
+		}
+		mapCounter++;
+	}
+	clPtr->next = criteriaList;
+	srand(time(0));
+	randNum = rand() % (mapCounter - 2);
+	for(int i = 0; i < randNum; i++) 
+		clPtr = clPtr->next;	
+	return clPtr;
+}
 
+int playerCount() {
+        edict_t * player = NULL;
+        unsigned int num_players = 0;
+
+        player = ctf_findplayer(NULL, NULL, CTF_TEAM_IGNORETEAM);
+        while (player)
+        {
+                num_players++;
+                player = ctf_findplayer(player, NULL, CTF_TEAM_IGNORETEAM);
+        }
+        return (num_players);
+}
 
 HIGHSCORE_STATS_TYPE Default_Highscore_Table[MAX_HIGHSCORE_ENTRIES] = 
 {
@@ -488,7 +528,7 @@ int map_count = 0;
 		//bat
 		while(Maps_Picked[maplistindex] == Last_Map)
 		{
-			if(maplistindex > -1 && !maplist[maplistindex][0]) // Did we reach the end of the list?
+			if(maplistindex > -1 && !maplist[maplistindex].mapname) // Did we reach the end of the list?
 				maplistindex = 0;
 
 			maplistindex++;
@@ -500,14 +540,14 @@ int map_count = 0;
 
 		if((int)ctfflags->value & CTF_RANDOM_MAPS)
 		{
-			ent->map = maplist[Maps_Picked[maplistindex]];
-			Last_Map = Maps_Picked[maplistindex]; 
-			gi.dprintf("Map #%d:  %s\n", Maps_Picked[maplistindex] + 1, maplist[Maps_Picked[maplistindex]]);
+			MapInfo *map = getRandomMapByPlayerCount(playerCount());
+			ent->map = map->mapname;
+			gi.dprintf("Map :  %s\n",  map->mapname);
 		}
 		else
 		{
-			ent->map = maplist[maplistindex];
-			gi.dprintf("Map #%d:  %s\n", maplistindex+1, maplist[maplistindex]);
+			ent->map = maplist[maplistindex].mapname;
+			gi.dprintf("Map #%d:  %s\n", maplistindex+1, maplist[maplistindex].mapname);
 		}
 
 		maplistindex++; 
@@ -592,19 +632,23 @@ void CheckDMRules (void)
 	if (maplistindex == -1) // First time through the list
 	{
 		gi.dprintf ("Using Maplist.\n");
-		if (!strcmp(maplist[0], level.mapname))
+		if (!strcmp(maplist[0].mapname, level.mapname))
 		{
 			maplistindex = 1;
 			return;
 		}
 		else
 		{
+			MapInfo *firstmap = &maplist[0];
 			ent = G_Spawn ();
 			ent->classname = "target_changelevel";
-			ent->map = maplist[0];
+	                if((int)ctfflags->value & CTF_RANDOM_MAPS)
+                	        firstmap = getRandomMapByPlayerCount(playerCount());
+			ent->map = firstmap->mapname;
 			maplistindex = 1;
 			level.changemap = ent->map;
 			level.exitintermission = 1;
+                        gi.dprintf("Startup Map :  %s\n",  firstmap->mapname);
 			return;
 		}
 	}
