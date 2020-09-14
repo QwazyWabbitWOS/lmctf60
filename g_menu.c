@@ -9,7 +9,7 @@
 void Cmd_Team_f (edict_t *ent);
 void Team_Change(edict_t *ent, int newnum);
 void ChaseCam (edict_t *ent);
-void Menu_Blank ();
+void Menu_Blank (edict_t *ent);
 void Observe (edict_t *ent);
 void f(edict_t *ent);
 void Show_String(int x, int y, char *string, char *Text);
@@ -83,7 +83,7 @@ void Observe_Exec(edict_t *ent);
 void Cmd_Observe_f(edict_t *ent, int Observer_Type);
 
 
-MapInfo *shortList = NULL;	
+MapInfo *shortList = NULL;
 
 
 menuitem mainmenu[] =
@@ -261,8 +261,7 @@ void Ctf_Menu (edict_t *ent)
 	if (cl->showmenu)
 	{
 		cl->showmenu = false;
-		Menu_Blank();
-		gi.unicast (ent, true);
+		Menu_Blank(ent);
 		return;
 	}
 
@@ -311,7 +310,6 @@ void Main_Menu (edict_t *ent)
 	cl->menuselect = 0;
 		
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void Skin_Old_Menu (edict_t *ent)
@@ -325,7 +323,6 @@ void Skin_Old_Menu (edict_t *ent)
 
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 
@@ -409,7 +406,6 @@ void Skin_Menu (edict_t *ent)
 	Menu_Set(ent, 17, "<next page>", Skin_Menu);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 
@@ -422,8 +418,7 @@ void Observe (edict_t *ent)
 		Drop_All(ent);
 		ctf_SetEntTeam(ent, CTF_TEAM_OBSERVER);
 		ent->client->showmenu = false;
-		Menu_Blank();
-		gi.unicast (ent, true);
+		Menu_Blank(ent);
 		Observer_Start(ent);
 	}
 	else
@@ -431,8 +426,7 @@ void Observe (edict_t *ent)
 		Drop_All(ent);
 		TeamJoin (ent);
 		ent->client->showmenu = false;
-		Menu_Blank();
-		gi.unicast (ent, true);
+		Menu_Blank(ent);
 		Observer_Stop(ent);
 	}
 }
@@ -528,7 +522,6 @@ void Help_Menu (edict_t *ent)
 	cl->menuselect = 1;
 	
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 */
 
@@ -542,7 +535,6 @@ void HowToPlay_Menu (edict_t *ent)
 	cl->menuselect = 1;
 	
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 /*
@@ -561,7 +553,6 @@ void Command_Menu (edict_t *ent)
 		cl->menuselect = (cl->menuselect + 1) % menulist[cl->menu].size;
 	
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 */
 
@@ -581,8 +572,7 @@ void Toggle_Radio_Menu (edict_t *ent)
 	if (cl->showmenu)
 	{
 		cl->showmenu = false;
-		Menu_Blank();
-		gi.unicast (ent, true);
+		Menu_Blank(ent);
 		return;
 	}
 
@@ -600,7 +590,6 @@ void Radio_Menu (edict_t *ent)
 	cl->menuselect = 1;
 	
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void PickSound (edict_t *ent)
@@ -608,8 +597,7 @@ void PickSound (edict_t *ent)
 	PlayTeamSound(ent, radiosound[ent->client->menuselect]);
 
 	ent->client->showmenu = false;
-	Menu_Blank();
-	gi.unicast (ent, true);
+	Menu_Blank(ent);
 	return;
 }
 
@@ -645,7 +633,6 @@ void Obs_Main_Menu (edict_t *ent)
 	Menu_Set(ent, 10, "Help", Help_Menu);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 
 }
 #else //bat
@@ -674,7 +661,6 @@ char text[MAX_INFO_STRING];
 	Menu_Set(ent, 10, "Help", Help_Menu);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 #endif
 
@@ -694,8 +680,7 @@ void Ref_Main_Load (edict_t *ent)
 	if (cl->showmenu)
 	{
 		cl->showmenu = false;
-		Menu_Blank();
-		gi.unicast (ent, true);
+		Menu_Blank(ent);
 		return;
 	}
 
@@ -741,7 +726,6 @@ void Ref_Main_Menu (edict_t *ent)
 		Menu_Set(ent, 13, "Save Config (RCON)", SaveServer_Exec);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void RefTogglePause(edict_t *ent)
@@ -762,7 +746,7 @@ void SaveServer_Exec(edict_t *ent)
 	char	text[MAX_INFO_STRING];
 	size_t	size;
 	char*	tempbuf;
-	long	i = 0;
+	size_t	i = 0;
 
 	strcpy(name, gamedir->string);
 	strcat(name,"/");
@@ -934,7 +918,6 @@ void Ref_Help_Menu(edict_t *ent)
 	Menu_Set(ent, 17, "<next page>", Ref_Help_Menu);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 
@@ -958,7 +941,6 @@ void Ref_Practice_Menu(edict_t *ent)
 		sprintf(text, "Blue Flag:    %s", "NORMAL");
 	Menu_Set(ent, 4, text, Ref_PracticeFlagBlue_Exec);
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void Ref_PracticeFlagRed_Exec(edict_t *ent)
@@ -1020,7 +1002,6 @@ void Ref_PingFloor_Menu (edict_t *ent)
 	}
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void PingFloor_Exec (edict_t *ent)
@@ -1048,7 +1029,6 @@ void Ref_PingCeiling_Menu (edict_t *ent)
 	}
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void PingCeiling_Exec (edict_t *ent)
@@ -1090,10 +1070,9 @@ void Ref_Settings_Menu (edict_t *ent)
 		sprintf(text, "Quad Time: %i", quad->quantity);
 		Menu_Set(ent, 9, text, NULL);
 	}
-	
+
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void ClearPassword_Exec (edict_t *ent)
@@ -1161,7 +1140,6 @@ void Ref_DMFlags_Menu (edict_t *ent)
 	Menu_Set(ent, 17, text, DMFlags_Exec);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void CTFFlags_Exec (edict_t *ent)
@@ -1226,7 +1204,6 @@ void Ref_CTFFlags_Menu (edict_t *ent)
 	
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 int timeslist[] = 
@@ -1276,7 +1253,6 @@ void Ref_Timelimit_Menu (edict_t *ent)
 	}
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 int fragslist[] = 
@@ -1326,7 +1302,6 @@ void Ref_Fraglimit_Menu (edict_t *ent)
 	}
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 
@@ -1398,7 +1373,7 @@ char *mapclist[] =
 	0
 };
 
-char *mapdlist[] = 
+char *mapdlist[] =
 {
 	0,
 	0,
@@ -1420,7 +1395,7 @@ char *mapdlist[] =
 	0
 };
 
-char *mapelist[] = 
+char *mapelist[] =
 {
 	0,
 	0,
@@ -1442,7 +1417,7 @@ char *mapelist[] =
 	0
 };
 
-char *maplmlist[] = 
+char *maplmlist[] =
 {
         "lmctf01",
         "lmctf02c",
@@ -1551,8 +1526,8 @@ void SetMap (edict_t *ent)
 		Ctf_Menu(ent); // turn off menu
 		i = (ent->client->menuselect - 2)+ent->client->menulastpage*15;
 	 	for (int ctr = 0; ctr < i && slPtr; ctr++)
-			slPtr = slPtr->next;				
-		if (slPtr) 
+			slPtr = slPtr->next;
+		if (slPtr)
 			StartMatch (slPtr->mapname);
 	}
 	else if (ent->client->prevmenu == Ref_Map_A_Menu)
@@ -1585,8 +1560,8 @@ void SetMap (edict_t *ent)
 		Ctf_Menu(ent); // turn off menu
 		i = (ent->client->menuselect - 2)+ent->client->menulastpage*15;
 	 	for (int ctr = 0; ctr < i && slPtr; ctr++)
-			slPtr = slPtr->next;				
-		if (slPtr) 
+			slPtr = slPtr->next;
+		if (slPtr)
 			ctf_ChangeMap(slPtr->mapname, false);
 	}
 }
@@ -1603,7 +1578,6 @@ void Ref_Match_Maplist_Menu (edict_t *ent)
 	Menu_Set(ent, 17, "<next page>", Ref_Match_Maplist_Menu);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void Ref_Map_Maplist_Menu (edict_t *ent)
@@ -1618,10 +1592,9 @@ void Ref_Map_Maplist_Menu (edict_t *ent)
 	Menu_Set(ent, 17, "<next page>", Ref_Map_Maplist_Menu);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
-void SetMapsForMenu( edict_t *ent) 
+void SetMapsForMenu( edict_t *ent)
 {
 	char text[MAX_INFO_STRING];
 	int start;
@@ -1639,11 +1612,11 @@ void SetMapsForMenu( edict_t *ent)
 		mapCtr++;
 		slPtr = slPtr->next;
 	}
-	
+
 	// Find if last page was the last
 	if (start > 14)
 	{
-		if (start + 15 >= mapCtr) 
+		if (start + 15 >= mapCtr)
 		{
 			start = 0;
 			ent->client->menupage = 0;
@@ -1662,9 +1635,9 @@ void SetMapsForMenu( edict_t *ent)
 	}
 }
 
-void SetupShortList() 
+void SetupShortList()
 {
-	if (shortList) 
+	if (shortList)
 	{
 		return;
 	}
@@ -1673,9 +1646,9 @@ void SetupShortList()
                 char *thisMap = maplist[ctr].mapname;
                 for(int lmNdx = 0; maplmlist[lmNdx]; lmNdx++) {
                         if (!strcmp(maplmlist[lmNdx], thisMap)) {
-                                goto end; 
-                        }    
-                }    
+                                goto end;
+                        }
+                }
                 if (!slPtr) {
                         shortList = slPtr = &maplist[ctr];
 			slPtr->next = NULL;
@@ -1683,14 +1656,14 @@ void SetupShortList()
                         slPtr->next = &maplist[ctr];
                         slPtr = slPtr->next;
                         slPtr->next = NULL;
-                }            
-                end: 
+                }
+                end:
                         continue;
-        } 
+        }
 }
 
 
-void MapMenu(edict_t *ent, char *maplist[], char *msg) 
+void MapMenu(edict_t *ent, char *maplist[], char *msg)
 {
 	char text[MAX_INFO_STRING];
         char title[MAX_INFO_STRING];
@@ -1701,7 +1674,7 @@ void MapMenu(edict_t *ent, char *maplist[], char *msg)
 	ent->client->menuselect = 0;
 
 	sprintf(title, "%s", msg);
-	
+
 	Menu_Set(ent, 0, title, ent->client->prevmenu);
 	Menu_Set(ent, 1, "-----------", NULL);
 	for (i=2; i < 18; i++)
@@ -1714,7 +1687,6 @@ void MapMenu(edict_t *ent, char *maplist[], char *msg)
 	}
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void Ref_Match_A_Menu (edict_t *ent)
@@ -1790,7 +1762,6 @@ void Ref_Match_Menu (edict_t *ent)
 	if (maplistindex != -2) // No list
 		Menu_Set(ent, 7, "Maplist", Ref_Match_Maplist_Menu);
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void Ref_Map_Menu (edict_t *ent)
@@ -1811,7 +1782,6 @@ void Ref_Map_Menu (edict_t *ent)
 		Menu_Set(ent, 7, "Maplist", Ref_Map_Maplist_Menu);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 
@@ -1853,7 +1823,6 @@ void Ref_Kick_Menu (edict_t *ent)
 	}
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 
@@ -1896,15 +1865,13 @@ void Voice_Menu (edict_t *ent)
 	}
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void Voice_Exec (edict_t *ent)
 {
 	PlayVoiceSound(ent, voicelist[ent->client->menuselect]);
 	ent->client->showmenu = false;
-	Menu_Blank();
-	gi.unicast (ent, true);
+	Menu_Blank(ent);
 }
 
 void Change_Team_Exec(edict_t *ent)
@@ -1957,7 +1924,6 @@ void Help_Menu (edict_t *ent)
 	Menu_Set(ent, 17, "<next page>", Help_Menu);
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 
@@ -2002,10 +1968,11 @@ void Menu_Draw (edict_t *ent)
 	int selected;
 
 	// Keep from updating the menu more than once per frame
-	if (ent->client->menumovetime == level.framenum)
+	// Paril: unless we're paused, in which case...
+	if (ent->client->menumovetime == level.framenum && !GamePaused())
 		return;
-	else
-		ent->client->menumovetime = level.framenum;
+
+	ent->client->menumovetime = level.framenum;
 	
 	gi.WriteByte (svc_layout);
 	strcpy(string, "xv 32 yv 8 picn inventory ");
@@ -2051,13 +2018,18 @@ void Menu_Draw (edict_t *ent)
 	}
 
 	gi.WriteString (string);
-
+	// Paril
+	gi.unicast (ent, true);
+	// Paril
 }
 
-void Menu_Blank ()
+void Menu_Blank (edict_t *ent)
 {
 	gi.WriteByte (svc_layout);
 	gi.WriteString ("");
+	// Paril
+	gi.unicast (ent, true);
+	// Paril
 }
 
 
@@ -2085,7 +2057,6 @@ void Menu_Next (edict_t *ent)
 		cl->menuselect = (cl->menuselect + 1) % size;
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void Menu_Prev (edict_t *ent)
@@ -2121,7 +2092,6 @@ void Menu_Prev (edict_t *ent)
 	}
 
 	Menu_Draw (ent);
-	gi.unicast (ent, true);
 }
 
 void Menu_Use (edict_t *ent)
@@ -2160,5 +2130,4 @@ void Menu_Use (edict_t *ent)
 		}
 	}
 	//Menu_Draw (ent);
-	//gi.unicast (ent, true);
 }

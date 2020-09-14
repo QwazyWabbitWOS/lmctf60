@@ -148,7 +148,7 @@ void InitGame (void)
 	// CTF CODE -- LM_JORM
 	FILE		*file;
 	char		line[MAX_INFO_STRING];
-	char		fname[MAX_INFO_STRING];
+	char		fname[MAX_QPATH];
 	int			i;
 
 	// END CTF CODE -- LM_JORM
@@ -228,7 +228,7 @@ void InitGame (void)
 	maplist_file = gi.cvar("maplist_file", "maplist.txt", 0);  //CTF CODE -- LM_CTF
 	skin_file = gi.cvar("skin_file", "skins.ini", 0);
 	skin_debug = gi.cvar("skin_debug", "0", 0);	// for debugging team skins in SkinsReadFile
-
+	flag_init = gi.cvar("flag_init", "0", 0);	// flag spawning frame initialization.
 
 
 
@@ -297,7 +297,7 @@ void InitGame (void)
 				maplist[maplistindex].maxplayers = tempmax;
 
 				maplistindex++;
-				
+
 			}
 			SortMaplist(maplist, 0, maplistindex-1);
 //			maplist[maplistindex][0] = 0; // Blank last entry
@@ -336,7 +336,8 @@ void InitGame (void)
 		i = 0;
 		while ( fgets(line, 255, file) )
 		{
-			strncpy(helptext[i], line, 24);
+			// Nul termination is guaranteed from fgets.
+			memcpy(helptext[i], line, 24);
 			i++;
 		}
 		helptext[i][0] = 0; // Blank last entry
@@ -357,7 +358,7 @@ void InitGame (void)
 	else
 		sprintf (fname, "%s/motd.txt", gamedir->string);
 	file = fopen(fname, "r");
-	if (!file) 
+	if (!file)
 		file = fopen("motd.txt", "r");
 	if (file)
     {

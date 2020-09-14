@@ -2,15 +2,9 @@
 // q_shared.h -- included first by ALL program modules
 
 #ifdef _WIN32
-// unknown pragmas are SUPPOSED to be ignored, but....
-#pragma warning(disable : 4244)     // data conversions
-#pragma warning(disable : 4018)     // signed/unsigned mismatch
-#pragma warning(disable : 4459)		// declaration of 'var' hides global declaration
-
-//surt ... trying to find errors at max debug level
-#pragma warning(disable : 4100) //unreferenced formal parameter lots in id code
-//end surt code
-
+#pragma warning(disable : 4244)    // data conversions
+#pragma warning(disable : 4459)    // declaration of 'var' hides global declaration
+#pragma warning(disable : 4100)    //unreferenced formal parameter lots in id code
 #endif
 
 #include <assert.h>
@@ -19,6 +13,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <ctype.h>
 #include <time.h>
 
@@ -754,7 +749,7 @@ typedef struct
 #define MZ2_SOLDIER_SHOTGUN_8			99
 #define MZ2_SOLDIER_MACHINEGUN_8		100
 
-// --- Xian shit below ---
+// --- Xian stuff below ---
 #define	MZ2_MAKRON_BFG					101
 #define MZ2_MAKRON_BLASTER_1			102
 #define MZ2_MAKRON_BLASTER_2			103

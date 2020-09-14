@@ -44,7 +44,7 @@ Match_Start(edict_t *ent)
 int i;
 edict_t *player;
 char message[MAX_INFO_STRING];
-int Num_Of_Players = 0;
+int player_count = 0;
 gitem_t *Item;
 //edict_t	*Item_ent;
 
@@ -56,7 +56,7 @@ gitem_t *Item;
 		// Don't bother killing them if they are an observer
 		if (player->inuse && !player->client->resp.spectator)
 		{
-			Num_Of_Players++;
+			player_count++;
 		
 			if(matchstate != MATCH_RAILGUN_COUNTDOWN)
 			{
@@ -74,7 +74,7 @@ gitem_t *Item;
 				//This is in seconds!!!
 				
 				//Let's try this in the respawn instead;
-				//player->client->respawn_time = level.time + (0.2 * Num_Of_Players);
+				//player->client->respawn_time = level.time + (0.2 * player_count);
 				
 				stats_clear(player); // Blank all our stats, whether we are here or not
 			}
@@ -97,7 +97,7 @@ gitem_t *Item;
 	{
 		matchstate = MATCH_RAILGUN_INPLAY;
 		ent->count = railtime->value;
-		sprintf(message, "%d seconds. %d men enter 1 man leaves \n", ent->count, Num_Of_Players);
+		sprintf(message, "%d seconds. %d men enter 1 man leaves \n", ent->count, player_count);
 		ctf_BSafePrint(PRINT_HIGH, message);
 	}
 	else
@@ -183,7 +183,7 @@ void Victory()
 		strcpy(teambuf,"");
 		ctf_teamstring(teambuf,dmvp->client->ctf.teamnum,CTF_TEAM_MATCHING);
 		
-		sprintf(temp_buf, "Defense MVP: %s (%s)!\n",
+		Com_sprintf(temp_buf, sizeof temp_buf, "Defense MVP: %s (%s)!\n",
 			dmvp->client->pers.netname,
 			teambuf);
 		strcat(victory_buf,temp_buf);
@@ -193,7 +193,7 @@ void Victory()
 		strcpy(teambuf,"");
 		ctf_teamstring(teambuf,omvp->client->ctf.teamnum,CTF_TEAM_MATCHING);
 		
-		sprintf(temp_buf, "Offense MVP: %s (%s)!\n", 
+		Com_sprintf(temp_buf, sizeof temp_buf, "Offense MVP: %s (%s)!\n",
 			omvp->client->pers.netname,
 			teambuf);
 		strcat(victory_buf, temp_buf);
@@ -310,9 +310,9 @@ SetPause(qboolean state)
 	match_pause = state;
 
 	if (state)
-		message = "Game Paused";
+		message = "Game Paused\n";
 	else
-		message = "Game Unpaused";
+		message = "Game Unpaused\n";
 
     for (i=0 ; i<game.maxclients ; i++)    //Go through everyone
     {

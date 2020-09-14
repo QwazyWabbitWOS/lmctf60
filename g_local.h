@@ -5,6 +5,7 @@
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN	//non-MFC
+#define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -32,7 +33,7 @@ _CrtMemState startup1;	// memory diagnostics
 #include "game.h"
 
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION     "LMCTF 6.1.1-raven" //surt was baseq2
+#define GAMEVERSION     "LMCTF 6.2-raven"
 
 #include "p_stats.h" // STATS - LM_Hati
 #include "g_menu.h" // MENUS - LM_Jorm
@@ -580,7 +581,7 @@ extern  cvar_t  *maplist_file;  // CTF CODE -- LM_SURT
 extern  cvar_t  *skin_file;     // CTF CODE -- LM_SURT
 extern  cvar_t  *skin_debug;    // For debugging skins file
 extern  cvar_t  *disabled_weps; // CTF CODE -- LM_SURT
-
+extern  cvar_t* flag_init;
 
 #ifdef ZBOT
 extern  cvar_t  *use_zbotdetect; // CTF CODE -- LM_Hati

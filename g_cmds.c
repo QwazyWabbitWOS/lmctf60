@@ -1033,7 +1033,7 @@ void Cmd_Team_f (edict_t *ent)
 	
 	LowerCase(rawnew); //converts to lower case
 
-	//If they are a spectator, team code is fucked up, so do this shit instead.
+	//If they are a spectator, team code screwed up, so do this instead.
 	//if(ent->client->pers.spectator)
 	if(ent->client->resp.spectator)
 	{
@@ -1089,7 +1089,7 @@ void Cmd_Team_f (edict_t *ent)
 		}
 		else
 		{
-			sprintf(message, "You are currently team %d.\n", ent->client->ctf.teamnum);
+			Com_sprintf(message, sizeof message, "You are currently team %d.\n", ent->client->ctf.teamnum);
 			ctf_SafePrint(ent,  PRINT_HIGH, message);
 		}
 		ctf_SafePrint(ent, PRINT_HIGH, "Use 'team red' or 'team blue' to change teams.\n");
@@ -1165,7 +1165,7 @@ void Cmd_Position_f(edict_t* ent)
 
 	string_replace(ent, "%p", temp, sizeof temp);
 
-	sprintf(message, "LOC: { %.0f, %.0f, %.0f }\nANGLE: { %.0f, %.0f, %.0f }\n"
+	Com_sprintf(message, sizeof message, "LOC: { %.0f, %.0f, %.0f }\nANGLE: { %.0f, %.0f, %.0f }\n"
 		"You are %s\n",
 		f1, f2, f3, a1, a2, a3, temp);
 

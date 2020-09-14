@@ -456,6 +456,12 @@ qboolean ctf_spawnflag(int teamnum)
 		//ent->s.effects |= EF_COLOR_SHELL | EF_FLAG1;
 		//ent->s.renderfx |= RF_SHELL_RED;
 		ent->s.effects = EF_FLAG1;
+		// Paril
+		if (flag_init->value)
+			ent->s.frame = 173;
+		else
+			ent->s.frame = 0;
+		// Paril
 		redflag = ent;
 	}
 	else if (teamnum == CTF_TEAM_BLUE && !blueflag) // BLUE FLAG
@@ -499,6 +505,12 @@ qboolean ctf_spawnflag(int teamnum)
 		//ent->s.effects |= EF_COLOR_SHELL | EF_FLAG2;
 		//ent->s.renderfx |= RF_SHELL_BLUE;
 		ent->s.effects = EF_FLAG2;
+		// Paril
+		if (flag_init->value)
+			ent->s.frame = 173;
+		else
+			ent->s.frame = 0;
+		// Paril
 		blueflag = ent;
 	}
 
@@ -663,9 +675,8 @@ void ctf_playerdropflag(edict_t * whichplayer, gitem_t *item)
 
 			//annouce to the world
 			ctf_teamstring(flagcolor, whichplayer->client->ctf.teamnum, CTF_TEAM_OPPOSING);
-			sprintf(message,"%s lost the %s flag.\n",
-				whichplayer->client->pers.netname,
-				flagcolor );
+			Com_sprintf(message, sizeof message, "%s lost the %s flag.\n",
+				whichplayer->client->pers.netname, flagcolor );
 			
 			stats_add(whichplayer, STATS_OFFENSE_FLAGLOST, 1); // STATS - LM_Hati
 
@@ -1417,7 +1428,7 @@ void ctf_SetEntTeamEx(edict_t* ent, int whatteam, int nopenalty)
 	//}
 	
 
-	sprintf(message,"%s is now on the %s team.\n", ent->client->pers.netname, buf);
+	Com_sprintf(message, sizeof message, "%s is now on the %s team.\n", ent->client->pers.netname, buf);
 	ctf_BSafePrint(PRINT_HIGH, message);
 }
 
