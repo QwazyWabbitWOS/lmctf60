@@ -104,7 +104,7 @@ void replace_carrierinfo(edict_t *person, char *temp);
 //assorted support functions
 void LowerCase(char * src);
 qboolean ctf_SpamCheck(edict_t *ent);
-void ctf_ClientDisconnect(edict_t *ent);
+//void ctf_ClientDisconnect(edict_t *ent);
 void ctf_TossEnt(edict_t * startent, edict_t * tossent);
 void ctf_SetEntTeamEx(edict_t* ent, int whatteam, int nopenalty);
 void ctf_SetEntTeam(edict_t* ent, int whatteam);

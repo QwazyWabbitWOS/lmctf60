@@ -149,7 +149,7 @@ void InitGame (void)
 	FILE		*file;
 	char		line[MAX_INFO_STRING];
 	char		fname[MAX_QPATH];
-	int			i;
+	size_t		i;
 
 	// END CTF CODE -- LM_JORM
 	

@@ -1333,21 +1333,23 @@ qboolean ctf_SpamCheck(edict_t *ent)
 	return result;
 }
 
-void ctf_ClientDisconnect(edict_t *ent)
-{
-	if ((ctf_findplayer(NULL, NULL, CTF_TEAM_IGNORETEAM)) == NULL)
-	{
-		if (level.time > 60)
-		{
-			char serverstring[60];
-			stats_cleanup();
-			sprintf(serverstring, "exec %s\n", server_file->string);
-			gi.AddCommandString("echo Server Empty, Resetting Server as precaution.\n");
-			gi.AddCommandString("set refset 0\n");
-			gi.AddCommandString(serverstring);
-		}
-	}
-}
+//QW// This function is scheduled for demolition. Not needed.
+//
+//void ctf_ClientDisconnect(edict_t *ent)
+//{
+//	if ((ctf_findplayer(NULL, NULL, CTF_TEAM_IGNORETEAM)) == NULL)
+//	{
+//		if (level.time > 60)
+//		{
+//			char serverstring[60];
+//			stats_cleanup();
+//			sprintf(serverstring, "exec %s\n", server_file->string);
+//			gi.AddCommandString("echo Server Empty, Resetting Server as precaution.\n");
+//			gi.AddCommandString("set refset 0\n");
+//			gi.AddCommandString(serverstring);
+//		}
+//	}
+//}
 
 void ctf_SetEntTeam(edict_t* ent, int whatteam)
 {

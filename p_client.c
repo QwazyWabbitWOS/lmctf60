@@ -2571,7 +2571,7 @@ void ClientDisconnect (edict_t *ent)
 	playernum = ent-g_edicts-1;
 	gi.configstring (CS_PLAYERSKINS+playernum, "");
 	
-	ctf_ClientDisconnect(ent);
+	//ctf_ClientDisconnect(ent);
 	
 }
 
