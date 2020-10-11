@@ -210,7 +210,7 @@ static void _sl_LogTime( void )
 
 static void _sl_LogDeathFlags( unsigned long dmFlags )
 {
-    fprintf( StdLogFile, "\t\tLogDeathFlags\t%ld\n", dmFlags );
+    fprintf( StdLogFile, "\t\tLogDeathFlags\t%lu\n", dmFlags );
 }
 
 static void _sl_LogMapName( char *pMapName )
@@ -244,7 +244,7 @@ static void _sl_LogScore( char *pKillerName,
     if( NULL != pTargetName )
         fprintf( StdLogFile, "%s", pTargetName );
     fprintf( StdLogFile, "\t" );
-    
+
     /* Score Type */
     if( NULL != pScoreType )
         fprintf( StdLogFile, "%s", pScoreType );
@@ -314,11 +314,11 @@ static int _sl_MaybeOpenFile( game_import_t  *gi )
         {
             cvar_t   *filename  = gi->cvar( "stdlogname", "StdLog.log", CVAR_SERVERINFO );
             char     *pName     = "StdLog.log";
-           
+
             // Open File
             if( filename )
                 pName = filename->string;
-            
+
             StdLogFile = fopen( pName, "a+t" );
 
             if( NULL == StdLogFile )
