@@ -342,7 +342,7 @@ void InitGame (void)
 		}
 		helptext[i][0] = 0; // Blank last entry
 		fclose(file);
-		sprintf(line, "Read %d lines of %s.\n", i, fname);
+		sprintf(line, "Read %zu lines of %s.\n", i, fname);
 		gi.dprintf(line);
 	}
 	else
