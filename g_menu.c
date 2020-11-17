@@ -178,7 +178,7 @@ menuitem radiomenu[] =
 	{"escort", PickSound },
 	{"incoming", PickSound },
 	{"overrun", PickSound },
-	{"q60", PickSound },	
+	{"q60", PickSound },
 	{"qattack", PickSound },
 	{"quad", PickSound },
 	{"qwaiting", PickSound },
@@ -209,7 +209,7 @@ CTF Menus
 =================
 */
 
-char *skin[] = 
+char *skin[] =
 {
 	"",
 	"male/rb-rm1",
@@ -308,7 +308,7 @@ void Main_Menu (edict_t *ent)
 	Menu_Set(ent, 10, "Help", Help_Menu);
 
 	cl->menuselect = 0;
-		
+
 	Menu_Draw (ent);
 }
 
@@ -366,8 +366,8 @@ void Skin_Menu (edict_t *ent)
 
 	// Calculate our page
 	start = 15*ent->client->menupage;
-	
-	
+
+
 	skinlist = SkinGetList(ent);
 
 	// Find if last page was the last
@@ -520,7 +520,7 @@ void Help_Menu (edict_t *ent)
 
 	cl->menu = MENU_HELP;
 	cl->menuselect = 1;
-	
+
 	Menu_Draw (ent);
 }
 */
@@ -533,7 +533,7 @@ void HowToPlay_Menu (edict_t *ent)
 
 	cl->menu = MENU_HOWTOPLAY;
 	cl->menuselect = 1;
-	
+
 	Menu_Draw (ent);
 }
 
@@ -551,7 +551,7 @@ void Command_Menu (edict_t *ent)
 	// Validate our highlighed selection
 	while (!menulist[cl->menu].menu[cl->menuselect].func)
 		cl->menuselect = (cl->menuselect + 1) % menulist[cl->menu].size;
-	
+
 	Menu_Draw (ent);
 }
 */
@@ -588,7 +588,7 @@ void Radio_Menu (edict_t *ent)
 
 	cl->menu = MENU_RADIO;
 	cl->menuselect = 1;
-	
+
 	Menu_Draw (ent);
 }
 
@@ -651,7 +651,7 @@ char text[MAX_INFO_STRING];
 
 	sprintf(text, "Observe Red");
 	Menu_Set(ent, 6, text, Observe_Red);
-	
+
 	sprintf(text, "Observe_Blue");
 	Menu_Set(ent, 7, text, Observe_Blue);
 
@@ -705,23 +705,23 @@ void Ref_Main_Menu (edict_t *ent)
 	Menu_Set(ent, 2, "------------------", NULL);
 	Menu_Set(ent, 3, "Change Map", Ref_Map_Menu);
 	Menu_Set(ent, 4, "Server Settings", Ref_Settings_Menu);
-	sprintf(text, "Ping Floor:          %3d", ent->client->ctf.pingalertfloor);	
+	sprintf(text, "Ping Floor:          %3d", ent->client->ctf.pingalertfloor);
 	Menu_Set(ent, 5, text, Ref_PingFloor_Menu);
-	sprintf(text, "Ping Ceiling:        %3d", ent->client->ctf.pingalertceiling);	
+	sprintf(text, "Ping Ceiling:        %3d", ent->client->ctf.pingalertceiling);
 	Menu_Set(ent, 6, text, Ref_PingCeiling_Menu);
 	if (Match_Mode())
 		Menu_Set(ent, 7, "Stop Match", Ref_End_Match);
 	else
 		Menu_Set(ent, 7, "Start Match", Ref_Match_Menu);
 	Menu_Set(ent, 8, "Kick Player", Ref_Kick_Menu);
-	
+
 	if (GamePaused())
 		Menu_Set(ent, 9, "Continue Match", RefTogglePause);
 	else
 		Menu_Set(ent, 9, "Pause Match", RefTogglePause);
 	Menu_Set(ent, 10, "Practice Settings", Ref_Practice_Menu);
 	Menu_Set(ent, 11, "Referee Help", Ref_Help_Menu);
-		
+
 	if (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_RCON)
 		Menu_Set(ent, 13, "Save Config (RCON)", SaveServer_Exec);
 
@@ -734,7 +734,7 @@ void RefTogglePause(edict_t *ent)
 		SetPause(false);
 	else
 		SetPause(true);
-	
+
 	Ref_Main_Menu(ent);
 }
 
@@ -755,7 +755,7 @@ void SaveServer_Exec(edict_t *ent)
 	fp = fopen (name, "r");
 	if (!fp)
 		return;
-	
+
 	tempbuf = (char *) gi.TagMalloc(40000, TAG_GAME); //server.cfg files must not exceed 40k arbitrary
 
 	if (tempbuf)
@@ -824,7 +824,7 @@ void SaveServer_Exec(edict_t *ent)
 	return;
 }
 
-char *refhelptext[] = 
+char *refhelptext[] =
 {
 	//23456789012345678901234
 	"",
@@ -890,7 +890,7 @@ void Ref_Help_Menu(edict_t *ent)
 
 	// Calculate our page
 	start = 15*ent->client->menupage;
-	
+
 	// Find if last page was the last
 	if (start > 14)
 	{
@@ -951,7 +951,7 @@ void Ref_PracticeFlagRed_Exec(edict_t *ent)
 		gi.cvar_set("refset", va("%d", ((int) refset->value | CTF_RED_FLAG_FROZEN)));
 	Ref_Practice_Menu(ent);
 }
-	
+
 void Ref_PracticeFlagBlue_Exec(edict_t *ent)
 {
 	if (blueflag && ((int)refset->value & CTF_BLUE_FLAG_FROZEN) )
@@ -961,7 +961,7 @@ void Ref_PracticeFlagBlue_Exec(edict_t *ent)
 	Ref_Practice_Menu(ent);
 }
 
-int pingfloor[] = 
+int pingfloor[] =
 {
 	0,
 	0,
@@ -992,7 +992,7 @@ void Ref_PingFloor_Menu (edict_t *ent)
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 0;
 
-	sprintf(text, "Current Ping Floor:  %3d", ent->client->ctf.pingalertfloor);	
+	sprintf(text, "Current Ping Floor:  %3d", ent->client->ctf.pingalertfloor);
 	Menu_Set(ent, 0, text, Ref_Main_Menu);
 	Menu_Set(ent, 1, "------------------", NULL);
 	for (i=2; i < 18; i++)
@@ -1019,7 +1019,7 @@ void Ref_PingCeiling_Menu (edict_t *ent)
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 0;
 
-	sprintf(text, "Current Ping Ceiling: %3d", ent->client->ctf.pingalertceiling);	
+	sprintf(text, "Current Ping Ceiling: %3d", ent->client->ctf.pingalertceiling);
 	Menu_Set(ent, 0, text, Ref_Main_Menu);
 	Menu_Set(ent, 1, "------------------", NULL);
 	for (i=2; i < 18; i++)
@@ -1049,13 +1049,13 @@ void Ref_Settings_Menu (edict_t *ent)
 	quad = FindItem("Quad Damage");
 	Menu_Set(ent, 1, "Server Settings", Ref_Main_Menu);
 	Menu_Set(ent, 2, "---------------", NULL);
-	sprintf(text, "Timelimit:           %3d", (int)timelimit->value);	
+	sprintf(text, "Timelimit:           %3d", (int)timelimit->value);
 	Menu_Set(ent, 3, text, Ref_Timelimit_Menu);
-	sprintf(text, "Fraglimit:           %3d", (int)fraglimit->value);	
+	sprintf(text, "Fraglimit:           %3d", (int)fraglimit->value);
 	Menu_Set(ent, 4, text, Ref_Fraglimit_Menu);
-	sprintf(text, "DMFlags:           %5d", ((unsigned short)dmflags->value));	
+	sprintf(text, "DMFlags:           %5d", ((unsigned short)dmflags->value));
 	Menu_Set(ent, 5, text, Ref_DMFlags_Menu);
-	sprintf(text, "CTFFlags:          %5d", ((unsigned short)ctfflags->value));	
+	sprintf(text, "CTFFlags:          %5d", ((unsigned short)ctfflags->value));
 	Menu_Set(ent, 6, text, Ref_CTFFlags_Menu);
 	cvar_t *svp = gi.cvar("sv_password","",0);
 	if (svp && strlen(svp->string) > 0) {
@@ -1103,40 +1103,40 @@ void Ref_DMFlags_Menu (edict_t *ent)
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 1;
 
-	sprintf(text, "DMFlags:             %d", ((unsigned short)dmflags->value));	
+	sprintf(text, "DMFlags:             %d", ((unsigned short)dmflags->value));
 	Menu_Set(ent, 0, text, Ref_Settings_Menu);
 	Menu_Set(ent, 1, "----------------", NULL);
-	sprintf(text, "No Health            %s", DMFLAG(DF_NO_HEALTH));	
+	sprintf(text, "No Health            %s", DMFLAG(DF_NO_HEALTH));
 	Menu_Set(ent, 2, text, DMFlags_Exec);
-	sprintf(text, "No Items             %s", DMFLAG(DF_NO_ITEMS));	
+	sprintf(text, "No Items             %s", DMFLAG(DF_NO_ITEMS));
 	Menu_Set(ent, 3, text, DMFlags_Exec);
-	sprintf(text, "Weapons Stay         %s", DMFLAG(DF_WEAPONS_STAY));	
+	sprintf(text, "Weapons Stay         %s", DMFLAG(DF_WEAPONS_STAY));
 	Menu_Set(ent, 4, text, DMFlags_Exec);
-	sprintf(text, "No Falling           %s", DMFLAG(DF_NO_FALLING));	
+	sprintf(text, "No Falling           %s", DMFLAG(DF_NO_FALLING));
 	Menu_Set(ent, 5, text, DMFlags_Exec);
-	sprintf(text, "Instant Items        %s", DMFLAG(DF_INSTANT_ITEMS));	
+	sprintf(text, "Instant Items        %s", DMFLAG(DF_INSTANT_ITEMS));
 	Menu_Set(ent, 6, text, DMFlags_Exec);
-	sprintf(text, "Same Level           %s", DMFLAG(DF_SAME_LEVEL));	
+	sprintf(text, "Same Level           %s", DMFLAG(DF_SAME_LEVEL));
 	Menu_Set(ent, 7, text, DMFlags_Exec);
-	sprintf(text, "Skin Teams           %s", DMFLAG(DF_SKINTEAMS));	
+	sprintf(text, "Skin Teams           %s", DMFLAG(DF_SKINTEAMS));
 	Menu_Set(ent, 8, text, DMFlags_Exec);
-	sprintf(text, "Model Teams          %s", DMFLAG(DF_MODELTEAMS));	
+	sprintf(text, "Model Teams          %s", DMFLAG(DF_MODELTEAMS));
 	Menu_Set(ent, 9, text, DMFlags_Exec);
-	sprintf(text, "Friendly Fire        %s", DMFLAG(DF_NO_FRIENDLY_FIRE));	
+	sprintf(text, "Friendly Fire        %s", DMFLAG(DF_NO_FRIENDLY_FIRE));
 	Menu_Set(ent, 10, text, DMFlags_Exec);
-	sprintf(text, "Spawn Farthest       %s", DMFLAG(DF_SPAWN_FARTHEST));	
+	sprintf(text, "Spawn Farthest       %s", DMFLAG(DF_SPAWN_FARTHEST));
 	Menu_Set(ent, 11, text, DMFlags_Exec);
-	sprintf(text, "Force Respawn        %s", DMFLAG(DF_FORCE_RESPAWN));	
+	sprintf(text, "Force Respawn        %s", DMFLAG(DF_FORCE_RESPAWN));
 	Menu_Set(ent, 12, text, DMFlags_Exec);
-	sprintf(text, "No Armor             %s", DMFLAG(DF_NO_ARMOR));	
+	sprintf(text, "No Armor             %s", DMFLAG(DF_NO_ARMOR));
 	Menu_Set(ent, 13, text, DMFlags_Exec);
-	sprintf(text, "Allow Exit           %s", DMFLAG(DF_ALLOW_EXIT));	
+	sprintf(text, "Allow Exit           %s", DMFLAG(DF_ALLOW_EXIT));
 	Menu_Set(ent, 14, text, DMFlags_Exec);
-	sprintf(text, "Infinite Ammo        %s", DMFLAG(DF_INFINITE_AMMO));	
+	sprintf(text, "Infinite Ammo        %s", DMFLAG(DF_INFINITE_AMMO));
 	Menu_Set(ent, 15, text, DMFlags_Exec);
-	sprintf(text, "Quad Drop            %s", DMFLAG(DF_QUAD_DROP));	
+	sprintf(text, "Quad Drop            %s", DMFLAG(DF_QUAD_DROP));
 	Menu_Set(ent, 16, text, DMFlags_Exec);
-	sprintf(text, "Fixed FOV            %s", DMFLAG(DF_FIXED_FOV));	
+	sprintf(text, "Fixed FOV            %s", DMFLAG(DF_FIXED_FOV));
 	Menu_Set(ent, 17, text, DMFlags_Exec);
 
 	Menu_Draw (ent);
@@ -1164,49 +1164,49 @@ void Ref_CTFFlags_Menu (edict_t *ent)
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 1;
 
-	sprintf(text, "CTFFlags:            %d", ((unsigned short)ctfflags->value));	
+	sprintf(text, "CTFFlags:            %d", ((unsigned short)ctfflags->value));
 	Menu_Set(ent, 0, text, Ref_Settings_Menu);
 	Menu_Set(ent, 1, "----------------", NULL);
-#ifdef WEAP_BALANCE_OK	
-	sprintf(text, "Weapon Balance       %s", CTFFLAG(CTF_WEAP_BALANCE));	
+#ifdef WEAP_BALANCE_OK
+	sprintf(text, "Weapon Balance       %s", CTFFLAG(CTF_WEAP_BALANCE));
 	Menu_Set(ent, 2, text, CTFFlags_Exec);
 #endif
-	sprintf(text, "Allow Invuln         %s", CTFFLAG(CTF_ALLOW_INVULN));	
+	sprintf(text, "Allow Invuln         %s", CTFFLAG(CTF_ALLOW_INVULN));
 	Menu_Set(ent, 3, text, CTFFlags_Exec);
-	sprintf(text, "Team Reset           %s", CTFFLAG(CTF_TEAM_RESET));	
+	sprintf(text, "Team Reset           %s", CTFFLAG(CTF_TEAM_RESET));
 	Menu_Set(ent, 4, text, CTFFlags_Exec);
-	sprintf(text, "Team No Switch       %s", CTFFLAG(CTF_TEAM_NOSWITCH));	
+	sprintf(text, "Team No Switch       %s", CTFFLAG(CTF_TEAM_NOSWITCH));
 	Menu_Set(ent, 5, text, CTFFlags_Exec);
-	sprintf(text, "Offhand Hook         %s", CTFFLAG(CTF_OFFHAND_HOOK));	
-#ifdef NOVOICE_OK	
+	sprintf(text, "Offhand Hook         %s", CTFFLAG(CTF_OFFHAND_HOOK));
+#ifdef NOVOICE_OK
 	Menu_Set(ent, 6, text, CTFFlags_Exec);
-	sprintf(text, "No Voice             %s", CTFFLAG(CTF_NOVOICE));	
+	sprintf(text, "No Voice             %s", CTFFLAG(CTF_NOVOICE));
 #endif
 	Menu_Set(ent, 7, text, CTFFlags_Exec);
-	sprintf(text, "No Grapple Damage    %s", CTFFLAG(CTF_NO_GRAP_DAMAGE));	
+	sprintf(text, "No Grapple Damage    %s", CTFFLAG(CTF_NO_GRAP_DAMAGE));
 	Menu_Set(ent, 8, text, CTFFlags_Exec);
-	sprintf(text, "No Teams             %s", CTFFLAG(CTF_TEAM_NOTEAMS));	
+	sprintf(text, "No Teams             %s", CTFFLAG(CTF_TEAM_NOTEAMS));
 	Menu_Set(ent, 9, text, CTFFlags_Exec);
-	sprintf(text, "No Flags             %s", CTFFLAG(CTF_FLAGS_NOFLAGS));	
+	sprintf(text, "No Flags             %s", CTFFLAG(CTF_FLAGS_NOFLAGS));
 	Menu_Set(ent, 10, text, CTFFlags_Exec);
-	sprintf(text, "Score Balance        %s", CTFFLAG(CTF_SCORE_BALANCE));	
+	sprintf(text, "Score Balance        %s", CTFFLAG(CTF_SCORE_BALANCE));
 	Menu_Set(ent, 11, text, CTFFlags_Exec);
-	sprintf(text, "Team Armor Protect   %s", CTFFLAG(CTF_TEAM_ARMOR_PROTECT));	
+	sprintf(text, "Team Armor Protect   %s", CTFFLAG(CTF_TEAM_ARMOR_PROTECT));
 	Menu_Set(ent, 12, text, CTFFlags_Exec);
 
 	//-bat
-	sprintf(text, "Random Map List      %s", CTFFLAG(CTF_RANDOM_MAPS));	
+	sprintf(text, "Random Map List      %s", CTFFLAG(CTF_RANDOM_MAPS));
 	Menu_Set(ent, 14, text, CTFFlags_Exec);
-	sprintf(text, "Random Quad Respawn  %s", CTFFLAG(CTF_RANDOM_QUAD));	
+	sprintf(text, "Random Quad Respawn  %s", CTFFLAG(CTF_RANDOM_QUAD));
 	Menu_Set(ent, 15, text, CTFFlags_Exec);
-	sprintf(text, "Random Death Msgs    %s", CTFFLAG(CTF_RANDOM_DEATH_MSG));	
+	sprintf(text, "Random Death Msgs    %s", CTFFLAG(CTF_RANDOM_DEATH_MSG));
 	Menu_Set(ent, 16, text, CTFFlags_Exec);
-	
+
 
 	Menu_Draw (ent);
 }
 
-int timeslist[] = 
+int timeslist[] =
 {
 	0,
 	0,
@@ -1243,7 +1243,7 @@ void Ref_Timelimit_Menu (edict_t *ent)
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 0;
 
-	sprintf(text, "Current Timelimit:  %3d", (int)timelimit->value);	
+	sprintf(text, "Current Timelimit:  %3d", (int)timelimit->value);
 	Menu_Set(ent, 0, text, Ref_Settings_Menu);
 	Menu_Set(ent, 1, "------------------", NULL);
 	for (i=2; i < 18; i++)
@@ -1255,7 +1255,7 @@ void Ref_Timelimit_Menu (edict_t *ent)
 	Menu_Draw (ent);
 }
 
-int fragslist[] = 
+int fragslist[] =
 {
 	0,
 	0,
@@ -1292,7 +1292,7 @@ void Ref_Fraglimit_Menu (edict_t *ent)
 	ent->client->menu = MENU_LOCAL;
 	ent->client->menuselect = 0;
 
-	sprintf(text, "Current Fraglimit:  %3d", (int)fraglimit->value);	
+	sprintf(text, "Current Fraglimit:  %3d", (int)fraglimit->value);
 	Menu_Set(ent, 0, text, Ref_Settings_Menu);
 	Menu_Set(ent, 1, "------------------", NULL);
 	for (i=2; i < 18; i++)
@@ -1307,7 +1307,7 @@ void Ref_Fraglimit_Menu (edict_t *ent)
 
 // Maps
 
-char *mapalist[] = 
+char *mapalist[] =
 {
 	0,
 	0,
@@ -1329,7 +1329,7 @@ char *mapalist[] =
 	0
 };
 
-char *mapblist[] = 
+char *mapblist[] =
 {
 	0,
 	0,
@@ -1351,7 +1351,7 @@ char *mapblist[] =
 	0
 };
 
-char *mapclist[] = 
+char *mapclist[] =
 {
 	0,
 	0,
@@ -1816,7 +1816,7 @@ void Ref_Kick_Menu (edict_t *ent)
 	player = ctf_findplayer(NULL, NULL, CTF_TEAM_IGNORETEAM);
 	while (player && i < 17)
 	{
-		sprintf(message, "%ld %s", player->client->ctf.ctfid, player->client->pers.netname);
+		sprintf(message, "%lu %s", player->client->ctf.ctfid, player->client->pers.netname);
 		Menu_Set(ent, i, message, SelectKick);
 		player = ctf_findplayer(player, NULL, CTF_TEAM_IGNORETEAM);
 		i++;
@@ -1826,7 +1826,7 @@ void Ref_Kick_Menu (edict_t *ent)
 }
 
 
-char *voicelist[] = 
+char *voicelist[] =
 {
 	0,
 	0,
@@ -1896,7 +1896,7 @@ void Help_Menu (edict_t *ent)
 
 	// Calculate our page
 	start = 15*ent->client->menupage;
-	
+
 	// Find if last page was the last
 	if (start > 14)
 	{
@@ -1964,7 +1964,7 @@ void Menu_Draw (edict_t *ent)
 	int i;
 	menuitem *menu;
 	int size, ystart;
-	
+
 	int selected;
 
 	// Keep from updating the menu more than once per frame
@@ -1973,10 +1973,10 @@ void Menu_Draw (edict_t *ent)
 		return;
 
 	ent->client->menumovetime = level.framenum;
-	
+
 	gi.WriteByte (svc_layout);
 	strcpy(string, "xv 32 yv 8 picn inventory ");
-	
+
 	if (ent->client->menu == MENU_LOCAL) // Special case
 	{
 		menu = ent->client->localmenu;

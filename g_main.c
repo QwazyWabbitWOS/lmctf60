@@ -716,13 +716,14 @@ void ExitLevel (void)
 	ClientEndServerFrames ();
 
 	// clear some things before going to next level
-	for (i=0 ; i<maxclients->value ; i++)
+	for (i = 0; i < maxclients->value; i++)
 	{
 		ent = g_edicts + 1 + i;
-		if (!ent->inuse)
-			continue;
-		if (ent->health > ent->client->pers.max_health)
-			ent->health = ent->client->pers.max_health;
+		if (ent && ent->inuse)
+		{
+			if (ent->health > ent->client->pers.max_health)
+				ent->health = ent->client->pers.max_health;
+		}
 	}
 
 	// clean up stats before start of next level

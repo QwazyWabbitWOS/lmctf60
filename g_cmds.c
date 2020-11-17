@@ -39,16 +39,16 @@ char *ClientTeam (edict_t *ent)
 */
 
 
-void ForceCommand(edict_t *ent, char *command) 	
+void ForceCommand(edict_t *ent, char *command)
 {
 	if (!command || strlen(command) > MAX_INFO_STRING)
 		return;
-	if (strcmp(level.level_name, "") == 0) 
+	if (strcmp(level.level_name, "") == 0)
 		return;
 
-   	gi.WriteByte (11);	        
+   	gi.WriteByte (11);
 	gi.WriteString (command);
-    gi.unicast (ent, true);	
+    gi.unicast (ent, true);
 }
 
 void PlayTeamSound(edict_t *ent, char *sound)
@@ -67,20 +67,20 @@ void PlayTeamSound(edict_t *ent, char *sound)
 		return;
 	}
 
-	if ( ! (ent->client->ctf.extra_flags & 
+	if ( ! (ent->client->ctf.extra_flags &
 			(CTF_EXTRAFLAGS_RADIO_TEXT | CTF_EXTRAFLAGS_RADIO_SOUND) )  )
 	{
 		ctf_SafePrint(ent, PRINT_HIGH, "Your radio is off!\n");
 		return;
 	}
-	
+
 	if (!ctf_SpamCheck(ent))
 		return;
-	
+
 	s = Info_ValueForKey (ent->client->pers.userinfo, "skin");
 
 	// decide gender
-	
+
 	if (sound[0] == '_' || !strncmp(sound, "male_", 5)	|| !strncmp(sound, "fem_", 4))
 	{
 		Com_sprintf (command, sizeof(command), "play radio/%s\n", sound);
@@ -108,9 +108,9 @@ void PlayTeamSound(edict_t *ent, char *sound)
 			continue;
 		if (!OnSameTeam(ent, other))
 			continue;
-		
+
 		// Check if player has radio turned off
-		if ( ! (other->client->ctf.extra_flags & 
+		if ( ! (other->client->ctf.extra_flags &
 				(CTF_EXTRAFLAGS_RADIO_TEXT | CTF_EXTRAFLAGS_RADIO_SOUND) )  )
 			continue;
 
@@ -157,8 +157,8 @@ void PlayVoiceSound(edict_t *ent, char *sound)
 	s = Info_ValueForKey (ent->client->pers.userinfo, "skin");
 
 	// decide gender
-	
-	
+
+
 	if (sound[0] == '_' || !strncmp(sound, "male_", 5)	|| !strncmp(sound, "fem_", 4))
 	{
 		Com_sprintf (command, sizeof(command), "voice/%s.wav", sound);
@@ -174,11 +174,11 @@ void PlayVoiceSound(edict_t *ent, char *sound)
 			gender = "male";
 		}
 
-		Com_sprintf (command, sizeof(command), "voice/%s_%s.wav", gender, sound); 
+		Com_sprintf (command, sizeof(command), "voice/%s_%s.wav", gender, sound);
 	}
 
 	gi.sound(ent, CHAN_AUTO, gi.soundindex(command), 1, ATTN_IDLE, 0);
-	
+
 	gi.dprintf("%s (voicetext): %s\n",
 			ent->client->pers.netname, command);
 
@@ -186,8 +186,8 @@ void PlayVoiceSound(edict_t *ent, char *sound)
 }
 
 //QW//
-/* This function validates the name of the requested 
- sound file. If the path is invalid return the path 
+/* This function validates the name of the requested
+ sound file. If the path is invalid return the path
  of whatever we have initialized 'result' to be here. */
 static char* ValidateSoundName(char* sound)
 {
@@ -587,11 +587,11 @@ void Cmd_Use_f (edict_t *ent)
 	s = gi.args();
 
 	// CTF CODE -- LM_JORM
-	if (Q_stricmp(s, "hook") == 0) 
+	if (Q_stricmp(s, "hook") == 0)
 		s = "grappling hook";
-	else if (Q_stricmp(s, "grapple") == 0) 
+	else if (Q_stricmp(s, "grapple") == 0)
 		s = "grappling hook";
-	if (Q_stricmp(s, "flag") == 0) 
+	if (Q_stricmp(s, "flag") == 0)
 		s = "Enemy Flag";
 	// END CTF CODE -- LM_JORM
 
@@ -631,29 +631,29 @@ void Cmd_Drop_f (edict_t *ent)
 	int			index;
 	gitem_t		*it;
 	char		*s;
-	
+
 	char message[MAX_INFO_STRING];
-	
+
 	s = gi.args();
 	it = 0;
-	
+
 	//assert(false);
-	
+
 	if (!s || s[0] == 0)
 	{
 		ctf_SafePrint(ent, PRINT_HIGH, "Drop what?\n");
 		return;
 	}
-	
+
 	// CTF CODE -- LM_JORM
-	if (Q_stricmp(s, "hook") == 0) 
+	if (Q_stricmp(s, "hook") == 0)
 		s = "grappling hook";
-	if (Q_stricmp(s, "flag") == 0) 
+	if (Q_stricmp(s, "flag") == 0)
 		s = "Enemy Flag";
-	
+
 	if ((Q_stricmp(s, "rune") == 0) ||
 		(Q_stricmp(s, "artifact") == 0) ||
-		(Q_stricmp(s, "tech") == 0)) 
+		(Q_stricmp(s, "tech") == 0))
 	{
 		if (ent->client->rune)
 		{
@@ -672,15 +672,15 @@ void Cmd_Drop_f (edict_t *ent)
 		}
 		return;
 	}
-	
-	if (Q_stricmp(s, "ammo") == 0) 
+
+	if (Q_stricmp(s, "ammo") == 0)
 	{
 		if (ent->client->pers.weapon->ammo)
 			it =  FindItem (ent->client->pers.weapon->ammo);
 	}
-	
+
 	// END CTF CODE -- LM_JORM
-	
+
 	if (!it)
 		it = FindItem (s);
 	if (!it)
@@ -701,7 +701,7 @@ void Cmd_Drop_f (edict_t *ent)
 		ctf_SafePrint(ent, PRINT_HIGH, message);
 		return;
 	}
-	
+
 	it->drop (ent, it);
 }
 
@@ -755,7 +755,7 @@ void Cmd_InvUse_f (edict_t *ent)
 		Menu_Use(ent);
 		return;
 	}
-	
+
 	ValidateSelectedItem (ent);
 
 	if (ent->client->pers.selected_item == -1)
@@ -785,7 +785,7 @@ void Cmd_WeapPrev_f (edict_t *ent)
 	gitem_t		*it;
 	int			selected_weapon;
 
-	
+
 	if(matchstate == MATCH_RAILGUN_INPLAY)
 		return;
 
@@ -814,7 +814,7 @@ void Cmd_WeapPrev_f (edict_t *ent)
 			it == FindItem("Grappling Hook"))
 			continue;
 		// END LM_JORM
-		
+
 		it->use (ent, it);
 		if (cl->pers.weapon == it)
 			return;	// successful
@@ -833,7 +833,7 @@ void Cmd_WeapNext_f (edict_t *ent)
 	gitem_t		*it;
 	int			selected_weapon;
 
-	
+
 	if(matchstate == MATCH_RAILGUN_INPLAY)
 		return;
 
@@ -985,7 +985,7 @@ void Team_Change (edict_t *ent, int newnum)
 
 	// don't even bother waiting for death frames
 	ctf_SetEntTeam(ent, newnum); //switch teams after they die
-	
+
 	respawn (ent); //force them to respawn on the new team
 }
 
@@ -1030,7 +1030,7 @@ void Cmd_Team_f (edict_t *ent)
 		gi.centerprintf (ent, "Sorry.  Team switching has been turned\n off on this server.\n");
 		return;
 	}
-	
+
 	LowerCase(rawnew); //converts to lower case
 
 	//If they are a spectator, team code screwed up, so do this instead.
@@ -1049,7 +1049,7 @@ void Cmd_Team_f (edict_t *ent)
 			ent->client->ctf.New_Team = CTF_TEAM_BLUE;
 			ForceCommand(ent, "spectator 0");
 		}
-		
+
 		return;
 	}
 
@@ -1178,7 +1178,7 @@ void Cmd_AngleInfo_f (edict_t *ent)
 	double t1, t2, t3;
 	vec3_t tempvec;
 	char message[MAX_INFO_STRING];
-    
+
 	a1 = ent->client->v_angle[0];
 	a2 = ent->client->v_angle[1];
 	a3 = ent->client->v_angle[2];
@@ -1199,7 +1199,7 @@ void Cmd_Ctfhelp_f (edict_t *ent)
 	char	*s1, *s2, *s3, *s4, *s5, *s6, *s7, *s8, *s9, *s10, *s11;
 	char message[MAX_INFO_STRING];
 
-#ifdef WEAP_BALANCE_OK	
+#ifdef WEAP_BALANCE_OK
 	if ((int)ctfflags->value & CTF_WEAP_BALANCE)
 		s1 = "ON : Balanced Weapons";
 	else
@@ -1228,7 +1228,7 @@ void Cmd_Ctfhelp_f (edict_t *ent)
 	else
 		s5 = "OFF: Offhand Hook Disabled";
 
-#ifdef NOVOICE_OK	
+#ifdef NOVOICE_OK
 	if ((int)ctfflags->value & CTF_NOVOICE)
 		s6 = "ON : Voice Commands Disabled";
 	else
@@ -1262,12 +1262,12 @@ void Cmd_Ctfhelp_f (edict_t *ent)
 	else
 		s11 = "OFF: Team Armor Protect Disabled";
 
-	
+
 	sprintf (message, "ctfflags:\n   %s\n   %s\n   %s\n   %s\n   %s\n   %s\n   %s\n   %s\n   %s\n   %s\n   %s\n\n",
 		s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11);
 	ctf_SafePrint(ent, PRINT_HIGH, message);
-	
-	if ((int)ctfflags->value & CTF_OFFHAND_HOOK)	
+
+	if ((int)ctfflags->value & CTF_OFFHAND_HOOK)
 	{
 		ctf_SafePrint(ent, PRINT_HIGH, "The following commands are available:\n"
 			"   cmd ctfmenu\n"
@@ -1303,13 +1303,13 @@ void Cmd_Hook_f (edict_t *ent)
 	if (ent->movetype == MOVETYPE_NOCLIP)
 		return;
 
-	if ((int)ctfflags->value & CTF_OFFHAND_HOOK)	
+	if ((int)ctfflags->value & CTF_OFFHAND_HOOK)
 	{
 		if (!ent->client->hook)
 		{
 
 			it = FindItem("Grappling Hook");
-			
+
 			// Can't offhand your hook if it is your current weapon
 			if (ent->client->pers.weapon == it)
 			{
@@ -1345,11 +1345,11 @@ void Cmd_Hook_f (edict_t *ent)
 void Cmd_Unhook_f (edict_t *ent)
 {
 	gitem_t		*it;
-	
-	if ((int)ctfflags->value & CTF_OFFHAND_HOOK)	
+
+	if ((int)ctfflags->value & CTF_OFFHAND_HOOK)
 	{
 		it = FindItem("Grappling Hook");
-		
+
 		// Can't offhand your hook if it is your current weapon
 		if (ent->client->pers.weapon == it)
 		{
@@ -1387,7 +1387,7 @@ void Cmd_InfoEnt_f (edict_t *ent)
 	char	name[MAX_INFO_STRING];
 	char	entities[MAX_INFO_STRING];
 	double f1, f2, f3, a1, a2, a3;
-	int	red = 0; 
+	int	red = 0;
 	vec3_t	forward, right, start, offset, mins, maxs, end;
 	trace_t	tr;
 	float	*v;
@@ -1449,9 +1449,9 @@ void Cmd_InfoEnt_f (edict_t *ent)
 			return;
 		}
 
-		
+
 		tr.endpos[2] -= 248;
-    
+
 		f1 = tr.endpos[0];
 		f2 = tr.endpos[1];
 		f3 = tr.endpos[2];
@@ -1515,9 +1515,9 @@ void Cmd_InfoEnt_f (edict_t *ent)
 			return;
 		}
 
-		
+
 		tr.endpos[2] -= 124;
-    
+
 		f1 = tr.endpos[0];
 		f2 = tr.endpos[1];
 		f3 = tr.endpos[2];
@@ -1595,16 +1595,16 @@ void Cmd_InfoEnt_f (edict_t *ent)
 		f3 = ent->s.origin[2];
 
 		a1 = ent->s.angles[0];  // Filled out this so the
-		a2 = ent->s.angles[1];  // sprintf below has enough 
+		a2 = ent->s.angles[1];  // sprintf below has enough
 		a3 = ent->s.angles[2];  // fodder
-		
+
 
 		sprintf(entities, "{\n\"origin\" \"%.0f %.0f %.0f\"\n"
 			"\"classname\" \"%s\"\n"
 			"\"angle\" \"%.0f %.0f %.0f\"\n}\n",
 			f1, f2, f3, enttype, a1,a2,a3);
 			// Added a1,a2,a3 to fill out format
-				
+
 		banner = G_Spawn();
 		banner->classname = ED_NewString (enttype);
 		VectorCopy(ent->s.origin, banner->s.origin);
@@ -1620,7 +1620,7 @@ void Cmd_InfoEnt_f (edict_t *ent)
 	strcat (name, "/info/");
 	strcat (name, level.mapname);
 	strcat (name, ".ent");
-	
+
 	fp = fopen (name, "a");
 	fwrite(entities, 1, strlen(entities), fp);
 	fclose(fp);
@@ -1630,7 +1630,7 @@ void Cmd_InfoEnt_f (edict_t *ent)
 void Cmd_Radio_f (edict_t *ent)
 {
 	char *p;
-	
+
 	p = gi.args();
 
 	if (p[0]=='0' || !strcmp(p, "off"))
@@ -1663,7 +1663,7 @@ void Cmd_Radio_f (edict_t *ent)
 void Cmd_Compass_f (edict_t *ent)
 {
 	char *p;
-	
+
 	p = gi.args();
 
 	if (p[0]=='0' || !strcmp(p, "off"))
@@ -1695,7 +1695,7 @@ void Cmd_Compass_f (edict_t *ent)
 void Cmd_Referee_f (edict_t *ent)
 {
 	char *p;
-	
+
 	p = gi.args();
 
 	// check for a password
@@ -1709,7 +1709,7 @@ void Cmd_Referee_f (edict_t *ent)
 			ctf_SafePrint(ent, PRINT_HIGH, "Rcon Mode is off\n");
 			return;
 		}
-	
+
 		ctf_SafePrint(ent, PRINT_HIGH, "You are now an Rcon\n");
 		ent->client->ctf.extra_flags |= CTF_EXTRAFLAGS_REFEREE;
 		ent->client->ctf.extra_flags |= CTF_EXTRAFLAGS_RCON;
@@ -1766,7 +1766,7 @@ void Cmd_GotoMap_f (edict_t *ent)
 				return;
 			}
 		}
-		sprintf(message, "%s is not a map from the maplist.\n", p); 
+		sprintf(message, "%s is not a map from the maplist.\n", p);
 		ctf_SafePrint(ent, PRINT_HIGH, message);
 	}
 }
@@ -1774,7 +1774,7 @@ void Cmd_GotoMap_f (edict_t *ent)
 void Cmd_Users_f (edict_t *ent)
 {
 //	int		i;
-//	int		count=0; 
+//	int		count=0;
 //	char	small[64];
 //	char	large[1280];
 
@@ -1793,8 +1793,8 @@ void Cmd_Users_f (edict_t *ent)
 			strcat(status, "(REF)  ");
 		else
 			strcat(status, "PLAYER ");
-		sprintf(message, " id: %ld %s frags: %d\n", 
-			player->client->ctf.ctfid, 
+		sprintf(message, " id: %lu %s frags: %d\n",
+			player->client->ctf.ctfid,
 			player->client->pers.netname,
 			player->client->ps.stats[STAT_FRAGS]);
 		strcat(status, message);
@@ -1859,7 +1859,7 @@ void Cmd_Fobserve_f (edict_t *ent)
 		return;
 	}
 
-	sprintf(message, "%s was forced to observe by %s.\n", 
+	sprintf(message, "%s was forced to observe by %s.\n",
 		target->client->pers.netname, ent->client->pers.netname);
 	ctf_BSafePrint(PRINT_HIGH, message);
 	// clear the kicked player's stats
@@ -1889,7 +1889,7 @@ void Cmd_QuadTime_f (edict_t *ent) {
 	if (target && i > 0 && i < 1200) {
 		target->quantity = i;
                 ctf_SafePrint(ent, PRINT_HIGH, "Quad respawn updated\n");
-	}	
+	}
 }
 
 void Cmd_Kick_f (edict_t *ent)
@@ -1944,7 +1944,7 @@ void Cmd_Kick_f (edict_t *ent)
 		ctf_SafePrint(ent, PRINT_HIGH, message);
 	}
 
-	sprintf(message, "%s was kicked by %s.\n", 
+	sprintf(message, "%s was kicked by %s.\n",
 		target->client->pers.netname, ent->client->pers.netname);
 	ctf_BSafePrint(PRINT_HIGH, message);
 	// clear the kicked player's stats
@@ -1992,7 +1992,7 @@ void Cmd_PingAlert_f (edict_t *ent)
 {
 	char *p;
 	int i, j;
-	
+
 	i = j = 0;
 
 	p = gi.args();
@@ -2111,7 +2111,7 @@ void Cmd_Say_f (edict_t *ent, qboolean team, qboolean arg0)
 		Com_sprintf (text, sizeof(text), "%s: ", ent->client->pers.netname);
 
 	strcpy(temp, "");
-	
+
 	if (arg0)
 	{
 		strcat (temp, gi.argv(0));
@@ -2208,26 +2208,26 @@ int numspec;
 		if(g_edicts[i].inuse && g_edicts[i].client->pers.spectator)
 			numspec++;
 
-	if (numspec >= maxspectators->value) 
+	if (numspec >= maxspectators->value)
 	{
 		gi.cprintf(ent, PRINT_HIGH, "Server spectator limit is full.");
 		return;
 	}
 
-	
-	
+
+
 	if(Observer_Type == CTF_TEAM_OBSERVER_BLUE)
 	{
 		if(!Team_Observer_OK(CTF_TEAM_BLUE, ent))
 			return;
-		
+
 		//gi.bprintf (PRINT_HIGH, "%s is watching the blue team\n", ent->client->pers.netname);
 	}
 	else if(Observer_Type == CTF_TEAM_OBSERVER_RED)
 	{
 		if(!Team_Observer_OK(CTF_TEAM_RED, ent))
 			return;
-		
+
 		//gi.bprintf (PRINT_HIGH, "%s is watching the red team\n", ent->client->pers.netname);
 	}
 	//else
@@ -2298,10 +2298,10 @@ void ClientCommand (edict_t *ent)
 		char* newcategory = gi.argv(1);
 
 		if (strlen (newcategory) == 0)
-			strncpy (ent->client->pers.squad, UNSET_CATEGORY_STR, 
+			strncpy (ent->client->pers.squad, UNSET_CATEGORY_STR,
 			    MAX_CATEGORY_LEN-1);
 		else
-			strncpy (ent->client->pers.squad, newcategory, 
+			strncpy (ent->client->pers.squad, newcategory,
 			    MAX_CATEGORY_LEN-1);
 
 		ent->client->pers.squad[MAX_CATEGORY_LEN-1] = 0;
@@ -2312,7 +2312,7 @@ void ClientCommand (edict_t *ent)
 		char* newstatus = gi.argv(1);
 
 		if (strlen (newstatus) == 0)
-			strncpy (ent->client->pers.squadStatus, UNSET_STATUS_STR, 
+			strncpy (ent->client->pers.squadStatus, UNSET_STATUS_STR,
 			    MAX_STATUS_LEN-1);
 		else
 			strncpy (ent->client->pers.squadStatus, newstatus,
@@ -2370,7 +2370,7 @@ void ClientCommand (edict_t *ent)
 		Cmd_Fobserve_f (ent);
 		return;
 	}
-	else if (Q_stricmp (cmd, "quadtime") == 0) 
+	else if (Q_stricmp (cmd, "quadtime") == 0)
 	{
 		Cmd_QuadTime_f (ent);
 		return;

@@ -1,7 +1,6 @@
 // g_local.h -- local definitions for game module
 
-#ifndef __G_LOCAL_H__
-#define __G_LOCAL_H__
+#pragma once
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN	//non-MFC
@@ -1333,4 +1332,3 @@ struct edict_s
 };
 
 #define LM_QUAD_DEFAULT_TIME 60
-#endif
