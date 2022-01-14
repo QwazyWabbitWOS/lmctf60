@@ -31,6 +31,8 @@ _CrtMemState startup1;	// memory diagnostics
 
 #include "game.h"
 
+#define ISREF(ent) (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_REFEREE)
+
 // the "gameversion" client command will print this plus compile date
 #define GAMEVERSION     "LMCTF 6.2-raven"
 
@@ -352,6 +354,7 @@ typedef struct
 	int			body_que;			// dead bodies
 
 	int			power_cubes;		// ugly necessity for coop
+	qboolean    teams_locked;
 } level_locals_t;
 
 
@@ -606,8 +609,10 @@ extern  int     bluescore, redscore; // CTF CODE -- LM_JORM
 extern  char    helptext[1000][25]; // CTF CODE -- LM_JORM
 
 extern	cvar_t	*sv_maplist;
+extern  int quad_respawn_time;
 
 #define world	(&g_edicts[0])
+
 
 // item spawnflags
 #define ITEM_TRIGGER_SPAWN		0x00000001

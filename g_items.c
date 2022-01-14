@@ -29,7 +29,7 @@ extern void Weapon_Plasma (edict_t *ent);
 extern void Use_PLASMA (edict_t *ent, gitem_t *inv);
 // END
 
-int quad_respawn_time;
+//int quad_respawn_time;
 
 void Weapon_Hook (edict_t *ent); // CTF CODE -- LM_JORM
 

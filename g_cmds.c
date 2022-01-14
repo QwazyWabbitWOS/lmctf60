@@ -38,6 +38,16 @@ char *ClientTeam (edict_t *ent)
 }
 */
 
+void Cmd_LockTeams_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Only referees can (un)lock teams.\n");
+		return;
+	}
+
+	level.teams_locked = !level.teams_locked;
+	gi.bprintf(PRINT_HIGH, "Teams are now %slocked\n", level.teams_locked ? "" : "un");
+}
 
 void ForceCommand(edict_t *ent, char *command)
 {
@@ -1028,6 +1038,11 @@ void Cmd_Team_f (edict_t *ent)
 	if ((int)ctfflags->value & CTF_TEAM_NOSWITCH)
 	{
 		gi.centerprintf (ent, "Sorry.  Team switching has been turned\n off on this server.\n");
+		return;
+	}
+
+	if (level.teams_locked) {
+		gi.cprintf(ent, PRINT_HIGH, "Teams are currently locked.\n");
 		return;
 	}
 
@@ -2353,6 +2368,11 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp (cmd, "refmenu") == 0)
 	{
 		Cmd_Refmenu_f (ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "lock") == 0 || Q_stricmp(cmd, "unlock") == 0)
+	{
+		Cmd_LockTeams_f(ent);
 		return;
 	}
 	else if (Q_stricmp (cmd, "users") == 0)
