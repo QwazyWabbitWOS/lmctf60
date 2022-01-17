@@ -60,10 +60,13 @@ void Cmd_StartMatch_f(edict_t *ent) {
 		return;
 	}
 
-	if (matchstate == MATCH_NONE) {
-		stats_cleanup();
-		matchstate = MATCH_COUNTDOWN;
+	if (gi.argc() != 2) {
+		gi.cprintf(ent, PRINT_HIGH, "Usage: startmatch <mapname>\n");
+		return;
 	}
+
+	char *maparg = gi.argv(1);
+	StartMatch(maparg);
 }
 
 void Cmd_StopMatch_f(edict_t *ent) {
@@ -78,6 +81,7 @@ void Cmd_StopMatch_f(edict_t *ent) {
 	}
 
 	KillMatch();
+	gi.bprintf(PRINT_HIGH, "Match stopped by %s\n", ent->client->pers.netname);
 }
 
 void ForceCommand(edict_t *ent, char *command)
