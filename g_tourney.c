@@ -242,7 +242,8 @@ void Match_End(edict_t *ent)
 	}
 	*/
 	matchstate = MATCH_OVER;
-	ent->count = 300; // five minutes	
+	ent->count = 300; // five minutes
+	level.teams_locked = false;
 }
 
 

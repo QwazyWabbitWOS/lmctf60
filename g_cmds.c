@@ -49,6 +49,37 @@ void Cmd_LockTeams_f(edict_t *ent)
 	gi.bprintf(PRINT_HIGH, "Teams are now %slocked\n", level.teams_locked ? "" : "un");
 }
 
+void Cmd_StartMatch_f(edict_t *ent) {
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command denied.\n");
+		return;
+	}
+
+	if (matchstate > MATCH_NONE) {
+		gi.cprintf(ent, PRINT_HIGH, "Match already running, stop it first\n");
+		return;
+	}
+
+	if (matchstate == MATCH_NONE) {
+		stats_cleanup();
+		matchstate = MATCH_COUNTDOWN;
+	}
+}
+
+void Cmd_StopMatch_f(edict_t *ent) {
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command denied.\n");
+		return;
+	}
+
+	if (matchstate == MATCH_NONE) {
+		gi.cprintf(ent, PRINT_HIGH, "No match running\n");
+		return;
+	}
+
+	KillMatch();
+}
+
 void ForceCommand(edict_t *ent, char *command)
 {
 	if (!command || strlen(command) > MAX_INFO_STRING)
@@ -2373,6 +2404,16 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp(cmd, "lock") == 0 || Q_stricmp(cmd, "unlock") == 0)
 	{
 		Cmd_LockTeams_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "startmatch") == 0)
+	{
+		Cmd_StartMatch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "stopmatch") == 0)
+	{
+		Cmd_StopMatch_f(ent);
 		return;
 	}
 	else if (Q_stricmp (cmd, "users") == 0)
