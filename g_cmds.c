@@ -84,6 +84,10 @@ void Cmd_StopMatch_f(edict_t *ent) {
 	gi.bprintf(PRINT_HIGH, "Match stopped by %s\n", ent->client->pers.netname);
 }
 
+void Cmd_PauseMatch_f(edict_t *ent) {
+	RefTogglePause(ent);
+}
+
 void ForceCommand(edict_t *ent, char *command)
 {
 	if (!command || strlen(command) > MAX_INFO_STRING)
@@ -2418,6 +2422,11 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp(cmd, "stopmatch") == 0)
 	{
 		Cmd_StopMatch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "pausematch") == 0 || Q_stricmp(cmd, "unpausematch") == 0)
+	{
+		Cmd_PauseMatch_f(ent);
 		return;
 	}
 	else if (Q_stricmp (cmd, "users") == 0)
