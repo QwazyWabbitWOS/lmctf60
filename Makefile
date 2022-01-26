@@ -1,4 +1,4 @@
-### OpenRA2 Makefile ###
+### LMCTF Makefile ###
 
 -include .config
 
@@ -26,7 +26,7 @@ ifdef CONFIG_WINDOWS
     LDFLAGS += -mconsole
     LDFLAGS += -Wl,--nxcompat,--dynamicbase
 else
-    CFLAGS += -fPIC -fvisibility=hidden 
+    CFLAGS += -fPIC -fvisibility=hidden
     LDFLAGS += -Wl,--no-undefined
 endif
 

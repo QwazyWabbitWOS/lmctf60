@@ -18,6 +18,20 @@ _CrtMemState startup1;	// memory diagnostics
 
 //#define OLDOBSERVERCODE
 
+// shared lib symbol visibility
+#if defined _WIN32 || defined __CYGWIN__
+  #define q_imported __declspec(dllimport)
+  #define q_exported __declspec(dllexport)
+#else
+  #if __GNUC__ >= 4
+    #define q_imported __attribute__ ((visibility ("default")))
+    #define q_exported __attribute__ ((visibility ("default")))
+  #else
+    #define q_imported
+    #define q_exported
+  #endif
+#endif
+
 #include "q_shared.h"
 
 // define GAME_INCLUDE so that game.h does not define the
