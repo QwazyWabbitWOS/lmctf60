@@ -2296,6 +2296,17 @@ int numspec;
 	ForceCommand(ent, "spectator 1");
 }
 
+void Cmd_ToggleFastSwitch_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+		return;
+	}
+
+	char *newval = (((int)fastswitch->value) == 1) ? "0" : "1";
+	gi.cvar_set("fastswitch", newval);
+	gi.bprintf(PRINT_HIGH, "Fast weapon switching now %sabled\n", (fastswitch->value) ? "en" : "dis");
+}
 
 /*
 =================
@@ -2427,6 +2438,11 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp(cmd, "pausematch") == 0 || Q_stricmp(cmd, "unpausematch") == 0)
 	{
 		Cmd_PauseMatch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "togglefastswitch") == 0)
+	{
+		Cmd_ToggleFastSwitch_f(ent);
 		return;
 	}
 	else if (Q_stricmp (cmd, "users") == 0)

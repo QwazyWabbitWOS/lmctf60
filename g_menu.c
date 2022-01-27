@@ -720,7 +720,8 @@ void Ref_Main_Menu (edict_t *ent)
 	else
 		Menu_Set(ent, 9, "Pause Match", RefTogglePause);
 	Menu_Set(ent, 10, "Practice Settings", Ref_Practice_Menu);
-	Menu_Set(ent, 11, "Referee Help", Ref_Help_Menu);
+	Menu_Set(ent, 11, "Toggle Fast Switch", Cmd_ToggleFastSwitch_f);
+	Menu_Set(ent, 12, "Referee Help", Ref_Help_Menu);
 
 	if (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_RCON)
 		Menu_Set(ent, 13, "Save Config (RCON)", SaveServer_Exec);
@@ -1057,18 +1058,20 @@ void Ref_Settings_Menu (edict_t *ent)
 	Menu_Set(ent, 5, text, Ref_DMFlags_Menu);
 	sprintf(text, "CTFFlags:          %5d", ((unsigned short)ctfflags->value));
 	Menu_Set(ent, 6, text, Ref_CTFFlags_Menu);
+	sprintf(text, "Fast Weap Switch:  %5d", ((unsigned short)fastswitch->value));
+	Menu_Set(ent, 7, text, NULL);
 	cvar_t *svp = gi.cvar("sv_password","",0);
 	if (svp && strlen(svp->string) > 0) {
 		sprintf(text, "sv_password: %s", svp->string);
 	} else {
 		sprintf(text, "password: %s", password->string);
 	}
-	Menu_Set(ent, 7, text, NULL);
+	Menu_Set(ent, 8, text, NULL);
 	if (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_RCON)
-		Menu_Set(ent, 8, "Clear password (RCON)", ClearPassword_Exec);
+		Menu_Set(ent, 9, "Clear password (RCON)", ClearPassword_Exec);
 	if (quad) {
 		sprintf(text, "Quad Time: %i", quad->quantity);
-		Menu_Set(ent, 9, text, NULL);
+		Menu_Set(ent, 10, text, NULL);
 	}
 
 

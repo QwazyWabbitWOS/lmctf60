@@ -685,6 +685,7 @@ void Cmd_WeapNext_f(edict_t *ent);
 void PlayTeamSound(edict_t *ent, char *sound); // LM_JORM
 void PlayVoiceSound(edict_t *ent, char *sound); // LM_Surt
 void Cmd_Squadboard_f (edict_t *ent); // ADC
+void Cmd_ToggleFastSwitch_f(edict_t *ent);
 
 //
 // g_items.c
