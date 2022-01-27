@@ -599,6 +599,7 @@ extern  cvar_t  *skin_debug;    // For debugging skins file
 extern  cvar_t  *disabled_weps; // CTF CODE -- LM_SURT
 extern  cvar_t  *flag_init;
 extern  cvar_t  *fastswitch;
+extern  cvar_t  *mod_website;   // URL to show in team join centerprint
 
 #ifdef ZBOT
 extern  cvar_t  *use_zbotdetect; // CTF CODE -- LM_Hati

@@ -217,6 +217,7 @@ void InitGame(void)
 	rconpassword = gi.cvar("rcon_password", "", 0); // CTF CODE -- LM_CTF
 	disabled_weps = gi.cvar("disabled_weps", "0", 0);
 	fastswitch = gi.cvar("fastswitch", "0", 0);
+	mod_website = gi.cvar("mod_website", "http://lmctf.com", 0);
 
 
 #ifdef ZBOT
