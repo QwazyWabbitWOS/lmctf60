@@ -2309,6 +2309,26 @@ void Cmd_ToggleFastSwitch_f(edict_t *ent)
 	gi.bprintf(PRINT_HIGH, "Fast weapon switching now %sabled\n", (fastswitch->value) ? "en" : "dis");
 }
 
+void Cmd_Refcommands_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+		return;
+	}
+
+	gi.cprintf(ent, PRINT_HIGH, "\nReferee commands:\n");
+	gi.cprintf(ent, PRINT_HIGH, "  gotomap                          Change the map\n");
+	gi.cprintf(ent, PRINT_HIGH, "  users                            List players\n");
+	gi.cprintf(ent, PRINT_HIGH, "  kick <id>                        Kick player by their client ID\n");
+	gi.cprintf(ent, PRINT_HIGH, "  pingalert <floor> <ceiling>      Notify ref if a player is outside this range\n");
+	gi.cprintf(ent, PRINT_HIGH, "  togglefastswitch                 Turn on/off fast weapon switching\n");
+	gi.cprintf(ent, PRINT_HIGH, "  refmenu                          Open the menu in the hud\n");
+	gi.cprintf(ent, PRINT_HIGH, "  startmatch <map>                 Start a new match on the given map\n");
+	gi.cprintf(ent, PRINT_HIGH, "  stopmatch                        Stop the current match\n");
+	gi.cprintf(ent, PRINT_HIGH, "  pausematch                       Pause the current match\n");
+	gi.cprintf(ent, PRINT_HIGH, "  lock                             Toggle the team lock\n");
+}
+
 /*
 =================
 ClientCommand
@@ -2419,6 +2439,11 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp (cmd, "refmenu") == 0)
 	{
 		Cmd_Refmenu_f (ent);
+		return;
+	}
+	else if (Q_stricmp (cmd, "refcommands") == 0)
+	{
+		Cmd_Refcommands_f(ent);
 		return;
 	}
 	else if (Q_stricmp(cmd, "lock") == 0 || Q_stricmp(cmd, "unlock") == 0)
