@@ -597,7 +597,7 @@ extern  cvar_t  *maplist_file;  // CTF CODE -- LM_SURT
 extern  cvar_t  *skin_file;     // CTF CODE -- LM_SURT
 extern  cvar_t  *skin_debug;    // For debugging skins file
 extern  cvar_t  *disabled_weps; // CTF CODE -- LM_SURT
-extern  cvar_t* flag_init;
+extern  cvar_t  *flag_init;
 
 #ifdef ZBOT
 extern  cvar_t  *use_zbotdetect; // CTF CODE -- LM_Hati
