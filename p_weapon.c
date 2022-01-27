@@ -453,6 +453,10 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 
 	if (ent->client->weaponstate == WEAPON_ACTIVATING)
 	{
+		if (fastswitch->value) {
+			ent->client->ps.gunframe = FRAME_ACTIVATE_LAST;
+		}
+
 		if (ent->client->ps.gunframe == FRAME_ACTIVATE_LAST)
 		{
 			ent->client->weaponstate = WEAPON_READY;
@@ -467,7 +471,12 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 	if ((ent->client->newweapon) && (ent->client->weaponstate != WEAPON_FIRING))
 	{
 		ent->client->weaponstate = WEAPON_DROPPING;
-		ent->client->ps.gunframe = FRAME_DEACTIVATE_FIRST;
+		if (fastswitch->value) {
+			ChangeWeapon(ent);
+			return;
+		} else {
+			ent->client->ps.gunframe = FRAME_DEACTIVATE_FIRST;
+		}
 
 		if ((FRAME_DEACTIVATE_LAST - FRAME_DEACTIVATE_FIRST) < 4)
 		{
@@ -561,8 +570,20 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 			}
 		}
 
-		if (!fire_frames[n])
+		if (!fire_frames[n]) {
 			ent->client->ps.gunframe++;
+			if (ent->client->newweapon && fastswitch->value) {
+				ent->client->weapon_sound = 0;
+				ChangeWeapon(ent);
+				return;
+			}
+		} else {
+			if (ent->client->newweapon && fastswitch->value) {
+				ent->client->weapon_sound = 0;
+				ChangeWeapon(ent);
+				return;
+			}
+		}
 
 		if (ent->client->ps.gunframe == FRAME_IDLE_FIRST+1)
 			ent->client->weaponstate = WEAPON_READY;
