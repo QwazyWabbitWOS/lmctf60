@@ -1430,6 +1430,7 @@ void Cmd_Refmenu_f (edict_t *ent)
 		return;
 	}
 
+	ent->client->showmenu = true;
 	Ref_Main_Menu(ent);
 }
 
