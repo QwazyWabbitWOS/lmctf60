@@ -48,7 +48,7 @@ _CrtMemState startup1;	// memory diagnostics
 #define ISREF(ent) (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_REFEREE)
 
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION     "LMCTF 6.2-raven"
+#define GAMEVERSION     "LMCTF 6"
 
 #include "p_stats.h" // STATS - LM_Hati
 #include "g_menu.h" // MENUS - LM_Jorm
