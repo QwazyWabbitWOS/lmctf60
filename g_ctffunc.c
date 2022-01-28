@@ -1556,8 +1556,9 @@ void ctf_ChangeMap(char *mapname, qboolean startmatch)
     level.intermissiontime = 0;
     stats_cleanup(); // STATS - LM_Hati
     KillMatch();
-    if (startmatch)
+    if (startmatch) {
 		matchstate = MATCH_COUNTDOWN;
-	else
+    } else {
 		matchstate = MATCH_NONE;
+    }
 }

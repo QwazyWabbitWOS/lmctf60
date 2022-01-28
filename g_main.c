@@ -77,6 +77,7 @@ cvar_t	*disabled_weps;	// CTF CODE -- LM_SURT
 cvar_t  *flag_init;
 cvar_t  *fastswitch;
 cvar_t  *mod_website;
+cvar_t  *autolock;
 
 #ifdef ZBOT
 cvar_t  *use_zbotdetect; // ZBOT Detect -- LM_Hati

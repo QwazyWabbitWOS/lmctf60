@@ -45,8 +45,8 @@ void Cmd_LockTeams_f(edict_t *ent)
 		return;
 	}
 
-	level.teams_locked = !level.teams_locked;
-	gi.bprintf(PRINT_HIGH, "Teams are now %slocked\n", level.teams_locked ? "" : "un");
+	game.teamslocked = !game.teamslocked;
+	gi.bprintf(PRINT_HIGH, "Teams are now %slocked\n", game.teamslocked ? "" : "un");
 }
 
 void Cmd_StartMatch_f(edict_t *ent) {
@@ -1024,8 +1024,15 @@ Cmd_Team_f
 
 void Team_Change (edict_t *ent, int newnum)
 {
-	if (!newnum)
+	if (!newnum) {
 		return;
+	}
+
+	if (game.teamslocked) {
+		gi.cprintf(ent, PRINT_HIGH, "Teams are locked\n");
+		return;
+	}
+
 	ent->health = 0;
 	player_die (ent, ent, ent, 100000, vec3_origin);
 	ent->client->resp.score++;
@@ -1080,7 +1087,7 @@ void Cmd_Team_f (edict_t *ent)
 		return;
 	}
 
-	if (level.teams_locked) {
+	if (game.teamslocked) {
 		gi.cprintf(ent, PRINT_HIGH, "Teams are currently locked.\n");
 		return;
 	}

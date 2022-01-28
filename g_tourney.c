@@ -205,7 +205,7 @@ void Match_End(edict_t *ent)
 
     matchstate = MATCH_OVER;
     ent->count = 300; // five minutes
-    level.teams_locked = false;
+    game.teamslocked = false;
 }
 
 qboolean Match_InCountdown()
@@ -267,8 +267,14 @@ void SetPause(qboolean state)
     match_pause = state;
 
     if (state) {
+    	if ((int)autolock->value) {
+    		game.teamslocked = false;
+    	}
         message = "Game Paused\n";
     } else {
+    	if ((int)autolock->value) {
+    		game.teamslocked = true;
+    	}
         message = "Game Unpaused\n";
     }
 
@@ -443,10 +449,18 @@ void KillMatch()
         tourneyclock->nextthink = level.time + 1;
         tourneyclock = NULL;
     }
+
+    if ((int)autolock->value) {
+    	game.teamslocked = false;
+    }
 }
 
 void StartMatch (char *levelname)
 {
+	if ((int) autolock->value) {
+		game.teamslocked = true;
+	}
+
     ctf_ChangeMap(levelname, true);
 }
 

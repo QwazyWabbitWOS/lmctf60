@@ -218,6 +218,7 @@ void InitGame(void)
 	disabled_weps = gi.cvar("disabled_weps", "0", 0);
 	fastswitch = gi.cvar("fastswitch", "0", 0);
 	mod_website = gi.cvar("mod_website", "http://lmctf.com", 0);
+	autolock = gi.cvar("autolock", "0", 0);
 
 
 #ifdef ZBOT

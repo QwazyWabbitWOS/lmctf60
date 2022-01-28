@@ -321,6 +321,7 @@ typedef struct
 	int			num_items;
 
 	qboolean	autosaved;
+	qboolean	teamslocked;
 } game_locals_t;
 
 
@@ -368,7 +369,6 @@ typedef struct
 	int			body_que;			// dead bodies
 
 	int			power_cubes;		// ugly necessity for coop
-	qboolean    teams_locked;
 } level_locals_t;
 
 
@@ -600,6 +600,7 @@ extern  cvar_t  *disabled_weps; // CTF CODE -- LM_SURT
 extern  cvar_t  *flag_init;
 extern  cvar_t  *fastswitch;
 extern  cvar_t  *mod_website;   // URL to show in team join centerprint
+extern  cvar_t  *autolock;      // lock/unlock teams with match status
 
 #ifdef ZBOT
 extern  cvar_t  *use_zbotdetect; // CTF CODE -- LM_Hati
