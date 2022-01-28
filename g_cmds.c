@@ -100,6 +100,25 @@ void ForceCommand(edict_t *ent, char *command)
     gi.unicast (ent, true);
 }
 
+void Cmd_SetPassword_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+		return;
+	}
+
+	// no password supplied, clear current password
+	if (gi.argc() < 2) {
+		gi.cvar_set("password", "");
+		gi.cprintf(ent, PRINT_HIGH, "Server password has been cleared\n");
+		return;
+	}
+
+	char *pw = gi.argv(1);
+	gi.cvar_set("password", pw);
+	gi.cprintf(ent, PRINT_HIGH, "Server password set to \"%s\"\n", pw);
+}
+
 void PlayTeamSound(edict_t *ent, char *sound)
 {
 	char	command [MAX_INFO_STRING];
@@ -2476,6 +2495,11 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp(cmd, "pausematch") == 0 || Q_stricmp(cmd, "unpausematch") == 0)
 	{
 		Cmd_PauseMatch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "setpassword") == 0)
+	{
+		Cmd_SetPassword_f(ent);
 		return;
 	}
 	else if (Q_stricmp(cmd, "togglefastswitch") == 0)
