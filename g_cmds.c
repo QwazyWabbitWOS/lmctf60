@@ -2316,17 +2316,22 @@ void Cmd_Refcommands_f(edict_t *ent)
 		return;
 	}
 
-	gi.cprintf(ent, PRINT_HIGH, "\nReferee commands:\n");
-	gi.cprintf(ent, PRINT_HIGH, "  gotomap                          Change the map\n");
-	gi.cprintf(ent, PRINT_HIGH, "  users                            List players\n");
-	gi.cprintf(ent, PRINT_HIGH, "  kick <id>                        Kick player by their client ID\n");
-	gi.cprintf(ent, PRINT_HIGH, "  pingalert <floor> <ceiling>      Notify ref if a player is outside this range\n");
-	gi.cprintf(ent, PRINT_HIGH, "  togglefastswitch                 Turn on/off fast weapon switching\n");
-	gi.cprintf(ent, PRINT_HIGH, "  refmenu                          Open the menu in the hud\n");
-	gi.cprintf(ent, PRINT_HIGH, "  startmatch <map>                 Start a new match on the given map\n");
-	gi.cprintf(ent, PRINT_HIGH, "  stopmatch                        Stop the current match\n");
-	gi.cprintf(ent, PRINT_HIGH, "  pausematch                       Pause the current match\n");
-	gi.cprintf(ent, PRINT_HIGH, "  lock                             Toggle the team lock\n");
+	char buf[0xffff];
+	memset(&buf[0], 0, sizeof(buf));
+
+	strcat(buf, "\nReferee, commands:\n");
+	strcat(buf, "  gotomap                          Change the map\n");
+	strcat(buf, "  users                            List players\n");
+	strcat(buf, "  kick <id>                        Kick player by their client ID\n");
+	strcat(buf, "  pingalert <floor> <ceiling>      Notify ref if a player is outside this range\n");
+	strcat(buf, "  togglefastswitch                 Turn on/off fast weapon switching\n");
+	strcat(buf, "  refmenu                          Open the menu in the hud\n");
+	strcat(buf, "  startmatch <map>                 Start a new match on the given map\n");
+	strcat(buf, "  stopmatch                        Stop the current match\n");
+	strcat(buf, "  pausematch                       Pause the current match\n");
+	strcat(buf, "  lock                             Toggle the team lock\n");
+
+	gi.cprintf(ent, PRINT_HIGH, buf);
 }
 
 /*
