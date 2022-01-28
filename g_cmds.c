@@ -2356,6 +2356,7 @@ void Cmd_Refcommands_f(edict_t *ent)
 	strcat(buf, "  stopmatch                        Stop the current match\n");
 	strcat(buf, "  pausematch                       Pause the current match\n");
 	strcat(buf, "  lock                             Toggle the team lock\n");
+	strcat(buf, "  setpassword <password>           Set a password on server. blank password unsets it\n");
 
 	gi.cprintf(ent, PRINT_HIGH, buf);
 }
