@@ -291,6 +291,10 @@ short Last_Guy       = 0;
 short Position_Count = 0;
 int   Time_Left      = 0;
 
+/**
+ * Called from the game clock's think function pointer.
+ * the edict_t* arg is the game clock
+ */
 void Tourney_Think(edict_t *ent)
 {
     int     minutes;
@@ -336,6 +340,9 @@ void Tourney_Think(edict_t *ent)
             } else {
                 ctf_BSafePrint(PRINT_HIGH, "15 seconds until match begins.\n");
             }
+            break;
+        case 10:
+            ctf_BSafePrint(PRINT_HIGH, "10 seconds until match begins.\n");
             break;
         case 0:
         //    gi.sound (ent, CHAN_CTF, gi.soundindex ("ctf/go.wav"), 1, ATTN_NONE, 0);
