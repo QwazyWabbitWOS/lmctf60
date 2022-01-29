@@ -2361,6 +2361,13 @@ void Cmd_Refcommands_f(edict_t *ent)
 	gi.cprintf(ent, PRINT_HIGH, buf);
 }
 
+/**
+ * Just for testing stuff
+ */
+void Cmd_Test_f(edict_t *ent)
+{
+}
+
 /*
 =================
 ClientCommand
@@ -2384,6 +2391,11 @@ void ClientCommand (edict_t *ent)
 	}
 #endif
 
+
+	if (Q_stricmp (cmd, "test") == 0) {
+		Cmd_Test_f(ent);
+		return;
+	}
 
 	if (Q_stricmp (cmd, "players") == 0)
 	{

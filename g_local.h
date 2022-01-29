@@ -46,6 +46,7 @@ _CrtMemState startup1;	// memory diagnostics
 #include "game.h"
 
 #define ISREF(ent) (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_REFEREE)
+#define CLAMP(val, low, high) ((val < low) ? low : (val > high) ? high : val)
 
 // the "gameversion" client command will print this plus compile date
 #define GAMEVERSION     "LMCTF 6"
