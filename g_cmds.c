@@ -2352,8 +2352,25 @@ void Cmd_Refcommands_f(edict_t *ent)
 	strcat(buf, "  pausematch                       Pause the current match\n");
 	strcat(buf, "  lock                             Toggle the team lock\n");
 	strcat(buf, "  setpassword <password>           Set a password on server. blank password unsets it\n");
+	strcat(buf, "  changemap <mapname>              Change to the selected map\n");
 
 	gi.cprintf(ent, PRINT_HIGH, buf);
+}
+
+void Cmd_ChangeMap_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+		return;
+	}
+
+	if (gi.argc() < 2) {
+		gi.cprintf(ent, PRINT_HIGH, "Usage: changemap <mapname>\n");
+		return;
+	}
+
+	char *map = gi.argv(1);
+	ctf_ChangeMap(map, false);
 }
 
 /**
@@ -2513,6 +2530,11 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp(cmd, "togglefastswitch") == 0)
 	{
 		Cmd_ToggleFastSwitch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "changemap") == 0)
+	{
+		Cmd_ChangeMap_f(ent);
 		return;
 	}
 	else if (Q_stricmp (cmd, "users") == 0)
