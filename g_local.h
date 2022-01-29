@@ -602,6 +602,7 @@ extern  cvar_t  *flag_init;
 extern  cvar_t  *fastswitch;
 extern  cvar_t  *mod_website;   // URL to show in team join centerprint
 extern  cvar_t  *autolock;      // lock/unlock teams with match status
+extern  cvar_t  *countdown_time; // the number of seconds to count before match start
 
 #ifdef ZBOT
 extern  cvar_t  *use_zbotdetect; // CTF CODE -- LM_Hati

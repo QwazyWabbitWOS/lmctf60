@@ -219,6 +219,7 @@ void InitGame(void)
 	fastswitch = gi.cvar("fastswitch", "0", 0);
 	mod_website = gi.cvar("mod_website", "http://lmctf.com", 0);
 	autolock = gi.cvar("autolock", "0", 0);
+	countdown_time = gi.cvar("countdown_time", "15", 0);
 
 
 #ifdef ZBOT

@@ -78,6 +78,7 @@ cvar_t  *flag_init;
 cvar_t  *fastswitch;
 cvar_t  *mod_website;
 cvar_t  *autolock;
+cvar_t  *countdown_time;
 
 #ifdef ZBOT
 cvar_t  *use_zbotdetect; // ZBOT Detect -- LM_Hati

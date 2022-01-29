@@ -478,7 +478,7 @@ void SpawnTourneyClock ()
     if (matchstate == MATCH_RAILGUN_COUNTDOWN) {
         ent->count = 16;
     } else {
-        ent->count = 60; // Give 60 seconds before match starts
+        ent->count = (int)countdown_time->value;
         matchstate = MATCH_COUNTDOWN;
     }
 
