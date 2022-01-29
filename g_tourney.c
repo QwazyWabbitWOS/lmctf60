@@ -210,29 +210,17 @@ void Match_End(edict_t *ent)
 
 qboolean Match_InCountdown()
 {
-    if (matchstate == MATCH_COUNTDOWN) {
-        return true;
-    }
-
-    return false;
+    return matchstate == MATCH_COUNTDOWN;
 }
 
 qboolean Match_InPlay()
 {
-    if (matchstate == MATCH_INPLAY) {
-        return true;
-    }
-
-    return false;
+    return matchstate == MATCH_INPLAY;
 }
 
 qboolean Match_Mode()
 {
-    if(matchstate > MATCH_ENDLEVEL) {
-        return(true);
-    }
-
-    return false;
+    return matchstate > MATCH_ENDLEVEL;
 }
 
 qboolean Match_CanScore()
@@ -246,11 +234,7 @@ qboolean Match_CanScore()
 
 qboolean Match_Over()
 {
-    if (matchstate == MATCH_OVER) {
-        return true;
-    } else {
-        return false;
-    }
+    return matchstate == MATCH_OVER;
 }
 
 qboolean GamePaused()
