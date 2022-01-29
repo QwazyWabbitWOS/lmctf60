@@ -60,13 +60,8 @@ void Cmd_StartMatch_f(edict_t *ent) {
 		return;
 	}
 
-	if (gi.argc() != 2) {
-		gi.cprintf(ent, PRINT_HIGH, "Usage: startmatch <mapname>\n");
-		return;
-	}
-
-	char *maparg = gi.argv(1);
-	StartMatch(maparg);
+	// start countdown
+	SpawnTourneyClock();
 }
 
 void Cmd_StopMatch_f(edict_t *ent) {
@@ -2352,7 +2347,7 @@ void Cmd_Refcommands_f(edict_t *ent)
 	strcat(buf, "  pingalert <floor> <ceiling>      Notify ref if a player is outside this range\n");
 	strcat(buf, "  togglefastswitch                 Turn on/off fast weapon switching\n");
 	strcat(buf, "  refmenu                          Open the menu in the hud\n");
-	strcat(buf, "  startmatch <map>                 Start a new match on the given map\n");
+	strcat(buf, "  startmatch                       Start the match on the current map\n");
 	strcat(buf, "  stopmatch                        Stop the current match\n");
 	strcat(buf, "  pausematch                       Pause the current match\n");
 	strcat(buf, "  lock                             Toggle the team lock\n");

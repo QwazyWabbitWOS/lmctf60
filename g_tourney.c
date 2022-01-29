@@ -473,6 +473,11 @@ void SpawnTourneyClock ()
         matchstate = MATCH_COUNTDOWN;
     }
 
+    // game is about to start, lock teams if necessary
+    if ((int)autolock->value) {
+    	game.teamslocked = true;
+    }
+
     ent->think = Tourney_Think;
     ent->nextthink = level.time + 1;
 }
