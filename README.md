@@ -30,30 +30,54 @@ QwazyWabbit 2020.03.24
 
 # Client Commands
 `players` - Show the players connected
+
 `squadboard` - 
+
 `squad <category>` - 
+
 `squadstatus <status>` - sets the current status
+
 `referee <password>` - authenticate as a ref
+
 `ctfhelp` - show help menu
+
 `ctfmenu` - show the main menu
+
 `users` - show who is connected to the server
+
 `ctfkick <id>` - boot someone from the server
+
 `fobserve` - dunno
+
 `quadtime` - not sure
+
 `gotomap` -
+
 `match` -
+
 `team <red|blue>` - join the red or blue team
 
 
 # Referee Commands
 `refmenu` - show the ref menu
+
 `refcommands` - shows all ref commands and usage
+
 `lock` - locks/unlocks the teams  (toggle)
+
 `unlock` - alias for `lock`
+
 `startmatch` - starts the match on the current map
+
 `stopmatch` - stops the match on the current map
+
 `pausematch` - pauses/unpauses the current match
+
 `unpausematch` - alias for `pausematch`
+
 `setpassword <passwd>` - sets the server password. leave arg blank to unset
+
 `togglefastswitch` - turn on/off the fast weapon switching mode
+
 `changemap <mapname>` - change the map but do not start a match
+
