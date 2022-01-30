@@ -1203,12 +1203,13 @@ int ClientShowMOD(edict_t *ent)
 			"Welcome to %s\nRunning %s\n"
 			"Pak File is available at:\n\" "
 			"xv %i yv %i cstring2 \""
-			"http://www.planetquake.com/lmctf/\n\n",
+			"%s\n\n",
 			0,40,
 			color,
 			hostname->string,
 			GAMEVERSION,
-			0,85 );
+			0,85,
+			mod_website->string);
 		
 		strcat(string, "\" ");
 

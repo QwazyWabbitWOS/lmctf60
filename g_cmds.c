@@ -38,6 +38,50 @@ char *ClientTeam (edict_t *ent)
 }
 */
 
+void Cmd_LockTeams_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Only referees can (un)lock teams.\n");
+		return;
+	}
+
+	game.teamslocked = !game.teamslocked;
+	gi.bprintf(PRINT_HIGH, "Teams are now %slocked\n", game.teamslocked ? "" : "un");
+}
+
+void Cmd_StartMatch_f(edict_t *ent) {
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command denied.\n");
+		return;
+	}
+
+	if (matchstate > MATCH_NONE) {
+		gi.cprintf(ent, PRINT_HIGH, "Match already running, stop it first\n");
+		return;
+	}
+
+	// start countdown
+	SpawnTourneyClock();
+}
+
+void Cmd_StopMatch_f(edict_t *ent) {
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command denied.\n");
+		return;
+	}
+
+	if (matchstate == MATCH_NONE) {
+		gi.cprintf(ent, PRINT_HIGH, "No match running\n");
+		return;
+	}
+
+	KillMatch();
+	gi.bprintf(PRINT_HIGH, "Match stopped by %s\n", ent->client->pers.netname);
+}
+
+void Cmd_PauseMatch_f(edict_t *ent) {
+	RefTogglePause(ent);
+}
 
 void ForceCommand(edict_t *ent, char *command)
 {
@@ -49,6 +93,25 @@ void ForceCommand(edict_t *ent, char *command)
    	gi.WriteByte (11);
 	gi.WriteString (command);
     gi.unicast (ent, true);
+}
+
+void Cmd_SetPassword_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+		return;
+	}
+
+	// no password supplied, clear current password
+	if (gi.argc() < 2) {
+		gi.cvar_set("password", "");
+		gi.cprintf(ent, PRINT_HIGH, "Server password has been cleared\n");
+		return;
+	}
+
+	char *pw = gi.argv(1);
+	gi.cvar_set("password", pw);
+	gi.cprintf(ent, PRINT_HIGH, "Server password set to \"%s\"\n", pw);
 }
 
 void PlayTeamSound(edict_t *ent, char *sound)
@@ -975,8 +1038,15 @@ Cmd_Team_f
 
 void Team_Change (edict_t *ent, int newnum)
 {
-	if (!newnum)
+	if (!newnum) {
 		return;
+	}
+
+	if (game.teamslocked) {
+		gi.cprintf(ent, PRINT_HIGH, "Teams are locked\n");
+		return;
+	}
+
 	ent->health = 0;
 	player_die (ent, ent, ent, 100000, vec3_origin);
 	ent->client->resp.score++;
@@ -1028,6 +1098,11 @@ void Cmd_Team_f (edict_t *ent)
 	if ((int)ctfflags->value & CTF_TEAM_NOSWITCH)
 	{
 		gi.centerprintf (ent, "Sorry.  Team switching has been turned\n off on this server.\n");
+		return;
+	}
+
+	if (game.teamslocked) {
+		gi.cprintf(ent, PRINT_HIGH, "Teams are currently locked.\n");
 		return;
 	}
 
@@ -1376,6 +1451,7 @@ void Cmd_Refmenu_f (edict_t *ent)
 		return;
 	}
 
+	ent->client->showmenu = true;
 	Ref_Main_Menu(ent);
 }
 
@@ -2242,6 +2318,86 @@ int numspec;
 	ForceCommand(ent, "spectator 1");
 }
 
+void Cmd_ToggleFastSwitch_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+		return;
+	}
+
+	char *newval = (((int)fastswitch->value) == 1) ? "0" : "1";
+	gi.cvar_set("fastswitch", newval);
+	gi.bprintf(PRINT_HIGH, "Fast weapon switching now %sabled\n", (fastswitch->value) ? "en" : "dis");
+}
+
+void Cmd_Refcommands_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+		return;
+	}
+
+	char buf[0xffff];
+	memset(&buf[0], 0, sizeof(buf));
+
+	strcat(buf, "\nReferee, commands:\n");
+	strcat(buf, "  gotomap                          Change the map\n");
+	strcat(buf, "  users                            List players\n");
+	strcat(buf, "  kick <id>                        Kick player by their client ID\n");
+	strcat(buf, "  pingalert <floor> <ceiling>      Notify ref if a player is outside this range\n");
+	strcat(buf, "  togglefastswitch                 Turn on/off fast weapon switching\n");
+	strcat(buf, "  refmenu                          Open the menu in the hud\n");
+	strcat(buf, "  startmatch                       Start the match on the current map\n");
+	strcat(buf, "  stopmatch                        Stop the current match\n");
+	strcat(buf, "  pausematch                       Pause the current match\n");
+	strcat(buf, "  lock                             Toggle the team lock\n");
+	strcat(buf, "  setpassword <password>           Set a password on server. blank password unsets it\n");
+	strcat(buf, "  changemap <mapname>              Change to the selected map\n");
+	strcat(buf, "  settimelimit <minutes>           Set the match timelimit in minutes\n");
+
+	gi.cprintf(ent, PRINT_HIGH, buf);
+}
+
+void Cmd_ChangeMap_f(edict_t *ent)
+{
+	if (!ISREF(ent)) {
+		gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+		return;
+	}
+
+	if (gi.argc() < 2) {
+		gi.cprintf(ent, PRINT_HIGH, "Usage: changemap <mapname>\n");
+		return;
+	}
+
+	char *map = gi.argv(1);
+	ctf_ChangeMap(map, false);
+}
+
+void Cmd_SetTimelimit_f(edict_t *ent)
+{
+    if (!ISREF(ent)) {
+        gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+        return;
+    }
+
+    if (gi.argc() < 2) {
+        gi.cprintf(ent, PRINT_HIGH, "Usage: settimelimit <minutes>\n");
+        return;
+    }
+
+    char *minutes = gi.argv(1);
+    gi.cvar_set("timelimit", minutes);
+
+    gi.cprintf(ent, PRINT_HIGH, "Timelimit set to %d minutes\n", (int)timelimit->value);
+}
+
+/**
+ * Just for testing stuff
+ */
+void Cmd_Test_f(edict_t *ent)
+{
+}
 
 /*
 =================
@@ -2266,6 +2422,11 @@ void ClientCommand (edict_t *ent)
 	}
 #endif
 
+
+	if (Q_stricmp (cmd, "test") == 0) {
+		Cmd_Test_f(ent);
+		return;
+	}
 
 	if (Q_stricmp (cmd, "players") == 0)
 	{
@@ -2334,10 +2495,7 @@ void ClientCommand (edict_t *ent)
 	}
 	else if (Q_stricmp (cmd, "gameversion") == 0)
 	{
-		ctf_SafePrint(ent, PRINT_HIGH, GAMEVERSION);
-		ctf_SafePrint(ent, PRINT_HIGH, " ");
-		ctf_SafePrint(ent, PRINT_HIGH, __DATE__);
-		ctf_SafePrint(ent, PRINT_HIGH, "\n");
+		ctf_SafePrint(ent, PRINT_HIGH, va("%s %s %s\n", GAMEVERSION, VER, __DATE__));
 		return;
 	}
 	else if (Q_stricmp (cmd, "ctfhelp") == 0)
@@ -2353,6 +2511,51 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp (cmd, "refmenu") == 0)
 	{
 		Cmd_Refmenu_f (ent);
+		return;
+	}
+	else if (Q_stricmp (cmd, "refcommands") == 0)
+	{
+		Cmd_Refcommands_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "lock") == 0 || Q_stricmp(cmd, "unlock") == 0)
+	{
+		Cmd_LockTeams_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "startmatch") == 0)
+	{
+		Cmd_StartMatch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "stopmatch") == 0)
+	{
+		Cmd_StopMatch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "pausematch") == 0 || Q_stricmp(cmd, "unpausematch") == 0)
+	{
+		Cmd_PauseMatch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "setpassword") == 0)
+	{
+		Cmd_SetPassword_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "settimelimit") == 0)
+    {
+        Cmd_SetTimelimit_f(ent);
+        return;
+    }
+	else if (Q_stricmp(cmd, "togglefastswitch") == 0)
+	{
+		Cmd_ToggleFastSwitch_f(ent);
+		return;
+	}
+	else if (Q_stricmp(cmd, "changemap") == 0)
+	{
+		Cmd_ChangeMap_f(ent);
 		return;
 	}
 	else if (Q_stricmp (cmd, "users") == 0)

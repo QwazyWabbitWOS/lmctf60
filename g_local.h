@@ -18,6 +18,20 @@ _CrtMemState startup1;	// memory diagnostics
 
 //#define OLDOBSERVERCODE
 
+// shared lib symbol visibility
+#if defined _WIN32 || defined __CYGWIN__
+  #define q_imported __declspec(dllimport)
+  #define q_exported __declspec(dllexport)
+#else
+  #if __GNUC__ >= 4
+    #define q_imported __attribute__ ((visibility ("default")))
+    #define q_exported __attribute__ ((visibility ("default")))
+  #else
+    #define q_imported
+    #define q_exported
+  #endif
+#endif
+
 #include "q_shared.h"
 
 // define GAME_INCLUDE so that game.h does not define the
@@ -31,8 +45,15 @@ _CrtMemState startup1;	// memory diagnostics
 
 #include "game.h"
 
+#define ISREF(ent) (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_REFEREE)
+#define CLAMP(val, low, high) ((val < low) ? low : (val > high) ? high : val)
+
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION     "LMCTF 6.2-raven"
+#define GAMEVERSION     "LMCTF 6"
+
+#ifndef VER
+#define VER "r00~000000"
+#endif
 
 #include "p_stats.h" // STATS - LM_Hati
 #include "g_menu.h" // MENUS - LM_Jorm
@@ -305,6 +326,7 @@ typedef struct
 	int			num_items;
 
 	qboolean	autosaved;
+	qboolean	teamslocked;
 } game_locals_t;
 
 
@@ -580,7 +602,11 @@ extern  cvar_t  *maplist_file;  // CTF CODE -- LM_SURT
 extern  cvar_t  *skin_file;     // CTF CODE -- LM_SURT
 extern  cvar_t  *skin_debug;    // For debugging skins file
 extern  cvar_t  *disabled_weps; // CTF CODE -- LM_SURT
-extern  cvar_t* flag_init;
+extern  cvar_t  *flag_init;
+extern  cvar_t  *fastswitch;
+extern  cvar_t  *mod_website;   // URL to show in team join centerprint
+extern  cvar_t  *autolock;      // lock/unlock teams with match status
+extern  cvar_t  *countdown_time; // the number of seconds to count before match start
 
 #ifdef ZBOT
 extern  cvar_t  *use_zbotdetect; // CTF CODE -- LM_Hati
@@ -606,8 +632,10 @@ extern  int     bluescore, redscore; // CTF CODE -- LM_JORM
 extern  char    helptext[1000][25]; // CTF CODE -- LM_JORM
 
 extern	cvar_t	*sv_maplist;
+extern  int quad_respawn_time;
 
 #define world	(&g_edicts[0])
+
 
 // item spawnflags
 #define ITEM_TRIGGER_SPAWN		0x00000001
@@ -664,6 +692,7 @@ void Cmd_WeapNext_f(edict_t *ent);
 void PlayTeamSound(edict_t *ent, char *sound); // LM_JORM
 void PlayVoiceSound(edict_t *ent, char *sound); // LM_Surt
 void Cmd_Squadboard_f (edict_t *ent); // ADC
+void Cmd_ToggleFastSwitch_f(edict_t *ent);
 
 //
 // g_items.c

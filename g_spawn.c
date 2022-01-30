@@ -923,15 +923,6 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 
 	char		*com_token;
 	int			i;
-	float		skill_level;
-
-	skill_level = floor (skill->value);
-	if (skill_level < 0)
-		skill_level = 0;
-	if (skill_level > 3)
-		skill_level = 3;
-	if (skill->value != skill_level)
-		gi.cvar_forceset("skill", va("%f", skill_level));
 
 	SaveClientData ();
 

@@ -216,6 +216,10 @@ void InitGame(void)
 	refpassword = gi.cvar("refpassword", "", 0); // CTF CODE -- LM_CTF
 	rconpassword = gi.cvar("rcon_password", "", 0); // CTF CODE -- LM_CTF
 	disabled_weps = gi.cvar("disabled_weps", "0", 0);
+	fastswitch = gi.cvar("fastswitch", "0", 0);
+	mod_website = gi.cvar("mod_website", "http://lmctf.com", 0);
+	autolock = gi.cvar("autolock", "0", 0);
+	countdown_time = gi.cvar("countdown_time", "15", 0);
 
 
 #ifdef ZBOT

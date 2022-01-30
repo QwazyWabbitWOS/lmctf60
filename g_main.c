@@ -74,7 +74,11 @@ cvar_t	*maplist_file;	// CTF CODE -- LM_SURT
 cvar_t	*skin_file;	// CTF CODE -- LM_SURT
 cvar_t	*skin_debug; // For debugging skin files
 cvar_t	*disabled_weps;	// CTF CODE -- LM_SURT
-cvar_t* flag_init;
+cvar_t  *flag_init;
+cvar_t  *fastswitch;
+cvar_t  *mod_website;
+cvar_t  *autolock;
+cvar_t  *countdown_time;
 
 #ifdef ZBOT
 cvar_t  *use_zbotdetect; // ZBOT Detect -- LM_Hati
@@ -144,7 +148,7 @@ Returns a pointer to the structure with all entry points
 and global variables
 =================
 */
-game_export_t *GetGameAPI (game_import_t *import)
+q_exported game_export_t *GetGameAPI (game_import_t *import)
 {
 	gi = *import;
 

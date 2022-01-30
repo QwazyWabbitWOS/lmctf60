@@ -3,27 +3,21 @@
 #include "bat.h"
 #include "g_tourney.h"
 
-extern int matchstate;
-
 int Num_Of_Players(edict_t *ent, int Ctf_Team);
 
 void UpdateChaseCam(edict_t *ent)
 {
-	vec3_t o, ownerv, goal;
+	vec3_t goal, forward, right, angles;
 	edict_t *targ;
-	vec3_t forward, right;
 	trace_t trace;
 	int i;
-	vec3_t angles;
 
 	// is our chase target gone?
 	if (!ent->client->chase_target->inuse
-		|| ent->client->chase_target->client->resp.spectator)
-	{
+		|| ent->client->chase_target->client->resp.spectator) {
 		edict_t *old = ent->client->chase_target;
 		ChaseNext(ent);
-		if (ent->client->chase_target == old) 
-		{
+		if (ent->client->chase_target == old) {
 			ent->client->chase_target = NULL;
 			ent->client->ps.pmove.pm_flags &= ~PMF_NO_PREDICTION;
 			return;
@@ -31,66 +25,50 @@ void UpdateChaseCam(edict_t *ent)
 	}
 
 	targ = ent->client->chase_target;
-
-	VectorCopy(targ->s.origin, ownerv);
-
-	ownerv[2] += targ->viewheight;
-
 	VectorCopy(targ->client->v_angle, angles);
-	if (angles[PITCH] > 56)
-		angles[PITCH] = 56;
+	VectorCopy (targ->s.origin, goal);
+	goal[2] += targ->viewheight;
+
+	vec3_t	targorigin;
+
+	VectorCopy (goal, targorigin);
+
 	AngleVectors (angles, forward, right, NULL);
-	VectorNormalize(forward);
-	VectorMA(ownerv, -30, forward, o);
+	VectorMA (goal, 30, forward, goal);
 
-	if (o[2] < targ->s.origin[2] + 20)
-		o[2] = targ->s.origin[2] + 20;
+	// trace from targorigin to final chase origin goal
+	trace = gi.trace (targorigin, vec3_origin, vec3_origin, goal, targ, MASK_SOLID);
 
-	// jump animation lifts
-	if (!targ->groundentity)
-		o[2] += 16;
+	// test for hit so we don't go out of the map!
+	if (trace.fraction < 1) {
+		vec3_t	temp;
 
-	trace = gi.trace(ownerv, vec3_origin, vec3_origin, o, targ, MASK_SOLID);
+		// we hit something, need to do a bit of avoidance
 
-	VectorCopy(trace.endpos, goal);
+		// take real end point
+		VectorCopy (trace.endpos, goal);
 
-	VectorMA(goal, 2, forward, goal);
+		// real dir vector
+		VectorSubtract (goal, targorigin, temp);
 
-	// pad for floors and ceilings
-	VectorCopy(goal, o);
-	o[2] += 6;
-	trace = gi.trace(goal, vec3_origin, vec3_origin, o, targ, MASK_SOLID);
-	if (trace.fraction < 1) 
-	{
-		VectorCopy(trace.endpos, goal);
-		goal[2] -= 6;
+		// scale it back bit more
+		VectorMA (targorigin, 0.9f, temp, goal);
 	}
-
-	VectorCopy(goal, o);
-	o[2] -= 6;
-	trace = gi.trace(goal, vec3_origin, vec3_origin, o, targ, MASK_SOLID);
-	if (trace.fraction < 1) 
-	{
-		VectorCopy(trace.endpos, goal);
-		goal[2] += 6;
-	}
-
-	if (targ->deadflag)
-		ent->client->ps.pmove.pm_type = PM_DEAD;
-	else
-		ent->client->ps.pmove.pm_type = PM_FREEZE;
 
 	VectorCopy(goal, ent->s.origin);
-	for (i=0 ; i<3 ; i++)
+	for (i=0 ; i<3 ; i++) {
 		ent->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(targ->client->v_angle[i] - ent->client->resp.cmd_angles[i]);
+	}
 
 	if (targ->deadflag) {
 		ent->client->ps.viewangles[ROLL] = 40;
 		ent->client->ps.viewangles[PITCH] = -15;
 		ent->client->ps.viewangles[YAW] = targ->client->killer_yaw;
+		ent->client->ps.pmove.pm_type = PM_DEAD;
 	} else {
 		VectorCopy(targ->client->v_angle, ent->client->ps.viewangles);
 		VectorCopy(targ->client->v_angle, ent->client->v_angle);
+		ent->client->ps.pmove.pm_type = PM_FREEZE;
 	}
 
 	ent->viewheight = 0;
