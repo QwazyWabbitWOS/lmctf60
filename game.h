@@ -213,4 +213,4 @@ typedef struct
 	int			max_edicts;
 } game_export_t;
 
-game_export_t *GetGameAPI (game_import_t *import);
+q_exported game_export_t *GetGameAPI (game_import_t *import);
