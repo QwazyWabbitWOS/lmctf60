@@ -2353,6 +2353,7 @@ void Cmd_Refcommands_f(edict_t *ent)
 	strcat(buf, "  lock                             Toggle the team lock\n");
 	strcat(buf, "  setpassword <password>           Set a password on server. blank password unsets it\n");
 	strcat(buf, "  changemap <mapname>              Change to the selected map\n");
+	strcat(buf, "  settimelimit <minutes>           Set the match timelimit in minutes\n");
 
 	gi.cprintf(ent, PRINT_HIGH, buf);
 }
@@ -2371,6 +2372,24 @@ void Cmd_ChangeMap_f(edict_t *ent)
 
 	char *map = gi.argv(1);
 	ctf_ChangeMap(map, false);
+}
+
+void Cmd_SetTimelimit_f(edict_t *ent)
+{
+    if (!ISREF(ent)) {
+        gi.cprintf(ent, PRINT_HIGH, "Referee-only command\n");
+        return;
+    }
+
+    if (gi.argc() < 2) {
+        gi.cprintf(ent, PRINT_HIGH, "Usage: settimelimit <minutes>\n");
+        return;
+    }
+
+    char *minutes = gi.argv(1);
+    gi.cvar_set("timelimit", minutes);
+
+    gi.cprintf(ent, PRINT_HIGH, "Timelimit set to %d minutes\n", (int)timelimit->value);
 }
 
 /**
@@ -2524,6 +2543,11 @@ void ClientCommand (edict_t *ent)
 		Cmd_SetPassword_f(ent);
 		return;
 	}
+	else if (Q_stricmp(cmd, "settimelimit") == 0)
+    {
+        Cmd_SetTimelimit_f(ent);
+        return;
+    }
 	else if (Q_stricmp(cmd, "togglefastswitch") == 0)
 	{
 		Cmd_ToggleFastSwitch_f(ent);
