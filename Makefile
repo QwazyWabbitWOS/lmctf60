@@ -19,7 +19,7 @@ WINDRES ?= windres
 STRIP ?= strip
 RM ?= rm -f
 
-CFLAGS ?= -std=c11 -O0 -fno-strict-aliasing -g -Wall -MMD $(INCLUDES)
+CFLAGS ?= -DVER='"$(VER)"' -std=c11 -O0 -fno-strict-aliasing -g -Wall -MMD $(INCLUDES)
 LDFLAGS ?= -shared
 
 ifdef CONFIG_WINDOWS

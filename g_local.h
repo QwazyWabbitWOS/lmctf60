@@ -51,6 +51,10 @@ _CrtMemState startup1;	// memory diagnostics
 // the "gameversion" client command will print this plus compile date
 #define GAMEVERSION     "LMCTF 6"
 
+#ifndef VER
+#define VER "r00~000000"
+#endif
+
 #include "p_stats.h" // STATS - LM_Hati
 #include "g_menu.h" // MENUS - LM_Jorm
 
