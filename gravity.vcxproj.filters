@@ -331,7 +331,4 @@
     </None>
     <None Include="Makefile" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="GNUmakefile" />
-  </ItemGroup>
 </Project>
