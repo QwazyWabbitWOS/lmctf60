@@ -2337,7 +2337,7 @@ void Cmd_Refcommands_f(edict_t *ent)
 		return;
 	}
 
-	char buf[0xffff];
+	char buf[0x2000]; //QW// resized unnecessarily large buffer.
 	memset(&buf[0], 0, sizeof(buf));
 
 	strcat(buf, "\nReferee, commands:\n");

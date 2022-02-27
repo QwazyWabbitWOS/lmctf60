@@ -311,9 +311,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="team.def">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="deaths.txt">
       <Filter>Information files</Filter>
     </None>
@@ -330,5 +327,9 @@
       <Filter>Information files</Filter>
     </None>
     <None Include="Makefile" />
+    <None Include="team.def">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="GNUmakefile" />
   </ItemGroup>
 </Project>

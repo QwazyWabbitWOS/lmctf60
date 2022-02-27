@@ -1197,7 +1197,7 @@ void Com_sprintf(char* dest, int size, char* fmt, ...)
 	len = vsprintf(bigbuffer, fmt, argptr);
 	va_end(argptr);
 	if (len < size)
-		strncpy(dest, bigbuffer, size - 1);
+		strncpy(dest, bigbuffer, (size_t)size - 1);
 	else
 		Com_Printf("Com_sprintf: overflow of %i in %i\n", len, size);
 }
