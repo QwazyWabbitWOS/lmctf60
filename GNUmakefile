@@ -145,7 +145,7 @@ ifeq ($(shell uname),Darwin)
 #SVNDEV := -D'SVN_REV="$(shell svnversion -n .)"'
 #CFLAGS += $(SVNDEV)
 CFLAGS += -DLINUX
-LIBTOOL = otool
+LIBTOOL = otool 
 endif
 
 # Linker flags for building a shared library (*.so).
