@@ -129,21 +129,18 @@ TARGET = game$(ARCH).so
 CC = gcc -std=c11
 
 SHELL = /bin/sh
-
+#for MSYS2 or when we don't know the OS.
+LIBTOOL = ldd
 CFLAGS += -g -Wall -Wparentheses
 
 # flavors of Linux
 ifeq ($(shell uname),Linux)
-#SVNDEV := -D'SVN_REV="$(shell svnversion -n .)"'
-#CFLAGS += $(SVNDEV)
 CFLAGS += -DLINUX
-LIBTOOL = ldd
+LIBTOOL = ldd -r
 endif
 
 # OS X wants to be Linux and FreeBSD too.
 ifeq ($(shell uname),Darwin)
-#SVNDEV := -D'SVN_REV="$(shell svnversion -n .)"'
-#CFLAGS += $(SVNDEV)
 CFLAGS += -DLINUX
 LIBTOOL = otool 
 endif
@@ -173,7 +170,7 @@ all: dep $(TARGET)
 
 $(TARGET):	$(OBJS) $(L_OBJS)
 		$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(OBJS) $(L_OBJS) $(LDFLAGS)
-		$(LIBTOOL) -r $@
+		$(LIBTOOL) $@
 
 dep:
 	@echo "Updating dependencies..."

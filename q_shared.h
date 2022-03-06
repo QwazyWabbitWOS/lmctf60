@@ -1,7 +1,7 @@
 	
 // q_shared.h -- included first by ALL program modules
 
-#ifdef _WIN32
+#if defined _WIN32 && !defined __CYGWIN__
 #pragma warning(disable : 4244)    // data conversions
 #pragma warning(disable : 4459)    // declaration of 'var' hides global declaration
 #pragma warning(disable : 4100)    //unreferenced formal parameter lots in id code
