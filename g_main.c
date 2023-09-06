@@ -287,6 +287,7 @@ MapInfo *getRandomMapByPlayerCount(int count) {
 	MapInfo *clPtr = NULL;
 	int mapCounter = 0;
 	int randNum;
+
 	for(int i = 0; maplist[i].mapname; i++) {
 		if (maplist[i].minplayers > count || maplist[i].maxplayers < count) {
 			gi.dprintf("Excluding %s due to min/max playercount\n", maplist[i].mapname);
@@ -301,6 +302,13 @@ MapInfo *getRandomMapByPlayerCount(int count) {
 		}
 		mapCounter++;
 	}
+
+	//QW// Added. This should never happen.
+	if (!clPtr || !criteriaList) {
+		gi.error("%s line %i: NULL pointer error.", __func__, __LINE__);
+		abort(); // Shut up compiler.
+	}
+
 	clPtr->next = criteriaList;
 	srand(time(0));
 	randNum = rand() % (mapCounter - 2);

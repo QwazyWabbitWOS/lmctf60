@@ -280,14 +280,14 @@ for making temporary vectors for function calls
 */
 float	*tv (float x, float y, float z)
 {
-	static	int		index;
+	static	int		index = 1;
 	static	vec3_t	vecs[8];
 	float	*v;
 
 	// use an array so that multiple tempvectors won't collide
 	// for a while
 	v = vecs[index];
-	index = (index + 1)&7;
+	index = (index + 1) & 7;
 
 	v[0] = x;
 	v[1] = y;

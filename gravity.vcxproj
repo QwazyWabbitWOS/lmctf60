@@ -26,22 +26,22 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -126,6 +126,12 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>GitWCRev.exe . GitRevisionInfo.tmpl GitRevisionInfo.h</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Configuring GIT Revisions</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -168,6 +174,12 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>GitWCRev.exe . GitRevisionInfo.tmpl GitRevisionInfo.h</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Configuring GIT Revisions</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -209,6 +221,12 @@
     <PostBuildEvent>
       <Command>copy $(OutDir)$(TargetName)$(TargetExt) c:\quake2\lmctf\gamex86.real.dll</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>GitWCRev.exe . GitRevisionInfo.tmpl GitRevisionInfo.h</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Configuring GIT Revisions</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -245,6 +263,15 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Debug/gravity.bsc</OutputFile>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>GitWCRev.exe . GitRevisionInfo.tmpl GitRevisionInfo.h -q</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Configuring GIT Revisions</Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>git rev-list --count HEAD</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bat.c" />
@@ -312,6 +339,7 @@
   <ItemGroup>
     <ClInclude Include="bat.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="GitRevisionInfo.h" />
     <ClInclude Include="gslog.h" />
     <ClInclude Include="g_ctffunc.h" />
     <ClInclude Include="g_local.h" />
@@ -348,6 +376,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="deaths.txt" />
+    <None Include="GitRevisionInfo.tmpl" />
     <None Include="GNUmakefile" />
     <None Include="license.txt" />
     <None Include="Makefile" />

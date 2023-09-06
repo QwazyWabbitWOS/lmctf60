@@ -45,14 +45,19 @@ _CrtMemState startup1;	// memory diagnostics
 
 #include "game.h"
 
+#if defined(_WIN32) && !(defined(__MINGW32__) || defined(__MINGW64__))
+#include "GitRevisionInfo.h" // Derived from template via GitWCRev
+#endif // _WIN32
+
+
 #define ISREF(ent) (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_REFEREE)
 #define CLAMP(val, low, high) ((val < low) ? low : (val > high) ? high : val)
 
 // the "gameversion" client command will print this plus compile date
-#define GAMEVERSION     "LMCTF 6"
+#define GAMEVERSION     "LMCTF TE 6.0"
 
 #ifndef VER
-#define VER "r00~000000"
+#define VER "r00~0000000"
 #endif
 
 #include "p_stats.h" // STATS - LM_Hati

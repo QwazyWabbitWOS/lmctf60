@@ -6,7 +6,7 @@
 #include "g_skins.h"
 #include "g_ctffunc.h" //surt for log renaming
 #include "bat.h"
-
+#include "GitRevisionInfo.h"
 
 #define Function(f) {#f, f}
 
@@ -153,7 +153,7 @@ void InitGame(void)
 
 	// END CTF CODE -- LM_JORM
 
-	gi.dprintf("==== InitGame "GAMEVERSION" "__DATE__" ====\n");
+	gi.dprintf("==== InitGame %s %d-%s %s ====\n", GAMEVERSION, LMCTF_REVISION, LMCTF_VERSION, __DATE__);
 
 	// seed the random number generator
 	srand((unsigned)time(NULL));
@@ -170,6 +170,9 @@ void InitGame(void)
 
 	// noset vars
 	dedicated = gi.cvar("dedicated", "0", CVAR_NOSET);
+
+	gi.cvar("revision", va("%d", LMCTF_REVISION), CVAR_SERVERINFO);
+	gi.cvar_set("revision", va("%d-%s", LMCTF_REVISION, LMCTF_VERSION));
 
 	// latched vars
 	sv_cheats = gi.cvar("cheats", "0", CVAR_SERVERINFO | CVAR_LATCH);

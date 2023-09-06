@@ -62,12 +62,19 @@ ARCH := $(shell uname -m | sed -e s/i.86/i386/ \
 # On Ubuntu 16.x use sudo apt install libc6-dev-i386
 # this will let you build 32-bits on ia64 systems
 #
+ifndef REV
+    REV := $(shell git rev-list HEAD | wc -l)
+endif
+
+ifndef VER
+    VER := r$(REV)~$(shell git rev-parse --short HEAD)
+endif
 
 # This is for native build
-CFLAGS=-O3 -DARCH="$(ARCH)" -DSTDC_HEADERS
+CFLAGS=-O3 -DARCH="$(ARCH)" -DSTDC_HEADERS -DVER='"$(VER)"'
 # This is for 32-bit build on 64-bit host
 ifeq ($(ARCH),i386)
-CFLAGS =-m32 -O3 -DARCH="$(ARCH)" -DSTDC_HEADERS -I/usr/include
+CFLAGS =-m32 -O3 -DARCH="$(ARCH)" -DSTDC_HEADERS -DVER='"$(VER)"' -I/usr/include
 endif
 
 ######################################################################
@@ -124,7 +131,7 @@ L_OBJS =
 #
 OBJS = $(C_OBJS) $(G_OBJS) $(M_OBJS) $(P_OBJS) $(Q_OBJS)
 
-TARGET = game$(ARCH).so
+TARGET = game$(ARCH)-lmctf-$(VER).so
 
 CC = gcc -std=c11
 
