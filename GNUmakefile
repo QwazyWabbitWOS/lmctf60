@@ -138,7 +138,7 @@ CC = gcc -std=c11
 SHELL = /bin/sh
 #for MSYS2 or when we don't know the OS.
 LIBTOOL = ldd
-CFLAGS += -g -Wall -Wparentheses
+CFLAGS += -g -Wall
 
 # flavors of Linux
 ifeq ($(shell uname),Linux)
