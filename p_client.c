@@ -1811,6 +1811,8 @@ void PutClientInServer (edict_t *ent)
  	client_persistent_t	saved;
 	client_respawn_t	resp;
 	stats_player_s *p_saved_stats = NULL; // STATS - LM_Hati
+	char teamskin[MAX_SKINLEN];
+	char enemyskin[MAX_SKINLEN];
 
 	static unsigned long unique_id = 6; //guaranteed 0-5 are special
 	
@@ -1821,6 +1823,7 @@ void PutClientInServer (edict_t *ent)
 
 	index = ent-g_edicts-1;
 	client = ent->client;
+
 
 	// deathmatch wipes most client data every spawn
 	if (deathmatch->value)
@@ -1838,8 +1841,16 @@ void PutClientInServer (edict_t *ent)
 		strncpy (savedsquad, ent->client->pers.squad, sizeof savedsquad); // ADC
 		savedsquad[MAX_CATEGORY_LEN-1] = 0; // ADC
 
+		// save
+		strncpy(teamskin, ent->client->pers.teamskin, sizeof(teamskin));
+		strncpy(enemyskin, ent->client->pers.enemyskin, sizeof(enemyskin));
+
 		InitClientPersistent (client);
 		ClientUserinfoChanged (ent, userinfo);
+
+		// restore
+		strncpy(ent->client->pers.teamskin, teamskin, sizeof(teamskin));
+		strncpy(ent->client->pers.enemyskin, enemyskin, sizeof(enemyskin));
 
 		strncpy (ent->client->pers.squad, savedsquad, MAX_CATEGORY_LEN); // ADC
 		ent->client->pers.squad[MAX_CATEGORY_LEN-1] = 0; // ADC
