@@ -52,6 +52,9 @@ typedef enum {false, true}	qboolean;
 
 #define	MAX_MSGLEN			1400	// max length of a message
 
+#define MAX_SKINLEN         24      // max length for player model + skin
+
+
 //
 // per-level limits
 //

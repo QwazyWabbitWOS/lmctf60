@@ -44,6 +44,7 @@ _CrtMemState startup1;	// memory diagnostics
 //#define BAT_DEBUG
 
 #include "game.h"
+#include "g_skins.h"
 
 #if defined(_WIN32) && !(defined(__MINGW32__) || defined(__MINGW64__))
 #include "GitRevisionInfo.h" // Derived from template via GitWCRev
@@ -60,6 +61,16 @@ _CrtMemState startup1;	// memory diagnostics
 #define VER "r00~0000000"
 #endif
 
+// should be set at build-time in Makefile
+#ifndef LMCTF_VERSION
+#define LMCTF_VERSION "0000000"
+#endif
+
+// should be set at build-time in Makefile
+#ifndef LMCTF_REVISION
+#define LMCTF_REVISION "r00"
+#endif
+
 #include "p_stats.h" // STATS - LM_Hati
 #include "g_menu.h" // MENUS - LM_Jorm
 
@@ -70,6 +81,14 @@ _CrtMemState startup1;	// memory diagnostics
 #define	svc_layout			4
 #define	svc_inventory		5
 #define	svc_stufftext		11
+#define svc_configstring    13
+
+// Convenience macros
+#define NAME(e)             (e->client->pers.netname)
+#define TEAM(e)             (e->client->ctf.teamnum)
+#define TEAMMATES(e1, e2)   (TEAM(e1) == TEAM(e2))
+#define IS_PLAYER(e)        (!e->client->pers.spectator)
+#define IS_SPECTATOR(e)     (e->client->pers.spectator)
 
 //==================================================================
 
@@ -1033,6 +1052,9 @@ typedef struct
 	int			helpchanged;
 
 	qboolean	spectator;			// client is a spectator
+
+	char        teamskin[MAX_SKINLEN];
+	char        enemyskin[MAX_SKINLEN];
 } client_persistant_t;
 
 // client data that stays across deathmatch respawns

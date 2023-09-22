@@ -6,7 +6,9 @@
 #include "g_skins.h"
 #include "g_ctffunc.h" //surt for log renaming
 #include "bat.h"
-#include "GitRevisionInfo.h"
+#if defined(_WIN32) && !(defined(__MINGW32__) || defined(__MINGW64__))
+  #include "GitRevisionInfo.h" // Derived from template via GitWCRev
+#endif // _WIN32
 
 #define Function(f) {#f, f}
 
