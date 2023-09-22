@@ -2399,6 +2399,37 @@ void Cmd_Test_f(edict_t *ent)
 {
 }
 
+/**
+ * Set custom skins per player.
+ * Called by issuing "tskin" or "eskin" commands
+ */
+void Cmd_TeamEnemySkin_f (edict_t *ent, qboolean team)
+{
+    char *val;
+
+    if (gi.argc() < 2) {
+        if (team) {
+            val = ent->client->pers.teamskin;
+            gi.cprintf(ent, PRINT_HIGH, "Current team skin: %s\n", (!val[0])? "<unset>" : val);
+        } else {
+            val = ent->client->pers.enemyskin;
+            gi.cprintf(ent, PRINT_HIGH, "Current enemy skin: %s\n", (!val[0])? "<unset>" : val);
+        }
+
+        return;
+    }
+
+    if (team) {
+        strncpy(ent->client->pers.teamskin, gi.argv(1),
+                sizeof(ent->client->pers.teamskin) - 1);
+        SetTeamSkin(ent);
+    } else {
+        strncpy(ent->client->pers.enemyskin, gi.argv(1),
+                sizeof(ent->client->pers.enemyskin) - 1);
+        SetEnemySkin(ent);
+    }
+}
+
 /*
 =================
 ClientCommand
@@ -2422,6 +2453,14 @@ void ClientCommand (edict_t *ent)
 	}
 #endif
 
+    if (Q_stricmp (cmd, "tskin") == 0) {
+        Cmd_TeamEnemySkin_f(ent, true);
+        return;
+    }
+    if (Q_stricmp (cmd, "eskin") == 0) {
+        Cmd_TeamEnemySkin_f(ent, false);
+        return;
+    }
 
 	if (Q_stricmp (cmd, "test") == 0) {
 		Cmd_Test_f(ent);

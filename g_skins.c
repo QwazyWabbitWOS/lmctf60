@@ -255,3 +255,120 @@ char **SkinGetList(edict_t *ent)
 	return skins;
 
 }
+
+/**
+ * Sets the teamskin property of an player and
+ * applies it to all team members. This does not
+ * set the global skin for a particular team, but
+ * the specific skin one player wants to use for
+ * their team. This allows players to override
+ * the team default skin for whatever reason.
+ *
+ * Can be set to ANY skin, regardless of whether
+ * it's in the skin list or not.
+ *
+ * Called when a player manually types "tskin"
+ * command.
+ */
+void SetTeamSkin(edict_t *target)
+{
+    edict_t *ent;
+
+    if (!target->client->pers.teamskin[0]) {
+        return;
+    }
+
+    for (ent = g_edicts + 1; ent <= g_edicts + game.maxclients; ent++) {
+        if (!ent->inuse) {
+            continue;
+        }
+
+        if (!TEAMMATES(ent, target)) {
+            continue;
+        }
+
+        gi.WriteByte(svc_configstring);
+        gi.WriteShort(CS_PLAYERSKINS + (ent - g_edicts) - 1);
+        gi.WriteString(va("%s\\%s", NAME(ent), target->client->pers.teamskin));
+        gi.unicast(target, true);
+    }
+}
+
+/**
+ * Sets the enemyskin property of an player and
+ * applies it to all enemy players.
+ *
+ * Can be set to ANY skin, regardless of whether
+ * it's in the skin list or not.
+ *
+ * Called when a player manually types "eskin"
+ * command.
+ */
+void SetEnemySkin(edict_t *target)
+{
+    edict_t *ent;
+
+    if (!target->client->pers.enemyskin[0]) {
+        return;
+    }
+
+    for (ent = g_edicts + 1; ent <= g_edicts + game.maxclients; ent++) {
+        if (!ent->inuse) {
+            continue;
+        }
+
+        if (IS_SPECTATOR(ent)) {
+            continue;
+        }
+
+        if (TEAMMATES(ent, target)) {
+            continue;
+        }
+
+        gi.WriteByte(svc_configstring);
+        gi.WriteShort(CS_PLAYERSKINS + (ent - g_edicts) - 1);
+        gi.WriteString(va("%s\\%s", NAME(ent), target->client->pers.enemyskin));
+        gi.unicast(target, true);
+    }
+}
+
+/**
+ * Send skinfor's skin to all players so they know what to display.
+ *
+ * If another player has custom skins set (tskin/eskin), those skins
+ * will be sent to those players instead.
+ */
+void SetPlayerSkin(edict_t *skinfor)
+{
+    edict_t *ent;
+    char *newskin;
+    char *defaultskin;
+
+    if (!skinfor->client) {
+        return;
+    }
+
+    // pick a team-specific random skin
+    defaultskin = SkinRandom(skinfor);
+
+    for (ent = g_edicts + 1; ent <= g_edicts + game.maxclients; ent++) {
+        if (!ent->inuse) {
+            continue;
+        }
+
+        newskin = defaultskin;
+
+        if (TEAMMATES(ent, skinfor) && ent->client->pers.teamskin[0]) {
+            newskin = va("%s\\%s", NAME(skinfor), ent->client->pers.teamskin);
+        }
+
+        if (!TEAMMATES(ent, skinfor) && ent->client->pers.enemyskin[0]) {
+            newskin = va("%s\\%s", NAME(skinfor), ent->client->pers.enemyskin);
+        }
+
+        gi.WriteByte(svc_configstring);
+        gi.WriteShort(CS_PLAYERSKINS + (skinfor - g_edicts) - 1);
+        gi.WriteString(newskin);
+        gi.unicast(ent, true);
+    }
+}
