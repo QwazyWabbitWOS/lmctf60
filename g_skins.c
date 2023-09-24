@@ -333,41 +333,39 @@ void SetEnemySkin(edict_t *target)
 }
 
 /**
- * Send skinfor's skin to all players so they know what to display.
+ * Send player's skin to all clients so they know what to display.
  *
- * If another player has custom skins set (tskin/eskin), those skins
- * will be sent to those players instead.
+ * Normally when a client sets their skin, a configstring is broadcast
+ * to all clients. Instead, send the skin individually (unicast)
+ * because if a client has custom skins set (tskin/eskin), those skins
+ * will be sent instead.
  */
-void SetPlayerSkin(edict_t *skinfor)
+void SendSkinToClients(edict_t *player, char *skin)
 {
     edict_t *ent;
     char *newskin;
-    char *defaultskin;
 
-    if (!skinfor->client) {
+    if (!player->client) {
         return;
     }
-
-    // pick a team-specific random skin
-    defaultskin = SkinRandom(skinfor);
 
     for (ent = g_edicts + 1; ent <= g_edicts + game.maxclients; ent++) {
         if (!ent->inuse) {
             continue;
         }
 
-        newskin = defaultskin;
+        newskin = skin;
 
-        if (TEAMMATES(ent, skinfor) && ent->client->pers.teamskin[0]) {
-            newskin = va("%s\\%s", NAME(skinfor), ent->client->pers.teamskin);
+        if (TEAMMATES(ent, player) && ent->client->pers.teamskin[0]) {
+            newskin = va("%s\\%s", NAME(player), ent->client->pers.teamskin);
         }
 
-        if (!TEAMMATES(ent, skinfor) && ent->client->pers.enemyskin[0]) {
-            newskin = va("%s\\%s", NAME(skinfor), ent->client->pers.enemyskin);
+        if (!TEAMMATES(ent, player) && ent->client->pers.enemyskin[0]) {
+            newskin = va("%s\\%s", NAME(player), ent->client->pers.enemyskin);
         }
 
         gi.WriteByte(svc_configstring);
-        gi.WriteShort(CS_PLAYERSKINS + (skinfor - g_edicts) - 1);
+        gi.WriteShort(CS_PLAYERSKINS + (player - g_edicts) - 1);
         gi.WriteString(newskin);
         gi.unicast(ent, true);
     }

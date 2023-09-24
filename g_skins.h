@@ -8,6 +8,6 @@ char *SkinRandom(edict_t *ent);
 char **SkinGetList(edict_t *ent);
 void SetEnemySkin(edict_t *target);
 void SetTeamSkin(edict_t *target);
-void SetPlayerSkin(edict_t *skinfor);
+void SendSkinToClients(edict_t *player, char *skin);
 
 #endif

@@ -2313,7 +2313,6 @@ The game can override any of the settings in place
 void ClientUserinfoChanged (edict_t *ent, char *userinfo)
 {
 	char	*s, *skin;
-	int 	playernum;
 	
 	// check for malformed or illegal info strings
 	if (!Info_Validate(userinfo))
@@ -2340,11 +2339,7 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo)
 
 	// set skin
 	skin = Info_ValueForKey (userinfo, "skin");
-
-	playernum = ent-g_edicts-1;
-
-	// combine name and skin into a configstring
-	gi.configstring (CS_PLAYERSKINS+playernum, va("%s\\%s", ent->client->pers.netname, skin) );
+	SendSkinToClients(ent, skin);
 
 	// fov
 	if (deathmatch->value && ((int)dmflags->value & DF_FIXED_FOV))
@@ -2369,8 +2364,6 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo)
 
 	// save off the userinfo in case we want to check something later
 	strncpy (ent->client->pers.userinfo, userinfo, sizeof(ent->client->pers.userinfo)-1);
-	
-	ClientSetSkin(ent, skin);
 }
 
 
@@ -3153,8 +3146,6 @@ void ClientOldSetSkin(edict_t *ent, char *skin);
 void ClientSetSkin(edict_t *ent, char *skin)
 {
 	char	*newskin, *s;
-	int 	playernum;
-	
 	
 	if (!SkinListInUse())
 	{
@@ -3174,12 +3165,6 @@ void ClientSetSkin(edict_t *ent, char *skin)
 	}
 	else
 		newskin = skin;
-	
-	playernum = ent-g_edicts-1;
-	
-	// combine name and skin into a configstring
-	gi.configstring (CS_PLAYERSKINS+playernum, va("%s\\%s", ent->client->pers.netname, newskin) );
-	
 	
 	Info_SetValueForKey (ent->client->pers.userinfo, "skin", newskin);
 	ent->client->ctf.goodskin = false; // We need to re-force our skin
