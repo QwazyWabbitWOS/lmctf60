@@ -284,7 +284,7 @@ void InitGame(void)
 			maplistindex = 0;
 			while (fgets(line, 255, file))
 			{
-				char* tempname = gi.TagMalloc(100, TAG_GAME);
+				char* tempname = gi.TagMalloc(1000, TAG_GAME);
 				int tempmin = 0;
 				int tempmax = 99;
 				if (sscanf(line, "%s %d %d", tempname, &tempmin, &tempmax) != 3) {
