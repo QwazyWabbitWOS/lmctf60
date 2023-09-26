@@ -91,7 +91,7 @@ cvar_t	*sv_maplist;
 
 char	motd[1000]; // CTF CODE -- LM_JORM
 
-MapInfo	maplist[300]; // CTF CODE -- LM_JORM
+MapInfo	maplist[1000];
 int		maplistindex  = 0; // CTF CODE -- LM_JORM
 
 int		bluescore = 0, redscore = 0; // CTF CODE -- LM_JORM

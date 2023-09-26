@@ -648,7 +648,7 @@ extern  edict_t *blueflag; // CTF CODE -- LM_JORM
 
 extern  char    motd[1000]; // CTF CODE -- LM_JORM
 
-extern  MapInfo maplist[300]; // CTF CODE -- LM_JORM
+extern  MapInfo maplist[1000];
 extern  int     maplistindex; // CTF CODE -- LM_JORM
 
 extern  int     bluescore, redscore; // CTF CODE -- LM_JORM
