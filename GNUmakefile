@@ -170,7 +170,7 @@ SHLIBLDFLAGS = -shared
 # Targets
 ######################################################################
 
-all: dep $(TARGET)
+all: GitRevisionInfo dep $(TARGET)
 
 GitRevisionInfo:
 	sed -e 's/\$$//g' GitRevisionInfo.tmpl | sed -e "s/WCLOGCOUNT+2/${REV}/g" | sed -e "s/WCREV=7/${VER}/g"  | sed -e "s/WCNOW=%Y/$(shell date +%Y)/g" > GitRevisionInfo.h
@@ -178,7 +178,7 @@ GitRevisionInfo:
 .c.o:
 	$(CC) $(CFLAGS) $(SHLIBCFLAGS) -o $@ -c $<
 
-$(TARGET):	$(OBJS) $(L_OBJS) GitRevisionInfo
+$(TARGET):	$(OBJS) $(L_OBJS)
 		$(CC) $(CFLAGS) $(SHLIBLDFLAGS) -o $@ $(OBJS) $(L_OBJS) $(LDFLAGS)
 		$(LIBTOOL) $@
 
