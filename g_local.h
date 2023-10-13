@@ -45,9 +45,7 @@ _CrtMemState startup1;	// memory diagnostics
 
 #include "game.h"
 
-#if defined(_WIN32) && !(defined(__MINGW32__) || defined(__MINGW64__))
 #include "GitRevisionInfo.h" // Derived from template via GitWCRev
-#endif // _WIN32
 
 
 #define ISREF(ent) (ent->client->ctf.extra_flags & CTF_EXTRAFLAGS_REFEREE)
