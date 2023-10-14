@@ -17,18 +17,6 @@
 #include <ctype.h>
 #include <time.h>
 
-#if (defined _M_IX86 || defined __i386__) && !defined C_ONLY && !defined __sun__
-#define id386	1
-#else
-#define id386	0
-#endif
-
-#if defined _M_ALPHA && !defined C_ONLY
-#define idaxp	1
-#else
-#define idaxp	0
-#endif
-
 typedef unsigned char 		byte;
 typedef enum {false, true}	qboolean;
 
