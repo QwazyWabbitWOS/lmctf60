@@ -1,7 +1,7 @@
 	
 // q_shared.h -- included first by ALL program modules
 
-#if defined _WIN32 && !defined __CYGWIN__
+#if defined _WIN32 && defined _MSC_VER
 #pragma warning(disable : 4244)    // data conversions
 #pragma warning(disable : 4459)    // declaration of 'var' hides global declaration
 #pragma warning(disable : 4100)    //unreferenced formal parameter lots in id code
@@ -122,7 +122,7 @@ extern vec3_t vec3_origin;
 
 #define	IS_NAN(x) (((*(int *)&x)&nanmask)==nanmask)
 
-#if !defined C_ONLY && !defined __linux__ && !defined __sgi
+#if defined _M_IX86 && defined _MSC_VER && !defined C_ONLY
 extern long Q_ftol( float f );
 #else
 #define Q_ftol( f ) ( long ) (f)

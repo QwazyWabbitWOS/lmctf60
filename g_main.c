@@ -7,6 +7,10 @@
 #include "gslog.h"	//	StdLog - Mark Davies
 #include "bat.h"
 
+#ifdef _WIN32
+_CrtMemState startup1;	// memory diagnostics
+#endif
+
 game_locals_t	game;
 level_locals_t	level;
 game_import_t	gi;

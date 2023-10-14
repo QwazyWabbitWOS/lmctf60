@@ -9,7 +9,7 @@
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
-_CrtMemState startup1;	// memory diagnostics
+extern _CrtMemState startup1;	// memory diagnostics
 #else
 #define OutputDebugString	//not doing Windows
 #endif
