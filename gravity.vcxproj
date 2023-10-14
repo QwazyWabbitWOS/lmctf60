@@ -376,14 +376,9 @@
     <ClInclude Include="stdlog.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="deaths.txt" />
     <None Include="GitRevisionInfo.tmpl" />
     <None Include="GNUmakefile" />
-    <None Include="license.txt" />
     <None Include="Makefile" />
-    <None Include="readme301.txt" />
-    <None Include="scores.txt" />
-    <None Include="TE todo.txt" />
     <None Include="team.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
