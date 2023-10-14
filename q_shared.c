@@ -6,7 +6,7 @@ vec3_t vec3_origin = {0,0,0};
 
 //============================================================================
 
-#ifdef _WIN32
+#if defined _WIN32 && defined _MSC_VER
 #pragma optimize( "", off )
 #endif
 
@@ -65,7 +65,7 @@ void RotatePointAroundVector( vec3_t dst, const vec3_t dir, const vec3_t point, 
 	}
 }
 
-#ifdef _WIN32
+#if defined _WIN32 && defined _MSC_VER
 #pragma optimize( "", on )
 #endif
 
@@ -229,7 +229,7 @@ void R_ConcatTransforms (float in1[3][4], float in2[3][4], float out[3][4])
 //============================================================================
 
 
-#if defined _M_IX86 && !defined C_ONLY
+#if defined _M_IX86 && defined _MSC_VER && !defined C_ONLY
 #pragma warning (disable:4035)
 __declspec( naked ) long Q_ftol( float f )
 {
@@ -313,7 +313,7 @@ BoxOnPlaneSide
 Returns 1, 2, or 1 + 2
 ==================
 */
-#if !id386 || defined __linux__ 
+#if !defined _M_IX86 || !defined _MSC_VER || defined C_ONLY
 int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, struct cplane_s *p)
 {
 	float	dist1, dist2;

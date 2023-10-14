@@ -48,10 +48,29 @@
 # Step 7: Type "make" to build your mod.
 ######################################################################
 
+PLATFORM := $(shell uname 2>/dev/null || echo Windows)
+PLATFORM := $(patsubst CYGWIN%,Cygwin,$(PLATFORM))
+PLATFORM := $(patsubst MSYS%,Cygwin,$(PLATFORM))
+PLATFORM := $(patsubst MINGW%,Windows,$(PLATFORM))
+PLATFORM := $(patsubst UCRT%,Windows,$(PLATFORM))
+PLATFORM := $(patsubst CLANG%,Windows,$(PLATFORM))
+
 # this nice line comes from the linux kernel makefile
 ARCH := $(shell uname -m | sed -e s/i.86/i386/ \
 	-e s/sun4u/sparc64/ -e s/arm.*/arm/ \
 	-e s/sa110/arm/ -e s/alpha/axp/)
+
+ifeq ($(PLATFORM),Windows)
+	ifeq ($(patsubst MINGW32%,,$(shell uname 2>/dev/null)),)
+		ARCH := x86
+	endif
+	ifeq ($(patsubst CLANG32%,,$(shell uname 2>/dev/null)),)
+		ARCH := x86
+	endif
+	ifeq ($(ARCH),i386)
+		ARCH := x86
+	endif
+endif
 
 # On 64-bit OS use the command: 'setarch i386 make' after 'make clean'
 # to obtain the 32-bit binary DLL on 64-bit Linux.
@@ -136,20 +155,36 @@ TARGET = game$(ARCH)-lmctf-$(VER).so
 CC = gcc -std=c11
 
 SHELL = /bin/sh
-#for MSYS2 or when we don't know the OS.
+#for Windows or when we don't know the OS.
 LIBTOOL = ldd
 CFLAGS += -g -Wall
+
+# Windows / MinGW (incl. MSYS2 MinGW)
+ifeq ($(PLATFORM),Windows)
+TARGET = game$(ARCH)-lmctf-$(VER).dll
+endif
+
+# MSYS2 / Cygwin
+ifeq ($(PLATFORM),Cygwin)
+TARGET = game$(ARCH)-lmctf-$(VER).dll
+CFLAGS += -DLINUX
+LDFLAGS = -ldl -lm
+endif
 
 # flavors of Linux
 ifeq ($(shell uname),Linux)
 CFLAGS += -DLINUX
+LDFLAGS = -ldl -lm
+ifeq ("$(wildcard /etc/alpine-release)","")
 LIBTOOL = ldd -r
+endif
 endif
 
 # OS X wants to be Linux and FreeBSD too.
 ifeq ($(shell uname),Darwin)
 CFLAGS += -DLINUX
-LIBTOOL = otool 
+LDFLAGS = -ldl -lm
+LIBTOOL = otool
 endif
 
 # Linker flags for building a shared library (*.so).
@@ -161,7 +196,7 @@ endif
 #LDFLAGS =
 
 # but Slackware people do
-LDFLAGS = -ldl -lm
+#LDFLAGS = -ldl -lm
 
 SHLIBCFLAGS = -fPIC
 SHLIBLDFLAGS = -shared
