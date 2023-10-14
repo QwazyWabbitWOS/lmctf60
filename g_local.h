@@ -858,11 +858,11 @@ edict_t	*PlayerTrail_LastSpot (void);
 void respawn (edict_t *ent);
 void BeginIntermission (edict_t *targ);
 void PutClientInServer (edict_t *ent);
-void InitClientPersistant (gclient_t *client);
+void InitClientPersistent (gclient_t *client);
 void InitClientResp (gclient_t *client);
 void InitBodyQue (void);
 void ClientBeginServerFrame (edict_t *ent);
-int     SexedSoundIndex (edict_t *ent, char *base);
+//int     SexedSoundIndex (edict_t *ent, char *base);
 
 // TEAM CODE -- LM_JORM
 void ClientSetSkin(edict_t *ent, char *skin);
@@ -1031,12 +1031,12 @@ typedef struct
 	int			helpchanged;
 
 	qboolean	spectator;			// client is a spectator
-} client_persistant_t;
+} client_persistent_t;
 
 // client data that stays across deathmatch respawns
 typedef struct
 {
-	client_persistant_t	coop_respawn;	// what to set client->pers to on a respawn
+	client_persistent_t	coop_respawn;	// what to set client->pers to on a respawn
 	int			enterframe;			// level.framenum the client entered the game
 	int			score;				// frags, etc
 	vec3_t		cmd_angles;			// angles sent over in the last command
@@ -1048,7 +1048,7 @@ typedef struct
 //surt LMCTF
 typedef struct
 {
-	int                             teamnum; //make this persistant
+	int                             teamnum; //make this persistent
 	int								New_Team; //bat
 	int                             extra_flags; //assorted other flags
 	qboolean                        goodskin;       // Flags that skin has been approved, no need to forcecommand
@@ -1073,7 +1073,7 @@ struct gclient_s
 	int				ping;
 
 	// private to game
-	client_persistant_t	pers;
+	client_persistent_t	pers;
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
 

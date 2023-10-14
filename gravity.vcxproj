@@ -219,7 +219,8 @@
       <OutputFile>.\Debug/gravity.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(TargetName)$(TargetExt) c:\quake2\lmctf\gamex86.real.dll</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>GitWCRev.exe . GitRevisionInfo.tmpl GitRevisionInfo.h</Command>

@@ -1097,13 +1097,13 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 
 /*
 ==============
-InitClientPersistant
+InitClientPersistent
 
 This is only called when the game first initializes in single player,
 but is called after each death and level change in deathmatch
 ==============
 */
-void InitClientPersistant (gclient_t *client)
+void InitClientPersistent (gclient_t *client)
 {
 	gitem_t		*item;
 
@@ -1178,7 +1178,7 @@ void InitClientResp (gclient_t *client)
 ==================
 SaveClientData
 
-Some information that should be persistant, like health, 
+Some information that should be persistent, like health, 
 is still stored in the edict structure, so it needs to
 be mirrored out to the client structure before all the
 edicts are wiped.
@@ -1808,7 +1808,7 @@ void PutClientInServer (edict_t *ent)
 	vec3_t spawn_angles;
 	gclient_t *client;
 	int 	i;
- 	client_persistant_t	saved;
+ 	client_persistent_t	saved;
 	client_respawn_t	resp;
 	stats_player_s *p_saved_stats = NULL; // STATS - LM_Hati
 
@@ -1838,7 +1838,7 @@ void PutClientInServer (edict_t *ent)
 		strncpy (savedsquad, ent->client->pers.squad, sizeof savedsquad); // ADC
 		savedsquad[MAX_CATEGORY_LEN-1] = 0; // ADC
 
-		InitClientPersistant (client);
+		InitClientPersistent (client);
 		ClientUserinfoChanged (ent, userinfo);
 
 		strncpy (ent->client->pers.squad, savedsquad, MAX_CATEGORY_LEN); // ADC
@@ -1879,7 +1879,7 @@ void PutClientInServer (edict_t *ent)
 
 	
 	if(client->pers.health <= 0)
-		InitClientPersistant(client);
+		InitClientPersistent(client);
 	
 	client->resp = resp;
 
@@ -2253,7 +2253,7 @@ void ClientBegin (edict_t *ent)
 	else
 	{
 		// a spawn point will completely reinitialize the entity
-		// except for the persistant data that was initialized at
+		// except for the persistent data that was initialized at
 		// ClientConnect() time
 		G_InitEdict (ent);
 		ent->classname = "player";
@@ -2446,7 +2446,7 @@ qboolean ClientConnect (edict_t *ent, char *userinfo)
 		// clear the respawning variables
 		InitClientResp (ent->client);
 		if (!game.autosaved || !ent->client->pers.weapon)
-			InitClientPersistant (ent->client);
+			InitClientPersistent (ent->client);
 	}
 
 	ClientUserinfoChanged (ent, userinfo);
