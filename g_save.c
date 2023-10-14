@@ -6,7 +6,6 @@
 #include "g_skins.h"
 #include "g_ctffunc.h" //surt for log renaming
 #include "bat.h"
-#include "GitRevisionInfo.h"
 
 #define Function(f) {#f, f}
 

@@ -170,7 +170,10 @@ SHLIBLDFLAGS = -shared
 # Targets
 ######################################################################
 
-all: dep $(TARGET)
+all: GitRevisionInfo dep $(TARGET)
+
+GitRevisionInfo:
+	sed -e 's/\$$//g' GitRevisionInfo.tmpl | sed -e "s/WCLOGCOUNT+2/${REV}/g" | sed -e "s/WCREV=7/${VER}/g"  | sed -e "s/WCNOW=%Y/$(shell date +%Y)/g" > GitRevisionInfo.h
 
 .c.o:
 	$(CC) $(CFLAGS) $(SHLIBCFLAGS) -o $@ -c $<
@@ -193,7 +196,7 @@ stripcr:	.
 
 clean:
 		@echo "Deleting temporary files..."
-		@rm -f $(OBJS) *.orig ~* core
+		@rm -f $(OBJS) GitRevisionInfo.h *.orig ~* core
 
 distclean:	clean
 		@echo "Deleting everything that can be rebuilt..."
