@@ -31,11 +31,11 @@ QwazyWabbit 2020.03.24
 # Client Commands
 `players` - Show the players connected
 
-`squadboard` - 
+`squadboard` - list players by squads, Offense, Defense, Middle
 
-`squad <category>` - 
+`squad <category>` - Squads by category
 
-`squadstatus <status>` - sets the current status
+`squadstatus <status>` - set your current status (free text format)
 
 `referee <password>` - authenticate as a ref
 
@@ -47,13 +47,13 @@ QwazyWabbit 2020.03.24
 
 `ctfkick <id>` - boot someone from the server
 
-`fobserve` - dunno
+`fobserve` - Force observer mode on idle client.
 
-`quadtime` - not sure
+`quadtime` - Change duration of quad time in seconds
 
-`gotomap` -
+`gotomap` - change map to named map. Must be ref, map must be in the maplist
 
-`match` -
+`match <mapname>` - begin a match on the specified map
 
 `team <red|blue>` - join the red or blue team
 
