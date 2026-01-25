@@ -368,9 +368,10 @@ void InitGame(void)
 		file = fopen("motd.txt", "r");
 	if (file)
 	{
-		size_t count = fread(motd, sizeof motd, 1, file);
+		size_t count = fread(motd, sizeof (char), sizeof motd, file);
 		if (count)
-			; // don't worry, be happy
+			gi.dprintf("%zu characters were read into MOTD\n", count);
+
 		fclose(file);
 	}
 
