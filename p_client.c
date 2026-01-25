@@ -12,10 +12,12 @@
 #include "bat.h"
 
 // Lithium II Zbot detect plugin
+#ifdef ZBOT
 qboolean ZbotCheck(edict_t *ent, usercmd_t *ucmd);
+#endif
 
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
-void Check_Drop_Flag(edict_t *ent);
+//void Check_Drop_Flag(edict_t *ent);
 void SP_misc_teleporter_dest (edict_t *ent);
 int Team_Observer_OK(int Team_To_View, edict_t *ent);
 void Cmd_Observe_f(edict_t *ent, int Observer_Type);
@@ -2739,12 +2741,13 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		   Original code by gaia, I added the 
 		   macro condition. */
 
-#ifdef WANT_FUNKY_GRAVITY
-		if(ent->s.origin[2] > 0) //gaia
-			client->ps.pmove.gravity = -800;
-		else
-			client->ps.pmove.gravity = 800;
-#endif
+		//QW Changed macro to a cvar so admin can control this.
+		if (want_funky_gravity->value) {
+			if (ent->s.origin[2] > 0) //gaia
+				client->ps.pmove.gravity = -800;
+			else
+				client->ps.pmove.gravity = 800;
+		}
 
 		pm.s = client->ps.pmove;
 

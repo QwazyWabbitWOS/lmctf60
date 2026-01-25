@@ -235,7 +235,7 @@ void InitGame(void)
 	skin_file = gi.cvar("skin_file", "skins.ini", 0);
 	skin_debug = gi.cvar("skin_debug", "0", 0);	// for debugging team skins in SkinsReadFile
 	flag_init = gi.cvar("flag_init", "0", 0);	// flag spawning frame initialization.
-
+	want_funky_gravity = gi.cvar("want_funky_gravity", "0", 0); // player z-pos > 0 causes negative gravity
 
 
 	//logging startup after vars initialized
